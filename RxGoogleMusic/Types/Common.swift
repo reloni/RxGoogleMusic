@@ -57,8 +57,59 @@ public struct GMusicRequest {
 	}
 }
 
-public struct GMusicCollection<T> {
+public struct GMusicCollection<T: Codable>: Codable {
+	enum CodingKeys: String, CodingKey {
+		case kind
+		case nextPageToken
+		case data
+	}
+	
+	enum NestedDataKeys: String, CodingKey {
+		case items
+	}
+	
 	let kind: String
 	let nextPageToken: String?
 	let items: [T]
+	
+	public init(from decoder: Decoder) throws {
+		let container = try decoder.container(keyedBy: CodingKeys.self)
+		
+		kind = try container.decode(String.self, forKey: .kind)
+		nextPageToken = try container.decodeIfPresent(String.self, forKey: .nextPageToken)
+		let nestedContainer = try container.nestedContainer(keyedBy: NestedDataKeys.self, forKey: .data)
+		items = try nestedContainer.decode([T].self, forKey: .items)
+	}
+	
+	public func encode(to encoder: Encoder) throws {
+		fatalError("Not implemented")
+	}
+}
+
+public struct GMusicRef: Codable {
+	let kind: String
+	let url: URL
+	let aspectRatio: String
+	let autogen: Bool
+}
+
+public struct GMusicTimestamp: Codable, CustomDebugStringConvertible {
+	let value: Date
+	let rawValue: String
+	
+	public init(from decoder: Decoder) throws {
+		let container = try decoder.singleValueContainer()
+		
+		let rawValue = try container.decode(String.self)
+		guard let timeStamp = UInt64(rawValue) else {
+			throw DecodingError.dataCorruptedError(in: container, debugDescription: "Unable to deserialize timestamp")
+		}
+		
+		self.rawValue = rawValue
+		value = Date(microsecondsSince1970: timeStamp)
+	}
+	
+	public var debugDescription: String {
+		return value.debugDescription
+	}
 }

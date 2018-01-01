@@ -11,14 +11,30 @@ import RxSwift
 @testable import RxGoogleMusic
 
 class RxGoogleMusicTests: XCTestCase {
-	let liveToken = "ya29.GosBNQUp17lnsLdM90lZ7YQK9g0raGGhpOyQFqmmDzHTsXILzElDMKn8k69Funx_ZhYIryPAg0Awh05XNHpawculaO0OqkKmuI5hx1ALrs3Alp8akI8lJD3BBQWQ8yNvLMsvXNvmzBP5yt-2kO9ErqzEnr1ZaIBesLxe61oSuG9dWsB48GrYzJw9owdFIA"
+	let liveToken = "ya29.GosBNQWhG_ntTf0U9jM9NUEOOSPFx14sd43XeDeqFmxVfQfcdQOzBDKsxAGIXGm9e1sNWnVonFs_g7niPoOZ8sDDcj-_A8Xq5foB8ZV1DXwPo9NNW3yd6nwGPqicYRlbVlIUm51n7hxaA32giAxiV-WGQ63XOn8TX2HiPzNKMT6bB7r8ml5h8BdGqqvGww"
+	
+	func testLoadJson() {
+		let client = GMusicClient()
+		
+		let resultExpectation = expectation(description: "Should return json data")
+		
+		_ = client.jsonRequest(GMusicRequest(type: .track, maxResults: 5, updatedMin: Date(), token: liveToken))
+			.do(onNext: { result in
+				print(result)
+				resultExpectation.fulfill()
+			})
+			.do(onError: { print($0) })
+			.subscribe()
+		
+		_ = XCTWaiter.wait(for: [resultExpectation], timeout: 1)
+	}
 	
 	func testLoadTracks() {
 		let client = GMusicClient()
 		
 		let resultExpectation = expectation(description: "Should return json data")
 		
-		_ = client.jsonRequest(GMusicRequest(type: .track, maxResults: 5, updatedMin: Date(), token: liveToken))
+		_ = client.tracks(token: liveToken, maxResults: 2, updatedMin: Date(microsecondsSince1970: 1514132217511863))
 			.do(onNext: { result in
 				print(result)
 				resultExpectation.fulfill()

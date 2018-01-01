@@ -1,5 +1,5 @@
 //
-//  Request.swift
+//  GMusicClient.swift
 //  RxGoogleMusic
 //
 //  Created by Anton Efimenko on 01.01.2018.
@@ -12,10 +12,25 @@ import RxSwift
 final class GMusicClient {
 	let baseUrl: URL
 	let session: URLSession
+	let locale: Locale
+	let tier: String
 	
-	public init(session: URLSession = URLSession.shared, baseUrl: URL = URL(string: "https://mclients.googleapis.com/sj/v2.5")!) {
+	public init(session: URLSession = URLSession.shared,
+				locale: Locale = Locale.current,
+				tier: String = "aa",
+				baseUrl: URL = URL(string: "https://mclients.googleapis.com/sj/v2.5")!) {
 		self.session = session
+		self.locale = locale
+		self.tier = tier
 		self.baseUrl = baseUrl
+	}
+	
+	func tracks(token: String, maxResults: Int, updatedMin: Date) -> Observable<GMusicCollection<GMusicTrack>> {
+		let request = GMusicRequest(type: .track, maxResults: maxResults, updatedMin: updatedMin, token: token, locale: locale, tier: tier)
+		return dataRequest(request).flatMap { data -> Observable<GMusicCollection<GMusicTrack>> in
+			let result = try JSONDecoder().decode(GMusicCollection<GMusicTrack>.self, from: data)
+			return .just(result)
+		}
 	}
 	
 	func jsonRequest(_ request: GMusicRequest) -> Observable<JSON> {

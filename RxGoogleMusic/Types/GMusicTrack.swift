@@ -12,9 +12,9 @@ public struct GMusicTrack: Codable {
 	let kind: String
 	let id: UUID
 	let clientId: String
-	let creationTimestamp: Date
-	let lastModifiedTimestamp: Date
-	let recentTimestamp: Date
+	let creationTimestamp: GMusicTimestamp
+	let lastModifiedTimestamp: GMusicTimestamp
+	let recentTimestamp: GMusicTimestamp
 	let deleted: Bool
 	let title: String
 	let artist: String
@@ -24,18 +24,18 @@ public struct GMusicTrack: Codable {
 	let year: Int
 	let trackNumber: Int
 	let genre: String
-	let durationMillis: Int
+	let durationMillis: String
 	let albumArtRef: [GMusicRef]
-	let artistArtRef: [GMusicRef]
+	let artistArtRef: [GMusicRef]?
 	let playCount: Int
 	let discNumber: Int
-	let rating: Int
-	let estimatedSize: Int
-	let trackType: Int
+	let rating: String?
+	let estimatedSize: String
+	let trackType: String
 	let storeId: String
 	let albumId: String
 	let artistId: [String]
 	let nid: String
-	let explicitType: Int
-	let lastRatingChangeTimestamp: Date
+	let explicitType: String
+	let lastRatingChangeTimestamp: GMusicTimestamp?
 }
