@@ -9,28 +9,6 @@
 import Foundation
 import RxSwift
 
-typealias JSON = [String: Any]
-
-public struct GMusicRequest {
-	enum EntityType: String {
-		case track = "tracks"
-	}
-	
-	let type: EntityType
-	let maxResults: Int
-	let updatedMin: Int
-	let token: String
-	let locale: String
-	let tier: String
-	
-	func createGMusicRequest(for baseUrl: URL) -> URLRequest {
-		let url = URL(baseUrl: baseUrl.appendingPathComponent(type.rawValue).absoluteString,
-					  parameters: ["dv": "3000038001007", "hl": locale, "max-results": "\(maxResults)", "prettyPrint": "false", "tier": tier, "updated-min": "\(updatedMin)"])!
-		
-		return URLRequest(url: url, headers: ["Authorization": "Bearer \(token)"])
-	}
-}
-
 final class GMusicClient {
 	let baseUrl: URL
 	let session: URLSession
@@ -65,6 +43,10 @@ final class GMusicClient {
 				observer.onNext(data)
 				observer.onCompleted()
 			}
+			
+			#if DEBUG
+				print("URL \(task.originalRequest!.url!.absoluteString)")
+			#endif
 			
 			task.resume()
 			
