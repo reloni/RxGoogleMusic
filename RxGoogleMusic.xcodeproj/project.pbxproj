@@ -9,7 +9,9 @@
 /* Begin PBXBuildFile section */
 		6E0B792D1FF2D434008F7800 /* RxGoogleMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E0B79231FF2D433008F7800 /* RxGoogleMusic.framework */; };
 		6E0B79321FF2D434008F7800 /* RxGoogleMusicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0B79311FF2D434008F7800 /* RxGoogleMusicTests.swift */; };
-		6E0B79341FF2D434008F7800 /* RxGoogleMusic.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E0B79261FF2D433008F7800 /* RxGoogleMusic.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6E3963F91FFA86610016C2FA /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E3963F81FFA86610016C2FA /* RxSwift.framework */; };
+		6E3963FB1FFA86B30016C2FA /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E3963F81FFA86610016C2FA /* RxSwift.framework */; };
+		6E3963FE1FFA87A70016C2FA /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3963FD1FFA87A70016C2FA /* Test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -24,11 +26,12 @@
 
 /* Begin PBXFileReference section */
 		6E0B79231FF2D433008F7800 /* RxGoogleMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxGoogleMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		6E0B79261FF2D433008F7800 /* RxGoogleMusic.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RxGoogleMusic.h; sourceTree = "<group>"; };
 		6E0B79271FF2D433008F7800 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E0B792C1FF2D434008F7800 /* RxGoogleMusicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RxGoogleMusicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E0B79311FF2D434008F7800 /* RxGoogleMusicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxGoogleMusicTests.swift; sourceTree = "<group>"; };
 		6E0B79331FF2D434008F7800 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E3963F81FFA86610016C2FA /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		6E3963FD1FFA87A70016C2FA /* Test.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -36,6 +39,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E3963F91FFA86610016C2FA /* RxSwift.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -43,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E3963FB1FFA86B30016C2FA /* RxSwift.framework in Frameworks */,
 				6E0B792D1FF2D434008F7800 /* RxGoogleMusic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -56,6 +61,7 @@
 				6E0B79251FF2D433008F7800 /* RxGoogleMusic */,
 				6E0B79301FF2D434008F7800 /* RxGoogleMusicTests */,
 				6E0B79241FF2D433008F7800 /* Products */,
+				6E3963F71FFA86610016C2FA /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -71,8 +77,8 @@
 		6E0B79251FF2D433008F7800 /* RxGoogleMusic */ = {
 			isa = PBXGroup;
 			children = (
-				6E0B79261FF2D433008F7800 /* RxGoogleMusic.h */,
 				6E0B79271FF2D433008F7800 /* Info.plist */,
+				6E3963FD1FFA87A70016C2FA /* Test.swift */,
 			);
 			path = RxGoogleMusic;
 			sourceTree = "<group>";
@@ -86,6 +92,14 @@
 			path = RxGoogleMusicTests;
 			sourceTree = "<group>";
 		};
+		6E3963F71FFA86610016C2FA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6E3963F81FFA86610016C2FA /* RxSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -93,7 +107,6 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E0B79341FF2D434008F7800 /* RxGoogleMusic.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +138,7 @@
 				6E0B79281FF2D434008F7800 /* Sources */,
 				6E0B79291FF2D434008F7800 /* Frameworks */,
 				6E0B792A1FF2D434008F7800 /* Resources */,
+				6E3963FC1FFA86B90016C2FA /* Copy carthage frameworks */,
 			);
 			buildRules = (
 			);
@@ -148,6 +162,7 @@
 				TargetAttributes = {
 					6E0B79221FF2D433008F7800 = {
 						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 					6E0B792B1FF2D434008F7800 = {
@@ -191,11 +206,30 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		6E3963FC1FFA86B90016C2FA /* Copy carthage frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
+			);
+			name = "Copy carthage frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		6E0B791E1FF2D433008F7800 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E3963FE1FFA87A70016C2FA /* Test.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +368,7 @@
 		6E0B79381FF2D434008F7800 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -341,6 +376,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = RxGoogleMusic/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -348,6 +387,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.RxGoogleMusic;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -356,6 +396,7 @@
 		6E0B79391FF2D434008F7800 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
@@ -363,6 +404,10 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = RxGoogleMusic/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -378,8 +423,13 @@
 		6E0B793B1FF2D434008F7800 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SJMSRXG797;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = RxGoogleMusicTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.RxGoogleMusicTests;
@@ -392,8 +442,13 @@
 		6E0B793C1FF2D434008F7800 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SJMSRXG797;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = RxGoogleMusicTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.RxGoogleMusicTests;
