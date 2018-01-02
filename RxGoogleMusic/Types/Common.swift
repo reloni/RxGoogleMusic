@@ -27,13 +27,13 @@ public enum EntityType: String {
 }
 
 public struct GMusicRequest {
-	let type: EntityType
-	let maxResults: Int
-	let updatedMin: Date
-	let token: String
-	let locale: Locale
-	let tier: String
-	let pageToken: String?
+	public let type: EntityType
+	public let maxResults: Int
+	public let updatedMin: Date
+	public let token: String
+	public let locale: Locale
+	public let tier: String
+	public let pageToken: String?
 	
 	public init(type: EntityType, maxResults: Int, updatedMin: Date, token: String, pageToken: String? = nil, locale: Locale = Locale.current, tier: String = "aa") {
 		self.type = type
@@ -45,30 +45,31 @@ public struct GMusicRequest {
 		self.pageToken = pageToken
 	}
 	
-	func withNew(nextPageToken: String) -> GMusicRequest {
+	public var urlParameters: [String: String] {
+		return ["dv": "3000038001007",
+				"hl": locale.identifier,
+				"max-results": "\(maxResults)",
+			"prettyPrint": "false",
+			"tier": tier,
+			"updated-min": "\(updatedMin.microsecondsSince1970)"]
+	}
+	
+	public var headers: [String: String] {
+		return ["Authorization": "Bearer \(token)"]
+	}
+	
+	var escapedPageToken: String? {
+		return pageToken?.addingPercentEncoding(withAllowedCharacters: CharacterSet.nextPageTokenAllowed)
+	}
+	
+	public func withNew(nextPageToken: String) -> GMusicRequest {
 		return GMusicRequest(type: type, maxResults: maxResults, updatedMin: updatedMin, token: token, pageToken: nextPageToken, locale: locale, tier: tier)
 	}
 	
 	func buildUrl(for baseUrl: URL) -> URL {
 		let url = URL(baseUrl: baseUrl.appendingPathComponent(type.rawValue).absoluteString, parameters: urlParameters)!
-		guard let token = pageToken else { return url }
-		var chars = CharacterSet.urlHostAllowed
-		chars.remove("=")
-		chars.remove("+")
-		return URL(string: "\(url.absoluteString)&start-token=\(token.addingPercentEncoding(withAllowedCharacters: chars)!)")!
-	}
-	
-	var urlParameters: [String: String] {
-		return ["dv": "3000038001007",
-				"hl": locale.identifier,
-				"max-results": "\(maxResults)",
-				"prettyPrint": "false",
-				"tier": tier,
-				"updated-min": "\(updatedMin.microsecondsSince1970)"]
-	}
-	
-	var headers: [String: String] {
-		return ["Authorization": "Bearer \(token)"]
+		guard let token = escapedPageToken else { return url }
+		return URL(string: "\(url.absoluteString)&start-token=\(token)")!
 	}
 	
 	func createGMusicRequest(for baseUrl: URL) -> URLRequest {
@@ -87,9 +88,9 @@ public struct GMusicCollection<T: Codable>: Codable {
 		case items
 	}
 	
-	let kind: String
-	let nextPageToken: String?
-	let items: [T]
+	public let kind: String
+	public let nextPageToken: String?
+	public let items: [T]
 	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -106,15 +107,15 @@ public struct GMusicCollection<T: Codable>: Codable {
 }
 
 public struct GMusicRef: Codable {
-	let kind: String
-	let url: URL
-	let aspectRatio: String?
-	let autogen: Bool?
+	public let kind: String
+	public let url: URL
+	public let aspectRatio: String?
+	public let autogen: Bool?
 }
 
 public struct GMusicTimestamp: Codable, CustomDebugStringConvertible {
-	let value: Date
-	let rawValue: String
+	public let value: Date
+	public let rawValue: String
 	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.singleValueContainer()

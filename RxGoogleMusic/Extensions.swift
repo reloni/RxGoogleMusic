@@ -8,6 +8,15 @@
 
 import Foundation
 
+extension CharacterSet {
+	static let nextPageTokenAllowed: CharacterSet = {
+		var chars = CharacterSet.urlHostAllowed
+		chars.remove("=")
+		chars.remove("+")
+		return chars
+	}()
+}
+
 extension URL {
 	init?(baseUrl: String, parameters: [String: String]) {
 		var components = URLComponents(string: baseUrl)

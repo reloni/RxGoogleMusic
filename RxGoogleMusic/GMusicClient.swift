@@ -54,9 +54,7 @@ final class GMusicClient {
 			
 			guard let nextPage = result.nextPageToken else { observer.onCompleted(); return .empty() }
 			
-			print("extracted next page: \(nextPage)")
 			return client.recursiveCollectionRequest(request: request.withNew(nextPageToken: nextPage), invokeRequest: invokeRequest, observer: observer)
-				.delaySubscription(0.5, scheduler: MainScheduler.instance)
 		}
 	}
 	
@@ -80,6 +78,7 @@ final class GMusicClient {
 				
 				if !(200...299 ~= (response as? HTTPURLResponse)?.statusCode ?? 0) {
 					print("Internal error: \(String(data: data, encoding: .utf8)!)")
+					fatalError("Now simply trap :(")
 				}
 				
 				observer.onNext(data)
