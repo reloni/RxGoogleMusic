@@ -33,27 +33,33 @@ public struct GMusicRequest {
 	let token: String
 	let locale: Locale
 	let tier: String
+	let pageToken: String?
 	
-	public init(type: EntityType, maxResults: Int, updatedMin: Date, token: String, locale: Locale = Locale.current, tier: String = "aa") {
+	public init(type: EntityType, maxResults: Int, updatedMin: Date, token: String, pageToken: String? = nil, locale: Locale = Locale.current, tier: String = "aa") {
 		self.type = type
 		self.maxResults = maxResults
 		self.updatedMin = updatedMin
 		self.token = token
 		self.locale = locale
 		self.tier = tier
+		self.pageToken = pageToken
+	}
+	
+	func buildUrl(for baseUrl: URL) -> URL {
+		return URL(baseUrl: baseUrl.appendingPathComponent(type.rawValue).absoluteString, parameters: urlParameters)!
+	}
+	
+	var urlParameters: [String: String] {
+		return ["dv": "3000038001007", "hl": locale.identifier, "max-results": "\(maxResults)",
+			"prettyPrint": "false", "tier": tier, "updated-min": "\(updatedMin.microsecondsSince1970)"]
+	}
+	
+	var headers: [String: String] {
+		return ["Authorization": "Bearer \(token)", "start-token": pageToken ?? ""].filter { $0.value != "" }
 	}
 	
 	func createGMusicRequest(for baseUrl: URL) -> URLRequest {
-		let urlParameters: [String: String] = ["dv": "3000038001007",
-											   "hl": locale.identifier,
-											   "max-results": "\(maxResults)",
-			"prettyPrint": "false",
-			"tier": tier,
-			"updated-min": "\(updatedMin.microsecondsSince1970)"]
-		let url = URL(baseUrl: baseUrl.appendingPathComponent(type.rawValue).absoluteString,
-					  parameters: urlParameters)!
-		
-		return URLRequest(url: url, headers: ["Authorization": "Bearer \(token)"])
+		return URLRequest(url: buildUrl(for: baseUrl), headers: headers)
 	}
 }
 

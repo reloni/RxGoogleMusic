@@ -11,7 +11,7 @@ import RxSwift
 @testable import RxGoogleMusic
 
 class RxGoogleMusicTests: XCTestCase {
-	let liveToken = "ya29.GosBNQWhG_ntTf0U9jM9NUEOOSPFx14sd43XeDeqFmxVfQfcdQOzBDKsxAGIXGm9e1sNWnVonFs_g7niPoOZ8sDDcj-_A8Xq5foB8ZV1DXwPo9NNW3yd6nwGPqicYRlbVlIUm51n7hxaA32giAxiV-WGQ63XOn8TX2HiPzNKMT6bB7r8ml5h8BdGqqvGww"
+	let liveToken = "ya29.GooBNgURzsEUaLtX3DnKSnjlT7E6yfB1vn4uZr2E_0KZutftysL9MSpaGvDibI4QolffcaBm6pV82slxxcYQQMYd98vl03-6SJtLkITabPtm_W10CWq7W6OGlXuI6HxeTB3iGFeo5dDdGdM59sNbpvSp6_EO59etncgg22AVFlJBCeZPNo8a4ApZsjqR"
 	
 	func testLoadJson() {
 		let client = GMusicClient()
@@ -37,6 +37,7 @@ class RxGoogleMusicTests: XCTestCase {
 		_ = client.tracks(token: liveToken, maxResults: 2, updatedMin: Date(microsecondsSince1970: 1514132217511863))
 			.do(onNext: { result in
 				print(result)
+				XCTAssertEqual(2, result.items.count)
 				resultExpectation.fulfill()
 			})
 			.do(onError: { print($0) })
