@@ -11,7 +11,7 @@ import RxSwift
 @testable import RxGoogleMusic
 
 class RxGoogleMusicTests: XCTestCase {
-	let liveToken = "ya29.GooBNgW5klVg42XBt5Na7yS7ahtPFQQbFnJPjooTWsf9bOCAb536wQJh89bR8yvRwDC5QJ-D-J6rOH0YhT8FitetoJqG61xsl9KAN_KjM-RkZwtV9rll-qKkO3ZV7gBenPAOlTLfRlEPjNbm2fddvnrGrT4J0NGjJar9p0l9o0dUjVCEzo5jLigCgpS1"
+	let liveToken = "ya29.GooBNgXgyczRcRh_NxjrGQyYqCMmZ_WImEUqHr9fGQWhQDyUXKWH48Zkf_dz9Z4RiHbgjDobceNDmWDr0cCH54ZgD97YoWtWERpD4aym-Asp-Q1299ep0n1WqKu6CPutFWab09qV9h8HdrmdT12hFZ35h_zhNv0Zw8uAw_UMaG7O69eZqLraIhkWdBJq"
 	
 //	func testLoadJson() {
 //		let client = GMusicClient()
@@ -92,6 +92,24 @@ class RxGoogleMusicTests: XCTestCase {
 			.do(onNext: { result in
 				print("Playlists loaded: \(result.items.count)")
 				print("First playlist: \(result.items.first?.name ?? "none")")
+			})
+			.do(onError: { print($0) })
+			.do(onCompleted: { resultExpectation.fulfill() })
+			.subscribe()
+		
+		let result = XCTWaiter.wait(for: [resultExpectation], timeout: 20)
+		XCTAssertEqual(result, .completed)
+	}
+	
+	func testLoadPlaylistEntriesRecursive() {
+		let client = GMusicClient()
+		
+		let resultExpectation = expectation(description: "Should return data")
+		
+		_ = client.playlistEntries(token: liveToken, updatedMin: Date(microsecondsSince1970: 0), maxResults: 100, recursive: true)
+			.do(onNext: { result in
+				print("Entries loaded: \(result.items.count)")
+				print("First entry track title: \(result.items.first?.track.title ?? "none")")
 			})
 			.do(onError: { print($0) })
 			.do(onCompleted: { resultExpectation.fulfill() })

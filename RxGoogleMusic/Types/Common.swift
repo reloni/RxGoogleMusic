@@ -25,6 +25,7 @@ enum HttpMethod: String {
 public enum GMusicEntityType: String {
 	case track = "tracks"
 	case playlist = "playlists"
+	case playlistEntry = "plentries"
 }
 
 public struct GMusicCollection<T: Codable>: Codable {

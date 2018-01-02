@@ -19,4 +19,9 @@ extension GMusicClient {
 		let request = GMusicRequest(type: .playlist, maxResults: maxResults, updatedMin: updatedMin, token: token, locale: locale, tier: tier)
 		return loadCollection(request, recursive: recursive)
 	}
+	
+	public func playlistEntries(token: String, updatedMin: Date, maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicPlaylistEntry>> {
+		let request = GMusicRequest(type: .playlistEntry, maxResults: maxResults, updatedMin: updatedMin, token: token, locale: locale, tier: tier)
+		return loadCollection(request, recursive: recursive)
+	}
 }
