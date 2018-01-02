@@ -11,7 +11,7 @@ import RxSwift
 @testable import RxGoogleMusic
 
 class RxGoogleMusicTests: XCTestCase {
-	let liveToken = "ya29.GooBNgX8s0tB9lPlzzAuzOvyDg-Jp7qkNTlSOsAUfv1H4VMWiy2iB4vq306yamYRuvxwsanqhJQZkAyVC89R-RjTBVu4vCrIN2UDTWKw8OU_McqTj_IVGBnFA-abjPo7zrpHSfHpa0sr5se20bZ-0vPy_u8qODzI9CrnwIrPO2Zf2yTVu3-YUhiqVZ9o"
+	let liveToken = "ya29.GooBNgW5klVg42XBt5Na7yS7ahtPFQQbFnJPjooTWsf9bOCAb536wQJh89bR8yvRwDC5QJ-D-J6rOH0YhT8FitetoJqG61xsl9KAN_KjM-RkZwtV9rll-qKkO3ZV7gBenPAOlTLfRlEPjNbm2fddvnrGrT4J0NGjJar9p0l9o0dUjVCEzo5jLigCgpS1"
 	
 //	func testLoadJson() {
 //		let client = GMusicClient()
@@ -32,9 +32,9 @@ class RxGoogleMusicTests: XCTestCase {
 	func testLoadTracks() {
 		let client = GMusicClient()
 		
-		let resultExpectation = expectation(description: "Should return json data")
+		let resultExpectation = expectation(description: "Should return data")
 		
-		_ = client.tracks(token: liveToken, updatedMin: Date(microsecondsSince1970: 1514132217511863), maxResults: 100)
+		_ = client.tracks(token: liveToken, updatedMin: Date(microsecondsSince1970: 1514132217511863), maxResults: 2)
 			.do(onNext: { result in
 				print(result)
 				XCTAssertEqual(2, result.items.count)
@@ -50,12 +50,48 @@ class RxGoogleMusicTests: XCTestCase {
 	func testLoadTracksRecursive() {
 		let client = GMusicClient()
 		
-		let resultExpectation = expectation(description: "Should return json data")
+		let resultExpectation = expectation(description: "Should return data")
 		
 		_ = client.tracks(token: liveToken, updatedMin: Date(microsecondsSince1970: 0), maxResults: 250, recursive: true)
 			.do(onNext: { result in
 				print("Tracks loaded: \(result.items.count)")
 				print("First track: \(result.items.first?.title ?? "none")")
+			})
+			.do(onError: { print($0) })
+			.do(onCompleted: { resultExpectation.fulfill() })
+			.subscribe()
+		
+		let result = XCTWaiter.wait(for: [resultExpectation], timeout: 20)
+		XCTAssertEqual(result, .completed)
+	}
+	
+	func testLoadPlaylists() {
+		let client = GMusicClient()
+		
+		let resultExpectation = expectation(description: "Should return data")
+		
+		_ = client.playlists(token: liveToken, updatedMin: Date(microsecondsSince1970: 1514132217511863), maxResults: 2)
+			.do(onNext: { result in
+				print(result)
+				XCTAssertEqual(1, result.items.count)
+				resultExpectation.fulfill()
+			})
+			.do(onError: { print($0) })
+			.subscribe()
+		
+		let result = XCTWaiter.wait(for: [resultExpectation], timeout: 1)
+		XCTAssertEqual(result, .completed)
+	}
+	
+	func testLoadPlaylistsRecursive() {
+		let client = GMusicClient()
+		
+		let resultExpectation = expectation(description: "Should return data")
+		
+		_ = client.playlists(token: liveToken, updatedMin: Date(microsecondsSince1970: 0), maxResults: 1, recursive: true)
+			.do(onNext: { result in
+				print("Playlists loaded: \(result.items.count)")
+				print("First playlist: \(result.items.first?.name ?? "none")")
 			})
 			.do(onError: { print($0) })
 			.do(onCompleted: { resultExpectation.fulfill() })
