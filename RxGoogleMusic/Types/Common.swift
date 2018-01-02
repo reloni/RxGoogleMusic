@@ -45,17 +45,30 @@ public struct GMusicRequest {
 		self.pageToken = pageToken
 	}
 	
+	func withNew(nextPageToken: String) -> GMusicRequest {
+		return GMusicRequest(type: type, maxResults: maxResults, updatedMin: updatedMin, token: token, pageToken: nextPageToken, locale: locale, tier: tier)
+	}
+	
 	func buildUrl(for baseUrl: URL) -> URL {
-		return URL(baseUrl: baseUrl.appendingPathComponent(type.rawValue).absoluteString, parameters: urlParameters)!
+		let url = URL(baseUrl: baseUrl.appendingPathComponent(type.rawValue).absoluteString, parameters: urlParameters)!
+		guard let token = pageToken else { return url }
+		var chars = CharacterSet.urlHostAllowed
+		chars.remove("=")
+		chars.remove("+")
+		return URL(string: "\(url.absoluteString)&start-token=\(token.addingPercentEncoding(withAllowedCharacters: chars)!)")!
 	}
 	
 	var urlParameters: [String: String] {
-		return ["dv": "3000038001007", "hl": locale.identifier, "max-results": "\(maxResults)",
-			"prettyPrint": "false", "tier": tier, "updated-min": "\(updatedMin.microsecondsSince1970)"]
+		return ["dv": "3000038001007",
+				"hl": locale.identifier,
+				"max-results": "\(maxResults)",
+				"prettyPrint": "false",
+				"tier": tier,
+				"updated-min": "\(updatedMin.microsecondsSince1970)"]
 	}
 	
 	var headers: [String: String] {
-		return ["Authorization": "Bearer \(token)", "start-token": pageToken ?? ""].filter { $0.value != "" }
+		return ["Authorization": "Bearer \(token)"]
 	}
 	
 	func createGMusicRequest(for baseUrl: URL) -> URLRequest {
@@ -95,8 +108,8 @@ public struct GMusicCollection<T: Codable>: Codable {
 public struct GMusicRef: Codable {
 	let kind: String
 	let url: URL
-	let aspectRatio: String
-	let autogen: Bool
+	let aspectRatio: String?
+	let autogen: Bool?
 }
 
 public struct GMusicTimestamp: Codable, CustomDebugStringConvertible {

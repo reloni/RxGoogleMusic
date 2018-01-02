@@ -15,9 +15,9 @@ extension URL {
 			return URLQueryItem(name: $0.key, value: $0.value)
 		}
 		
-		guard let absoluteString = components?.url?.absoluteString else { return nil }
+		guard let created = components?.url else { return nil }
 		
-		self.init(string: absoluteString)
+		self = created
 	}
 }
 

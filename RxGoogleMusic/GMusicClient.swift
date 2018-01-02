@@ -10,9 +10,9 @@ import Foundation
 import RxSwift
 
 final class GMusicClient {
-	let baseUrl: URL
-	let session: URLSession
-	let locale: Locale
+	public let baseUrl: URL
+	public let session: URLSession
+	public let locale: Locale
 	let tier: String
 	
 	public init(session: URLSession = URLSession.shared,
@@ -25,22 +25,45 @@ final class GMusicClient {
 		self.baseUrl = baseUrl
 	}
 	
-	func tracks(token: String, maxResults: Int, updatedMin: Date) -> Observable<GMusicCollection<GMusicTrack>> {
+	public func tracks(token: String, updatedMin: Date, maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicTrack>> {
 		let request = GMusicRequest(type: .track, maxResults: maxResults, updatedMin: updatedMin, token: token, locale: locale, tier: tier)
-		return dataRequest(request).flatMap { data -> Observable<GMusicCollection<GMusicTrack>> in
-			let result = try JSONDecoder().decode(GMusicCollection<GMusicTrack>.self, from: data)
-			return .just(result)
+		
+		guard recursive else { return collectionRequest(request) }
+		
+		return Observable.create { [weak self] observer in
+			guard let client = self else { observer.onCompleted(); return Disposables.create() }
+
+			let subscription =
+				client.recursiveCollectionRequest(request: request,
+										invokeRequest: { [weak self] in self?.collectionRequest($0) ?? .empty() },
+										observer: observer)
+					.do(onError: { observer.onError($0) })
+					.subscribe()
+			
+			return Disposables.create([subscription])
 		}
 	}
 	
-	func jsonRequest(_ request: GMusicRequest) -> Observable<JSON> {
-		return dataRequest(request).flatMap { data -> Observable<JSON> in
-			do {
-				let json = try JSONSerialization.jsonObject(with: data, options: []) as? JSON
-				return .just(json ?? [:])
-			} catch let error {
-				return .error(error)
-			}
+	func recursiveCollectionRequest<T>(request: GMusicRequest,
+							 invokeRequest: @escaping  (GMusicRequest) -> Observable<GMusicCollection<T>>,
+							 observer: AnyObserver<GMusicCollection<T>>) -> Observable<Void> {
+		return invokeRequest(request).flatMap { [weak self] result -> Observable<Void> in
+			guard let client = self else { observer.onCompleted(); return .empty() }
+			
+			observer.onNext(result)
+			
+			guard let nextPage = result.nextPageToken else { observer.onCompleted(); return .empty() }
+			
+			print("extracted next page: \(nextPage)")
+			return client.recursiveCollectionRequest(request: request.withNew(nextPageToken: nextPage), invokeRequest: invokeRequest, observer: observer)
+				.delaySubscription(0.5, scheduler: MainScheduler.instance)
+		}
+	}
+	
+	func collectionRequest<T>(_ request: GMusicRequest) -> Observable<GMusicCollection<T>> {
+		return dataRequest(request).flatMap { data -> Observable<GMusicCollection<T>> in
+			let result = try JSONDecoder().decode(GMusicCollection<T>.self, from: data)
+			return .just(result)
 		}
 	}
 	
@@ -52,8 +75,12 @@ final class GMusicClient {
 					observer.onError(error)
 					return
 				}
-				
+
 				guard let data = data else { observer.onCompleted(); return }
+				
+				if !(200...299 ~= (response as? HTTPURLResponse)?.statusCode ?? 0) {
+					print("Internal error: \(String(data: data, encoding: .utf8)!)")
+				}
 				
 				observer.onNext(data)
 				observer.onCompleted()
