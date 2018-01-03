@@ -11,7 +11,7 @@ import RxSwift
 @testable import RxGoogleMusic
 
 class RxGoogleMusicTests: XCTestCase {
-	let liveToken = "ya29.GooBNgXgyczRcRh_NxjrGQyYqCMmZ_WImEUqHr9fGQWhQDyUXKWH48Zkf_dz9Z4RiHbgjDobceNDmWDr0cCH54ZgD97YoWtWERpD4aym-Asp-Q1299ep0n1WqKu6CPutFWab09qV9h8HdrmdT12hFZ35h_zhNv0Zw8uAw_UMaG7O69eZqLraIhkWdBJq"
+	let liveToken = "ya29.GosBNwXjYChUpU04cCIpN7EYCD3j11sHA3b_a9DuBMFnn4Q_iu0W_u-d6vPTvZUSfANAfafeGW5lvdqP5qK_kWoltpBrcECTb8KrrXSmpH_fOfRC6CtMirg_-XuDHLvNNANzuc51_EiMvk2pqr_IPwvhzG5aYWNbnqssJKu7i2bs3wPp2yHTitO3Uu3Mnw"
 	
 //	func testLoadJson() {
 //		let client = GMusicClient()
@@ -109,7 +109,7 @@ class RxGoogleMusicTests: XCTestCase {
 		_ = client.playlistEntries(token: liveToken, updatedMin: Date(microsecondsSince1970: 0), maxResults: 100, recursive: true)
 			.do(onNext: { result in
 				print("Entries loaded: \(result.items.count)")
-				print("First entry track title: \(result.items.first?.track.title ?? "none")")
+				print("First entry track title: \(result.items.first?.track?.title ?? "none")")
 			})
 			.do(onError: { print($0) })
 			.do(onCompleted: { resultExpectation.fulfill() })

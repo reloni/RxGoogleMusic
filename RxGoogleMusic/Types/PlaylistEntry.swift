@@ -19,5 +19,5 @@ public struct GMusicPlaylistEntry: Codable {
 	public let lastModifiedTimestamp: GMusicTimestamp
 	public let deleted: Bool
 	public let source: String
-	public let track: GMusicTrack
+	public let track: GMusicTrack?
 }

@@ -10,12 +10,12 @@ import Foundation
 
 public struct GMusicTrack: Codable {
 	public let kind: String
-	public let id: UUID
-	public let clientId: String
-	public let creationTimestamp: GMusicTimestamp
-	public let lastModifiedTimestamp: GMusicTimestamp
-	public let recentTimestamp: GMusicTimestamp
-	public let deleted: Bool
+	public let id: UUID?
+	public let clientId: String?
+	public let creationTimestamp: GMusicTimestamp?
+	public let lastModifiedTimestamp: GMusicTimestamp?
+	public let recentTimestamp: GMusicTimestamp?
+	public let deleted: Bool?
 	public let title: String
 	public let artist: String
 	public let composer: String?
@@ -38,4 +38,7 @@ public struct GMusicTrack: Codable {
 	public let nid: String?
 	public let explicitType: String?
 	public let lastRatingChangeTimestamp: GMusicTimestamp?
+	public let trackAvailableForSubscription: Bool?
+	public let trackAvailableForPurchase: Bool?
+	public let albumAvailableForPurchase: Bool?
 }

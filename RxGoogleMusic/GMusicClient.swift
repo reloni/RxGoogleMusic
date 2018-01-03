@@ -9,11 +9,11 @@
 import Foundation
 import RxSwift
 
-final class GMusicClient {
+final public class GMusicClient {
 	public let baseUrl: URL
 	public let session: URLSession
 	public let locale: Locale
-	let tier: String
+	public let tier: String
 	
 	public init(session: URLSession = URLSession.shared,
 				locale: Locale = Locale.current,

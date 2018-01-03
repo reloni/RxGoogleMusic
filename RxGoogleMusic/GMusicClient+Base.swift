@@ -10,15 +10,15 @@ import Foundation
 import RxSwift
 
 extension GMusicClient {	
-	func loadCollection<T>(_ request: GMusicRequest, recursive: Bool) -> Observable<GMusicCollection<T>> {
+	func collectionRequest<T>(_ request: GMusicRequest, recursive: Bool) -> Observable<GMusicCollection<T>> {
 		guard recursive else { return collectionRequest(request) }
 		return Observable.create { [weak self] observer in
 			guard let client = self else { observer.onCompleted(); return Disposables.create() }
 			
 			let subscription =
-				client.recursiveCollectionLoad(request: request,
-												  invokeRequest: { [weak self] in self?.collectionRequest($0) ?? .empty() },
-												  observer: observer)
+				client.collectionRequest(request: request,
+										 invokeRequest: { [weak self] in self?.collectionRequest($0) ?? .empty() },
+										 observer: observer)
 					.do(onError: { observer.onError($0) })
 					.subscribe()
 			
@@ -26,9 +26,9 @@ extension GMusicClient {
 		}
 	}
 	
-	func recursiveCollectionLoad<T>(request: GMusicRequest,
-									   invokeRequest: @escaping  (GMusicRequest) -> Observable<GMusicCollection<T>>,
-									   observer: AnyObserver<GMusicCollection<T>>) -> Observable<Void> {
+	func collectionRequest<T>(request: GMusicRequest,
+							  invokeRequest: @escaping  (GMusicRequest) -> Observable<GMusicCollection<T>>,
+							  observer: AnyObserver<GMusicCollection<T>>) -> Observable<Void> {
 		return invokeRequest(request).flatMap { [weak self] result -> Observable<Void> in
 			guard let client = self else { observer.onCompleted(); return .empty() }
 			
@@ -36,7 +36,7 @@ extension GMusicClient {
 			
 			guard let nextPage = result.nextPageToken else { observer.onCompleted(); return .empty() }
 			
-			return client.recursiveCollectionLoad(request: request.withNew(nextPageToken: nextPage), invokeRequest: invokeRequest, observer: observer)
+			return client.collectionRequest(request: request.withNew(nextPageToken: nextPage), invokeRequest: invokeRequest, observer: observer)
 		}
 	}
 	
