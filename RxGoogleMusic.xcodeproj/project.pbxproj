@@ -1,0 +1,534 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 48;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6E0B792D1FF2D434008F7800 /* RxGoogleMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E0B79231FF2D433008F7800 /* RxGoogleMusic.framework */; };
+		6E0B79321FF2D434008F7800 /* RxGoogleMusicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0B79311FF2D434008F7800 /* RxGoogleMusicTests.swift */; };
+		6E3963F91FFA86610016C2FA /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E3963F81FFA86610016C2FA /* RxSwift.framework */; };
+		6E3963FB1FFA86B30016C2FA /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E3963F81FFA86610016C2FA /* RxSwift.framework */; };
+		6E3964001FFA88090016C2FA /* GMusicClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3963FF1FFA88090016C2FA /* GMusicClient.swift */; };
+		6E3964021FFA93930016C2FA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964011FFA93930016C2FA /* Extensions.swift */; };
+		6E3964041FFA981E0016C2FA /* GMusicTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964031FFA981E0016C2FA /* GMusicTrack.swift */; };
+		6E3964071FFAA1370016C2FA /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964061FFAA1370016C2FA /* Common.swift */; };
+		6ED14CAB1FFBFF9F00B78078 /* GMusicPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED14CAA1FFBFF9F00B78078 /* GMusicPlaylist.swift */; };
+		6ED14CAD1FFC003200B78078 /* GMusicRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED14CAC1FFC003200B78078 /* GMusicRequest.swift */; };
+		6ED14CAF1FFC00C500B78078 /* GMusicClient+Base.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED14CAE1FFC00C500B78078 /* GMusicClient+Base.swift */; };
+		6ED14CB11FFC00F900B78078 /* GMusicClient+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED14CB01FFC00F900B78078 /* GMusicClient+Requests.swift */; };
+		6ED14CB31FFC065800B78078 /* PlaylistEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED14CB21FFC065800B78078 /* PlaylistEntry.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		6E0B792E1FF2D434008F7800 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6E0B791A1FF2D433008F7800 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6E0B79221FF2D433008F7800;
+			remoteInfo = RxGoogleMusic;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		6E0B79231FF2D433008F7800 /* RxGoogleMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = RxGoogleMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E0B79271FF2D433008F7800 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E0B792C1FF2D434008F7800 /* RxGoogleMusicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RxGoogleMusicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E0B79311FF2D434008F7800 /* RxGoogleMusicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxGoogleMusicTests.swift; sourceTree = "<group>"; };
+		6E0B79331FF2D434008F7800 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E3963F81FFA86610016C2FA /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		6E3963FF1FFA88090016C2FA /* GMusicClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicClient.swift; sourceTree = "<group>"; };
+		6E3964011FFA93930016C2FA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		6E3964031FFA981E0016C2FA /* GMusicTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicTrack.swift; sourceTree = "<group>"; };
+		6E3964061FFAA1370016C2FA /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		6ED14CAA1FFBFF9F00B78078 /* GMusicPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicPlaylist.swift; sourceTree = "<group>"; };
+		6ED14CAC1FFC003200B78078 /* GMusicRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicRequest.swift; sourceTree = "<group>"; };
+		6ED14CAE1FFC00C500B78078 /* GMusicClient+Base.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GMusicClient+Base.swift"; sourceTree = "<group>"; };
+		6ED14CB01FFC00F900B78078 /* GMusicClient+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GMusicClient+Requests.swift"; sourceTree = "<group>"; };
+		6ED14CB21FFC065800B78078 /* PlaylistEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistEntry.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6E0B791F1FF2D433008F7800 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E3963F91FFA86610016C2FA /* RxSwift.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6E0B79291FF2D434008F7800 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E3963FB1FFA86B30016C2FA /* RxSwift.framework in Frameworks */,
+				6E0B792D1FF2D434008F7800 /* RxGoogleMusic.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6E0B79191FF2D433008F7800 = {
+			isa = PBXGroup;
+			children = (
+				6E0B79251FF2D433008F7800 /* RxGoogleMusic */,
+				6E0B79301FF2D434008F7800 /* RxGoogleMusicTests */,
+				6E0B79241FF2D433008F7800 /* Products */,
+				6E3963F71FFA86610016C2FA /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		6E0B79241FF2D433008F7800 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6E0B79231FF2D433008F7800 /* RxGoogleMusic.framework */,
+				6E0B792C1FF2D434008F7800 /* RxGoogleMusicTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6E0B79251FF2D433008F7800 /* RxGoogleMusic */ = {
+			isa = PBXGroup;
+			children = (
+				6E3964051FFAA1230016C2FA /* Types */,
+				6E3963FF1FFA88090016C2FA /* GMusicClient.swift */,
+				6ED14CAE1FFC00C500B78078 /* GMusicClient+Base.swift */,
+				6ED14CB01FFC00F900B78078 /* GMusicClient+Requests.swift */,
+				6E3964011FFA93930016C2FA /* Extensions.swift */,
+				6E0B79271FF2D433008F7800 /* Info.plist */,
+			);
+			path = RxGoogleMusic;
+			sourceTree = "<group>";
+		};
+		6E0B79301FF2D434008F7800 /* RxGoogleMusicTests */ = {
+			isa = PBXGroup;
+			children = (
+				6E0B79311FF2D434008F7800 /* RxGoogleMusicTests.swift */,
+				6E0B79331FF2D434008F7800 /* Info.plist */,
+			);
+			path = RxGoogleMusicTests;
+			sourceTree = "<group>";
+		};
+		6E3963F71FFA86610016C2FA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6E3963F81FFA86610016C2FA /* RxSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6E3964051FFAA1230016C2FA /* Types */ = {
+			isa = PBXGroup;
+			children = (
+				6E3964061FFAA1370016C2FA /* Common.swift */,
+				6E3964031FFA981E0016C2FA /* GMusicTrack.swift */,
+				6ED14CAA1FFBFF9F00B78078 /* GMusicPlaylist.swift */,
+				6ED14CB21FFC065800B78078 /* PlaylistEntry.swift */,
+				6ED14CAC1FFC003200B78078 /* GMusicRequest.swift */,
+			);
+			path = Types;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		6E0B79201FF2D433008F7800 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		6E0B79221FF2D433008F7800 /* RxGoogleMusic */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6E0B79371FF2D434008F7800 /* Build configuration list for PBXNativeTarget "RxGoogleMusic" */;
+			buildPhases = (
+				6E0B791E1FF2D433008F7800 /* Sources */,
+				6E0B791F1FF2D433008F7800 /* Frameworks */,
+				6E0B79201FF2D433008F7800 /* Headers */,
+				6E0B79211FF2D433008F7800 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = RxGoogleMusic;
+			productName = RxGoogleMusic;
+			productReference = 6E0B79231FF2D433008F7800 /* RxGoogleMusic.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		6E0B792B1FF2D434008F7800 /* RxGoogleMusicTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6E0B793A1FF2D434008F7800 /* Build configuration list for PBXNativeTarget "RxGoogleMusicTests" */;
+			buildPhases = (
+				6E0B79281FF2D434008F7800 /* Sources */,
+				6E0B79291FF2D434008F7800 /* Frameworks */,
+				6E0B792A1FF2D434008F7800 /* Resources */,
+				6E3963FC1FFA86B90016C2FA /* Copy carthage frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6E0B792F1FF2D434008F7800 /* PBXTargetDependency */,
+			);
+			name = RxGoogleMusicTests;
+			productName = RxGoogleMusicTests;
+			productReference = 6E0B792C1FF2D434008F7800 /* RxGoogleMusicTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6E0B791A1FF2D433008F7800 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0920;
+				LastUpgradeCheck = 0920;
+				ORGANIZATIONNAME = "Anton Efimenko";
+				TargetAttributes = {
+					6E0B79221FF2D433008F7800 = {
+						CreatedOnToolsVersion = 9.2;
+						LastSwiftMigration = 0920;
+						ProvisioningStyle = Automatic;
+					};
+					6E0B792B1FF2D434008F7800 = {
+						CreatedOnToolsVersion = 9.2;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 6E0B791D1FF2D433008F7800 /* Build configuration list for PBXProject "RxGoogleMusic" */;
+			compatibilityVersion = "Xcode 8.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 6E0B79191FF2D433008F7800;
+			productRefGroup = 6E0B79241FF2D433008F7800 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6E0B79221FF2D433008F7800 /* RxGoogleMusic */,
+				6E0B792B1FF2D434008F7800 /* RxGoogleMusicTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6E0B79211FF2D433008F7800 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6E0B792A1FF2D434008F7800 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6E3963FC1FFA86B90016C2FA /* Copy carthage frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/RxSwift.framework",
+			);
+			name = "Copy carthage frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6E0B791E1FF2D433008F7800 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6ED14CAF1FFC00C500B78078 /* GMusicClient+Base.swift in Sources */,
+				6E3964071FFAA1370016C2FA /* Common.swift in Sources */,
+				6E3964001FFA88090016C2FA /* GMusicClient.swift in Sources */,
+				6E3964041FFA981E0016C2FA /* GMusicTrack.swift in Sources */,
+				6ED14CB11FFC00F900B78078 /* GMusicClient+Requests.swift in Sources */,
+				6ED14CB31FFC065800B78078 /* PlaylistEntry.swift in Sources */,
+				6E3964021FFA93930016C2FA /* Extensions.swift in Sources */,
+				6ED14CAB1FFBFF9F00B78078 /* GMusicPlaylist.swift in Sources */,
+				6ED14CAD1FFC003200B78078 /* GMusicRequest.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		6E0B79281FF2D434008F7800 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6E0B79321FF2D434008F7800 /* RxGoogleMusicTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		6E0B792F1FF2D434008F7800 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6E0B79221FF2D433008F7800 /* RxGoogleMusic */;
+			targetProxy = 6E0B792E1FF2D434008F7800 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		6E0B79351FF2D434008F7800 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Debug;
+		};
+		6E0B79361FF2D434008F7800 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+			};
+			name = Release;
+		};
+		6E0B79381FF2D434008F7800 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = SJMSRXG797;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = RxGoogleMusic/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.RxGoogleMusic;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6E0B79391FF2D434008F7800 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "";
+				CODE_SIGN_STYLE = Automatic;
+				DEFINES_MODULE = YES;
+				DEVELOPMENT_TEAM = SJMSRXG797;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = RxGoogleMusic/Info.plist;
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.RxGoogleMusic;
+				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		6E0B793B1FF2D434008F7800 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SJMSRXG797;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = RxGoogleMusicTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.RxGoogleMusicTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6E0B793C1FF2D434008F7800 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = SJMSRXG797;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
+				INFOPLIST_FILE = RxGoogleMusicTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.RxGoogleMusicTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 4.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6E0B791D1FF2D433008F7800 /* Build configuration list for PBXProject "RxGoogleMusic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E0B79351FF2D434008F7800 /* Debug */,
+				6E0B79361FF2D434008F7800 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6E0B79371FF2D434008F7800 /* Build configuration list for PBXNativeTarget "RxGoogleMusic" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E0B79381FF2D434008F7800 /* Debug */,
+				6E0B79391FF2D434008F7800 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6E0B793A1FF2D434008F7800 /* Build configuration list for PBXNativeTarget "RxGoogleMusicTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6E0B793B1FF2D434008F7800 /* Debug */,
+				6E0B793C1FF2D434008F7800 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6E0B791A1FF2D433008F7800 /* Project object */;
+}
