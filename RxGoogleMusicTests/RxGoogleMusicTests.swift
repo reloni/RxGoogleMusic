@@ -10,6 +10,10 @@ import XCTest
 import RxSwift
 @testable import RxGoogleMusic
 
+// client_id	936475272427.apps.googleusercontent.com
+// client_secret	KWsJlkaMn1jGLxQpWxMnOox-
+// scope	https://www.google.com/accounts/OAuthLogin
+
 class RxGoogleMusicTests: XCTestCase {
 	let liveToken = "ya29.GosBNwXjYChUpU04cCIpN7EYCD3j11sHA3b_a9DuBMFnn4Q_iu0W_u-d6vPTvZUSfANAfafeGW5lvdqP5qK_kWoltpBrcECTb8KrrXSmpH_fOfRC6CtMirg_-XuDHLvNNANzuc51_EiMvk2pqr_IPwvhzG5aYWNbnqssJKu7i2bs3wPp2yHTitO3Uu3Mnw"
 	
