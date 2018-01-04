@@ -165,7 +165,12 @@ class ViewController: UIViewController {
 			print("advice response")
 			if let data = data, let responseJson = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String: Any] {
 				if let url = responseJson["uri"] as? String {
-					callback(URL(string: url.replacingOccurrences(of: "&wv_mode=1", with: ""))!)
+					var comp = URLComponents(string: url)
+					if let index = comp?.queryItems?.index(where: { $0.name == "wv_mode" }) {
+						comp?.queryItems?.remove(at: index)
+					}
+					callback(comp!.url!)
+//					callback(URL(string: url.replacingOccurrences(of: "&wv_mode=1", with: ""))!)
 				}
 			}
 			
