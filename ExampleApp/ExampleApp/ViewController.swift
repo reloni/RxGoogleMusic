@@ -9,6 +9,14 @@
 import UIKit
 import SafariServices
 
+struct Token: Decodable {
+	let access_token: String
+	let expires_in: Int
+	let id_token: String
+	let refresh_token: String
+	let token_type: String
+}
+
 class ViewController: UIViewController {
 	let working_gmusic: URL = {
 		let host = "accounts.google.com"
@@ -57,30 +65,79 @@ class ViewController: UIViewController {
 	
 	func startAuthentiationSession(with url: URL) {
 		
-		session = SFAuthenticationSession(url: url, callbackURLScheme: nil, completionHandler: { callbackUrl, error in
+		session = SFAuthenticationSession(url: working_gmusic, callbackURLScheme: nil, completionHandler: { callbackUrl, error in
 			print("======== callbackurl: \(callbackUrl)")
 			print("======== error: \(error)")
+			guard let callbackUrl = callbackUrl else { return }
+			self.loadToken(for: callbackUrl) { token in
+				print("obrtained token: \(token)")
+			}
 		})
 
 		session.start()
 	}
+	
+	func loadToken(for url: URL, callback: @escaping (Token) -> Void) {
+		let comp = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+		let code = comp.queryItems!.first(where: { $0.name == "authorization_code" })!.value!
+		
+		var body = "grant_type=authorization_code&code=\(code)&client_id=936475272427.apps.googleusercontent.com&client_secret=KWsJlkaMn1jGLxQpWxMnOox-&scope=https%3A%2F%2Fwww.google.com%2Faccounts%2FOAuthLogin"
+		
+//		body += "&redirect_uri=com.google.sso.228293309116:/authCallback"
+		
+		var request = URLRequest(url: URL(string: "https://accounts.google.com/o/oauth2/token")!)
+		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
+		request.httpMethod = "POST"
+		request.httpBody = body.data(using: .utf8)
+		
+		URLSession.shared.dataTask(with: request) { data, response, error in
+			print("token response code: \((response as? HTTPURLResponse)?.statusCode)")
+			if let data = data, let responseJson = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String: Any] {
+				print(responseJson)
+			}
+			
+			if let error = error {
+				print("error: \(error)")
+			}
+			}.resume()
+	}
 
 	func authAdvice(callback: @escaping (URL) ->Void) {
-		let minimumJson =
-		"""
+//		let minimumJson =
+//		"""
+//		{
+//		"redirect_uri": "com.google.sso.228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o:/authCallback",
+//		"fast_setup": "false",
+//		"mediator_client_id": "936475272427.apps.googleusercontent.com",
+//		"device_id": "\(UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString)",
+//		"hl": "\(Locale.current.identifier)"
+//		}
+//		"""
+		
+		let json = 	"""
 		{
-		"redirect_uri": "com.google.sso.myApp:/authCallback",
+		"report_user_id": "true",
+		"system_version": "\(UIDevice.current.systemVersion)",
+		"app_version": "1.0",
+		"user_id": [],
+		"request_trigger": "ADD_ACCOUNT",
+		"lib_ver": "3.2",
+		"package_name": "com.google.PlayMusic",
+		"supported_service": ["uca"],
+		"redirect_uri": "com.google.sso.228293309116:/authCallback",
+		"device_name": "iPhone",
 		"fast_setup": "false",
 		"mediator_client_id": "936475272427.apps.googleusercontent.com",
 		"device_id": "\(UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString)",
-		"hl": "\(Locale.current.identifier)"
+		"hl": "ru-RU",
+		"client_id": "228293309116.apps.googleusercontent.com"
 		}
 		"""
 		
 		var request = URLRequest(url: URL(string: "https://www.googleapis.com/oauth2/v3/authadvice")!)
 		request.addValue("application/json", forHTTPHeaderField: "content-type")
 		request.httpMethod = "POST"
-		request.httpBody = minimumJson.data(using: .utf8)
+		request.httpBody = json.data(using: .utf8)
 		
 		URLSession.shared.dataTask(with: request) { data, response, error in
 			print("advice response")
@@ -88,7 +145,8 @@ class ViewController: UIViewController {
 				if let url = responseJson["uri"] as? String {
 					var comp = URLComponents(string: url)
 					if let index = comp?.queryItems?.index(where: { $0.name == "wv_mode" }) {
-						comp?.queryItems?.remove(at: index)
+//						comp?.queryItems?.remove(at: index)
+						comp?.queryItems?[index] = URLQueryItem(name: "wv_mode", value: "0")
 					}
 					callback(comp!.url!)
 				}
