@@ -19,23 +19,39 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6MI-R4-Dwa">
-                                <rect key="frame" x="143" y="318" width="88" height="30"/>
+                                <rect key="frame" x="143" y="30" width="88" height="30"/>
                                 <state key="normal" title="Authenticate"/>
                                 <connections>
                                     <action selector="authenticate:" destination="BYZ-38-t0r" eventType="touchUpInside" id="KOL-JT-C2H"/>
                                 </connections>
                             </button>
+                            <wkWebView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ma5-f5-Hr4">
+                                <rect key="frame" x="0.0" y="70" width="375" height="597"/>
+                                <color key="backgroundColor" red="0.36078431370000003" green="0.38823529410000002" blue="0.4039215686" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <wkWebViewConfiguration key="configuration">
+                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
+                                    <wkPreferences key="preferences"/>
+                                </wkWebViewConfiguration>
+                            </wkWebView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6MI-R4-Dwa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="KMV-cM-3vV"/>
-                            <constraint firstItem="6MI-R4-Dwa" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="L0P-EO-rVx"/>
+                            <constraint firstItem="6MI-R4-Dwa" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="10" id="2sM-dB-nIM"/>
+                            <constraint firstItem="6MI-R4-Dwa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="5L5-6K-bav"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="Ma5-f5-Hr4" secondAttribute="trailing" id="JTw-ij-X0Y"/>
+                            <constraint firstItem="Ma5-f5-Hr4" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="JwU-us-s0g"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="Ma5-f5-Hr4" secondAttribute="bottom" id="RKQ-IR-d8m"/>
+                            <constraint firstItem="Ma5-f5-Hr4" firstAttribute="top" secondItem="6MI-R4-Dwa" secondAttribute="bottom" constant="10" id="WBE-Yi-cMM"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <connections>
+                        <outlet property="webView" destination="Ma5-f5-Hr4" id="myR-I4-Pgb"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="136.80000000000001" y="124.58770614692655"/>
         </scene>
     </scenes>
 </document>

@@ -8,6 +8,7 @@
 
 import UIKit
 import SafariServices
+import WebKit
 
 struct Token: Decodable {
 	let access_token: String
@@ -42,16 +43,19 @@ class ViewController: UIViewController {
 	}()
 	
 	var session: SFAuthenticationSession!
-
+	
+	@IBOutlet weak var webView: WKWebView!
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
+		
+		webView.navigationDelegate = self
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
-		
 	}
 
 	@IBAction func authenticate(_ sender: Any) {
@@ -64,17 +68,22 @@ class ViewController: UIViewController {
 	}
 	
 	func startAuthentiationSession(with url: URL) {
+		let url = URL(string: "https://accounts.google.com/embedded/setup/ios?scope=https://www.google.com/accounts/OAuthLogin+https://www.googleapis.com/auth/userinfo.email&client_id=936475272427.apps.googleusercontent.com&as=-516ae9d58c461c5f&delegated_client_id=228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o.apps.googleusercontent.com&hl=ru-RU&device_name=iPhone&auth_extension=ADa53XK2t9MDL7JXhLLiEgdShl2rTjssNxENDwJ5b4-V9g1flUYIt_w0pmGAZue5FPknDnDGpufBR_8BMLBtUvWO_VYzOdqVV5Yka6jZk4EYwQ2JYDiWlQY&system_version=11.2.1&app_version=3.38.1007&kdlc=1&kdac=1")!
+		var request = URLRequest(url: url)
+		request.addValue("0604339A-AA08-48BF-8B3B-2F08FB6CA581", forHTTPHeaderField: "X-IOS-Device-ID")
+		request.addValue("embedded", forHTTPHeaderField: "X-Browser-View")
+		webView.load(request)
 		
-		session = SFAuthenticationSession(url: working_gmusic, callbackURLScheme: nil, completionHandler: { callbackUrl, error in
-			print("======== callbackurl: \(callbackUrl)")
-			print("======== error: \(error)")
-			guard let callbackUrl = callbackUrl else { return }
-			self.loadToken(for: callbackUrl) { token in
-				print("obrtained token: \(token)")
-			}
-		})
-
-		session.start()
+//		session = SFAuthenticationSession(url: url, callbackURLScheme: nil, completionHandler: { callbackUrl, error in
+//			print("======== callbackurl: \(callbackUrl)")
+//			print("======== error: \(error)")
+//			guard let callbackUrl = callbackUrl else { return }
+//			self.loadToken(for: callbackUrl) { token in
+//				print("obrtained token: \(token)")
+//			}
+//		})
+//
+//		session.start()
 	}
 	
 	func loadToken(for url: URL, callback: @escaping (Token) -> Void) {
@@ -83,9 +92,9 @@ class ViewController: UIViewController {
 		
 		var body = "grant_type=authorization_code&code=\(code)&client_id=936475272427.apps.googleusercontent.com&client_secret=KWsJlkaMn1jGLxQpWxMnOox-&scope=https%3A%2F%2Fwww.google.com%2Faccounts%2FOAuthLogin"
 		
-//		body += "&redirect_uri=com.google.sso.228293309116:/authCallback"
+		body += "&redirect_uri=com.google.sso.228293309116:/oauth2redirect/google"
 		
-		var request = URLRequest(url: URL(string: "https://accounts.google.com/o/oauth2/token")!)
+		var request = URLRequest(url: URL(string: "https://www.googleapis.com/oauth2/v4/token")!)
 		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
 		request.httpMethod = "POST"
 		request.httpBody = body.data(using: .utf8)
@@ -94,6 +103,34 @@ class ViewController: UIViewController {
 			print("token response code: \((response as? HTTPURLResponse)?.statusCode)")
 			if let data = data, let responseJson = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String: Any] {
 				print(responseJson)
+			}
+			
+			if let error = error {
+				print("error: \(error)")
+			}
+			}.resume()
+	}
+	
+	func authAdvice2(callback: @escaping (URL) ->Void) {
+		let body = "chrome_installed=false&client_id=228293309116.apps.googleusercontent.com&device_id=cba09321-d88f-4200-a3a7-c7d08d2a572c&device_name=iPhone&hl=ru&lib_ver=1.0&mediator_client_id=936475272427.apps.googleusercontent.com&package_name=com.google.PlayMusic&redirect_uri=com.google.sso.228293309116%3A%2FauthCallback"
+		
+		var request = URLRequest(url: URL(string: "https://www.googleapis.com/oauth2/v3/authadvice")!)
+		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
+		request.addValue("GET", forHTTPHeaderField: "x-http-method-override")
+		request.httpMethod = "POST"
+		request.httpBody = body.data(using: .utf8)
+		
+		URLSession.shared.dataTask(with: request) { data, response, error in
+			print("advice response")
+			if let data = data, let responseJson = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String: Any] {
+				if let url = responseJson["uri"] as? String {
+					var comp = URLComponents(string: url)
+//					if let index = comp?.queryItems?.index(where: { $0.name == "wv_mode" }) {
+//						//						comp?.queryItems?.remove(at: index)
+//						comp?.queryItems?[index] = URLQueryItem(name: "wv_mode", value: "0")
+//					}
+					callback(comp!.url!)
+				}
 			}
 			
 			if let error = error {
@@ -124,13 +161,13 @@ class ViewController: UIViewController {
 		"lib_ver": "3.2",
 		"package_name": "com.google.PlayMusic",
 		"supported_service": ["uca"],
-		"redirect_uri": "com.google.sso.228293309116:/authCallback",
+		"redirect_uri": "com.google.sso.228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o:/authCallback",
 		"device_name": "iPhone",
-		"fast_setup": "false",
+		"fast_setup": "true",
 		"mediator_client_id": "936475272427.apps.googleusercontent.com",
 		"device_id": "\(UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString)",
 		"hl": "ru-RU",
-		"client_id": "228293309116.apps.googleusercontent.com"
+		"client_id": "228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o.apps.googleusercontent.com"
 		}
 		"""
 		
@@ -156,5 +193,34 @@ class ViewController: UIViewController {
 				print("error: \(error)")
 			}
 		}.resume()
+	}
+}
+
+extension ViewController: WKNavigationDelegate {
+//	func webView(_ webView: WKWebView, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+//		print("challenge!!")
+//		print(challenge)
+//	}
+	
+	func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+//		navigationResponse.response.coo
+		
+		decisionHandler(.allow)
+	}
+	
+	func webView(_ webView: WKWebView, didReceiveServerRedirectForProvisionalNavigation navigation: WKNavigation!) {
+		print("redirect")
+		print(navigation)
+	}
+	
+	func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+		guard webView.url?.absoluteString == "https://accounts.google.com/embedded/close" else { return }
+		print("didStartProvisionalNavigation")
+		print(navigation)
+		print(webView.url)
+		WKWebsiteDataStore.default().httpCookieStore.getAllCookies { cookies in
+			let oauth_code = cookies.first(where: { $0.name == "oauth_code" })?.value
+			print("code is HERE: \(oauth_code)")
+		}
 	}
 }
