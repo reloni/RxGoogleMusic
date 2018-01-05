@@ -16,7 +16,7 @@ final public class GMusicClient {
 	public let tier: String
 	
 	public convenience init(session: URLSession = URLSession.shared, locale: Locale = Locale.current) {
-		self.init(session: session, locale: locale, tier: "aa", baseUrl: URL(string: "https://mclients.googleapis.com/sj/v2.5")!)
+		self.init(session: session, locale: locale, tier: "aa", baseUrl: GMusicConstants.apiBaseUrl)
 	}
 	
 	init(session: URLSession,

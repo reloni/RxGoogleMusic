@@ -12,15 +12,10 @@ import WebKit
 import RxGoogleMusic
 import RxSwift
 
-struct Token: Decodable {
-	let access_token: String
-	let expires_in: Int
-	let id_token: String
-	let refresh_token: String
-	let token_type: String
-}
-
 class ViewController: UIViewController {
+	let bag = DisposeBag()
+	let tokenClient = GMusicTokenClient()
+	
 	let working_gmusic: URL = {
 		let host = "accounts.google.com"
 		let path = "embedded/setup/v2/safarivc"
@@ -87,7 +82,7 @@ class ViewController: UIViewController {
 //		session.start()
 	}
 	
-	func loadToken(withCode code: String, callback: @escaping (Token) -> Void) {
+	func loadToken_old(withCode code: String, callback: @escaping (GMusicToken) -> Void) {
 //		let comp = URLComponents(url: url, resolvingAgainstBaseURL: false)!
 //		let code = comp.queryItems!.first(where: { $0.name == "authorization_code" })!.value!
 		
@@ -222,9 +217,14 @@ extension ViewController: WKNavigationDelegate {
 		WKWebsiteDataStore.default().httpCookieStore.getAllCookies { cookies in
 			guard let oauth_code = cookies.first(where: { $0.name == "oauth_code" })?.value else { return }
 //			print("code is HERE: \(oauth_code)")
-			self.loadToken(withCode: oauth_code) { token in
-				print("obtained token: \(token)")
-			}
+//			self.loadToken(withCode: oauth_code) { token in
+//				print("obtained token: \(token)")
+//			}
+			self.tokenClient.exchangeOAuthCodeForToken(oauth_code)
+				.do(onNext: { print("Exchanged token: \($0)") })
+				.do(onError: { print("Error while exchanging token: \($0)") })
+				.subscribe()
+				.disposed(by: self.bag)
 		}
 	}
 }

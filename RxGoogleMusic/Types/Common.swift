@@ -10,6 +10,18 @@ import Foundation
 
 typealias JSON = [String: Any]
 
+struct GMusicConstants {
+	static let apiBaseUrl = URL(string: "https://mclients.googleapis.com/sj/v2.5")!
+	static let tokenUrl = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
+	static let issueTokenUrl = URL(string: "https://www.googleapis.com/oauth2/v2/IssueToken")!
+	static let clientId = "936475272427.apps.googleusercontent.com"
+	static let clientSecret = "KWsJlkaMn1jGLxQpWxMnOox-"
+}
+
+enum Scope: String {
+	case oauthLogin = "https://www.google.com/accounts/OAuthLogin"
+}
+
 enum HttpMethod: String {
 	case options = "OPTIONS"
 	case get     = "GET"
@@ -20,6 +32,17 @@ enum HttpMethod: String {
 	case delete  = "DELETE"
 	case trace   = "TRACE"
 	case connect = "CONNECT"
+}
+
+enum GrantType: String {
+	case authorizationCode = "authorization_code"
+	case refreshToken = "refresh_token"
+}
+
+public struct GMusicToken {
+	let accessToken: String
+	let expiresIn: Int?
+	let refreshToken: String?
 }
 
 public enum GMusicEntityType: String {
