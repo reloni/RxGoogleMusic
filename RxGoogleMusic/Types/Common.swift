@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 
 typealias JSON = [String: Any]
 
@@ -14,8 +15,16 @@ struct GMusicConstants {
 	static let apiBaseUrl = URL(string: "https://mclients.googleapis.com/sj/v2.5")!
 	static let tokenUrl = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
 	static let issueTokenUrl = URL(string: "https://www.googleapis.com/oauth2/v2/IssueToken")!
+	static let authAdviceUrl = URL(string: "https://www.googleapis.com/oauth2/v3/authadvice")!
 	static let clientId = "936475272427.apps.googleusercontent.com"
+	static let clientIdLong = "228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o.apps.googleusercontent.com"
 	static let clientSecret = "KWsJlkaMn1jGLxQpWxMnOox-"
+	static let redirectUri = "com.google.sso.228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o:/authCallback"
+	static let packageName = "com.google.PlayMusic"
+	
+	static let systemVersion = UIDevice.current.systemVersion
+	static let deviceModel = UIDevice.current.model
+	static let deviceId = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
 }
 
 enum Scope: String {

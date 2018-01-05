@@ -136,6 +136,12 @@ class ViewController: UIViewController {
 	}
 
 	func authAdvice(callback: @escaping (URL) ->Void) {
+		tokenClient.loadAuthenticationUrl()
+			.do(onNext: { callback($0) })
+			.do(onError: { print("auth advice error: \($0)") })
+			.subscribe()
+			.disposed(by: bag)
+		
 //		let minimumJson =
 //		"""
 //		{
@@ -147,48 +153,48 @@ class ViewController: UIViewController {
 //		}
 //		"""
 		
-		let json = 	"""
-		{
-		"report_user_id": "true",
-		"system_version": "\(UIDevice.current.systemVersion)",
-		"app_version": "1.0",
-		"user_id": [],
-		"request_trigger": "ADD_ACCOUNT",
-		"lib_ver": "3.2",
-		"package_name": "com.google.PlayMusic",
-		"supported_service": ["uca"],
-		"redirect_uri": "com.google.sso.228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o:/authCallback",
-		"device_name": "iPhone",
-		"fast_setup": "true",
-		"mediator_client_id": "936475272427.apps.googleusercontent.com",
-		"device_id": "\(UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString)",
-		"hl": "ru-RU",
-		"client_id": "228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o.apps.googleusercontent.com"
-		}
-		"""
-		
-		var request = URLRequest(url: URL(string: "https://www.googleapis.com/oauth2/v3/authadvice")!)
-		request.addValue("application/json", forHTTPHeaderField: "content-type")
-		request.httpMethod = "POST"
-		request.httpBody = json.data(using: .utf8)
-		
-		URLSession.shared.dataTask(with: request) { data, response, error in
-			print("advice response")
-			if let data = data, let responseJson = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String: Any] {
-				if let url = responseJson["uri"] as? String {
-					var comp = URLComponents(string: url)
-					if let index = comp?.queryItems?.index(where: { $0.name == "wv_mode" }) {
-//						comp?.queryItems?.remove(at: index)
-						comp?.queryItems?[index] = URLQueryItem(name: "wv_mode", value: "0")
-					}
-					callback(comp!.url!)
-				}
-			}
-			
-			if let error = error {
-				print("error: \(error)")
-			}
-		}.resume()
+//		let json = 	"""
+//		{
+//		"report_user_id": "true",
+//		"system_version": "\(UIDevice.current.systemVersion)",
+//		"app_version": "1.0",
+//		"user_id": [],
+//		"request_trigger": "ADD_ACCOUNT",
+//		"lib_ver": "3.2",
+//		"package_name": "com.google.PlayMusic",
+//		"supported_service": ["uca"],
+//		"redirect_uri": "com.google.sso.228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o:/authCallback",
+//		"device_name": "iPhone",
+//		"fast_setup": "true",
+//		"mediator_client_id": "936475272427.apps.googleusercontent.com",
+//		"device_id": "\(UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString)",
+//		"hl": "ru-RU",
+//		"client_id": "228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o.apps.googleusercontent.com"
+//		}
+//		"""
+//
+//		var request = URLRequest(url: URL(string: "https://www.googleapis.com/oauth2/v3/authadvice")!)
+//		request.addValue("application/json", forHTTPHeaderField: "content-type")
+//		request.httpMethod = "POST"
+//		request.httpBody = json.data(using: .utf8)
+//
+//		URLSession.shared.dataTask(with: request) { data, response, error in
+//			print("advice response")
+//			if let data = data, let responseJson = (try? JSONSerialization.jsonObject(with: data, options: [])) as? [String: Any] {
+//				if let url = responseJson["uri"] as? String {
+//					var comp = URLComponents(string: url)
+//					if let index = comp?.queryItems?.index(where: { $0.name == "wv_mode" }) {
+////						comp?.queryItems?.remove(at: index)
+//						comp?.queryItems?[index] = URLQueryItem(name: "wv_mode", value: "0")
+//					}
+//					callback(comp!.url!)
+//				}
+//			}
+//
+//			if let error = error {
+//				print("error: \(error)")
+//			}
+//		}.resume()
 	}
 }
 
