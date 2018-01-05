@@ -86,13 +86,13 @@ class ViewController: UIViewController {
 //		session.start()
 	}
 	
-	func loadToken(for url: URL, callback: @escaping (Token) -> Void) {
-		let comp = URLComponents(url: url, resolvingAgainstBaseURL: false)!
-		let code = comp.queryItems!.first(where: { $0.name == "authorization_code" })!.value!
+	func loadToken(withCode code: String, callback: @escaping (Token) -> Void) {
+//		let comp = URLComponents(url: url, resolvingAgainstBaseURL: false)!
+//		let code = comp.queryItems!.first(where: { $0.name == "authorization_code" })!.value!
 		
-		var body = "grant_type=authorization_code&code=\(code)&client_id=936475272427.apps.googleusercontent.com&client_secret=KWsJlkaMn1jGLxQpWxMnOox-&scope=https%3A%2F%2Fwww.google.com%2Faccounts%2FOAuthLogin"
+		let body = "grant_type=authorization_code&code=\(code)&client_id=936475272427.apps.googleusercontent.com&client_secret=KWsJlkaMn1jGLxQpWxMnOox-&scope=https%3A%2F%2Fwww.google.com%2Faccounts%2FOAuthLogin"
 		
-		body += "&redirect_uri=com.google.sso.228293309116:/oauth2redirect/google"
+//		body += "&redirect_uri=com.google.sso.228293309116:/oauth2redirect/google"
 		
 		var request = URLRequest(url: URL(string: "https://www.googleapis.com/oauth2/v4/token")!)
 		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
@@ -219,8 +219,11 @@ extension ViewController: WKNavigationDelegate {
 		print(navigation)
 		print(webView.url)
 		WKWebsiteDataStore.default().httpCookieStore.getAllCookies { cookies in
-			let oauth_code = cookies.first(where: { $0.name == "oauth_code" })?.value
-			print("code is HERE: \(oauth_code)")
+			guard let oauth_code = cookies.first(where: { $0.name == "oauth_code" })?.value else { return }
+//			print("code is HERE: \(oauth_code)")
+			self.loadToken(withCode: oauth_code) { token in
+				print("obtained token: \(token)")
+			}
 		}
 	}
 }
