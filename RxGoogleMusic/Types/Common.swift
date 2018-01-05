@@ -29,6 +29,8 @@ struct GMusicConstants {
 
 enum Scope: String {
 	case oauthLogin = "https://www.google.com/accounts/OAuthLogin"
+	case skyjam = "https://www.googleapis.com/auth/skyjam"
+	case supportcontent = "https://www.googleapis.com/auth/supportcontent"
 }
 
 enum HttpMethod: String {
@@ -49,9 +51,9 @@ enum GrantType: String {
 }
 
 public struct GMusicToken {
-	let accessToken: String
-	let expiresIn: Int?
-	let refreshToken: String?
+	public let accessToken: String
+	public let expiresIn: Int?
+	public let refreshToken: String?
 }
 
 public enum GMusicEntityType: String {

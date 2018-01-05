@@ -46,19 +46,6 @@ public struct GMusicTokenClient {
 	
 	public func exchangeOAuthCodeForToken(_ code: String) -> Observable<GMusicToken> {
 		return Observable.create { observer in
-//			var request = URLRequest(url: GMusicConstants.tokenUrl)
-//			request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
-//			request.httpMethod = "POST"
-//			let body =
-//				"""
-//				grant_type=\(GrantType.authorizationCode.rawValue)&
-//				code=\(code)&
-//				client_id=\(GMusicConstants.clientId)&
-//				client_secret=\(GMusicConstants.clientSecret)&
-//				scope=\(Scope.oauthLogin.rawValue)
-//				""".replacingOccurrences(of: "\n", with: "")
-//			request.httpBody = body.data(using: .utf8)
-			
 			let subscribtion = self.session.invoke(request: URLRequest.codeForTokenExchangeRequest(code))
 				.do(onNext: { data in
 					guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
@@ -72,6 +59,32 @@ public struct GMusicTokenClient {
 					let token = GMusicToken(accessToken: accessToken,
 											expiresIn: json["expires_in"] as? Int,
 											refreshToken: json["refresh_token"] as? String)
+					
+					observer.onNext(token)
+					observer.onCompleted()
+				})
+				.do(onError: { observer.onError($0) })
+				.subscribe()
+			
+			return Disposables.create([subscribtion])
+		}
+	}
+	
+	public func issueMusicApiToken(withToken token: GMusicToken) -> Observable<GMusicToken> {
+		return Observable.create { observer in
+			let subscribtion = self.session.invoke(request: URLRequest.issueMusicApiTokenRequest(token: token))
+				.do(onNext: { data in
+					guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
+						fatalError("Should throw error here")
+					}
+					
+					guard let accessToken = json["token"] as? String, accessToken.count > 0 else {
+						fatalError("Should throw error here")
+					}
+					
+					let token = GMusicToken(accessToken: accessToken,
+											expiresIn: Int(json["expiresIn"] as? String ?? ""),
+											refreshToken: nil)
 					
 					observer.onNext(token)
 					observer.onCompleted()

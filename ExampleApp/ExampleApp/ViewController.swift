@@ -61,7 +61,11 @@ extension ViewController: WKNavigationDelegate {
 		WKWebsiteDataStore.default().httpCookieStore.getAllCookies { cookies in
 			guard let oauth_code = cookies.first(where: { $0.name == "oauth_code" })?.value else { return }
 			self.tokenClient.exchangeOAuthCodeForToken(oauth_code)
-				.do(onNext: { print("Exchanged token: \($0)") })
+				.flatMap { token -> Observable<GMusicToken> in
+					print("Exchanged token: \(token.accessToken)")
+					return self.tokenClient.issueMusicApiToken(withToken: token)
+				}
+				.do(onNext: { print("Music API token: \($0)") })
 				.do(onError: { print("Error while exchanging token: \($0)") })
 				.subscribe()
 				.disposed(by: self.bag)

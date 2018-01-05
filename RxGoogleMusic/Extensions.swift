@@ -75,7 +75,8 @@ extension URLRequest {
 	}
 	
 	static func authAdviceRequest() -> URLRequest {
-		let json = 	"""
+		let json =
+		"""
 		{
 		"report_user_id": "true",
 		"system_version": "\(GMusicConstants.systemVersion)",
@@ -114,7 +115,27 @@ extension URLRequest {
 				client_id=\(GMusicConstants.clientId)&
 				client_secret=\(GMusicConstants.clientSecret)&
 				scope=\(Scope.oauthLogin.rawValue)
-				""".replacingOccurrences(of: "\n", with: "")
+				"""
+				.replacingOccurrences(of: "\n", with: "")
+		request.httpBody = body.data(using: .utf8)
+		return request
+	}
+	
+	static func issueMusicApiTokenRequest(token: GMusicToken) -> URLRequest {
+		var request = URLRequest(url: GMusicConstants.issueTokenUrl)
+		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
+		request.setValue("Bearer \(token.accessToken)", forHTTPHeaderField: "Authorization")
+		request.httpMethod = "POST"
+		let body =
+				"""
+				client_id=\(GMusicConstants.clientIdLong)&
+				app_id=\(GMusicConstants.packageName)&
+				device_id=\(GMusicConstants.deviceId)&
+				hl=\(Locale.current.identifier)&
+				response_type=token&
+				scope=\(Scope.skyjam.rawValue) \(Scope.supportcontent.rawValue)
+				"""
+				.replacingOccurrences(of: "\n", with: "")
 		request.httpBody = body.data(using: .utf8)
 		return request
 	}
