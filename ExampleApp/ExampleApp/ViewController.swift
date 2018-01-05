@@ -9,6 +9,8 @@
 import UIKit
 import SafariServices
 import WebKit
+import RxGoogleMusic
+import RxSwift
 
 struct Token: Decodable {
 	let access_token: String
@@ -49,7 +51,6 @@ class ViewController: UIViewController {
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
-		
 		webView.navigationDelegate = self
 	}
 

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E66AC4B2000045A00E3DFD0 /* RxGoogleMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E66AC4C2000045A00E3DFD0 /* RxGoogleMusic.framework */; };
+		6E66AC4D2000046E00E3DFD0 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E66AC45200001CA00E3DFD0 /* RxSwift.framework */; };
 		6E67375E1FFD4991006EDA4F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E67375D1FFD4991006EDA4F /* AppDelegate.swift */; };
 		6E6737601FFD4991006EDA4F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E67375F1FFD4991006EDA4F /* ViewController.swift */; };
 		6E6737631FFD4991006EDA4F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E6737611FFD4991006EDA4F /* Main.storyboard */; };
@@ -15,6 +17,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6E66AC442000016300E3DFD0 /* RxGoogleMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxGoogleMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		6E66AC45200001CA00E3DFD0 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = ../Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		6E66AC492000040100E3DFD0 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
+		6E66AC4C2000045A00E3DFD0 /* RxGoogleMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxGoogleMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E67375A1FFD4991006EDA4F /* ExampleApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E67375D1FFD4991006EDA4F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6E67375F1FFD4991006EDA4F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -29,17 +35,31 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E66AC4D2000046E00E3DFD0 /* RxSwift.framework in Frameworks */,
+				6E66AC4B2000045A00E3DFD0 /* RxGoogleMusic.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6E66AC422000016300E3DFD0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6E66AC4C2000045A00E3DFD0 /* RxGoogleMusic.framework */,
+				6E66AC45200001CA00E3DFD0 /* RxSwift.framework */,
+				6E66AC492000040100E3DFD0 /* RxSwift.framework */,
+				6E66AC442000016300E3DFD0 /* RxGoogleMusic.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		6E6737511FFD4991006EDA4F = {
 			isa = PBXGroup;
 			children = (
 				6E67375C1FFD4991006EDA4F /* ExampleApp */,
 				6E67375B1FFD4991006EDA4F /* Products */,
+				6E66AC422000016300E3DFD0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -74,6 +94,7 @@
 				6E6737561FFD4991006EDA4F /* Sources */,
 				6E6737571FFD4991006EDA4F /* Frameworks */,
 				6E6737581FFD4991006EDA4F /* Resources */,
+				6E66AC47200001FE00E3DFD0 /* Copy carthage frameworks */,
 			);
 			buildRules = (
 			);
@@ -130,6 +151,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		6E66AC47200001FE00E3DFD0 /* Copy carthage frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/../Carthage/Build/iOS/RxSwift.framework",
+			);
+			name = "Copy carthage frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		6E6737561FFD4991006EDA4F /* Sources */ = {
@@ -276,6 +315,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SJMSRXG797;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = ExampleApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.ExampleApp;
@@ -291,6 +334,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = SJMSRXG797;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = ExampleApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.ExampleApp;
