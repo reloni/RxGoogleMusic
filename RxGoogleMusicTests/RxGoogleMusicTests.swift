@@ -10,32 +10,20 @@ import XCTest
 import RxSwift
 @testable import RxGoogleMusic
 
-// client_id	936475272427.apps.googleusercontent.com
-// client_secret	KWsJlkaMn1jGLxQpWxMnOox-
-// scope	https://www.google.com/accounts/OAuthLogin
-
 class RxGoogleMusicTests: XCTestCase {
-	let liveToken = "ya29.GosBNwXjYChUpU04cCIpN7EYCD3j11sHA3b_a9DuBMFnn4Q_iu0W_u-d6vPTvZUSfANAfafeGW5lvdqP5qK_kWoltpBrcECTb8KrrXSmpH_fOfRC6CtMirg_-XuDHLvNNANzuc51_EiMvk2pqr_IPwvhzG5aYWNbnqssJKu7i2bs3wPp2yHTitO3Uu3Mnw"
+	let liveToken = ""
 	
-//	func testLoadJson() {
-//		let client = GMusicClient()
-//		
-//		let resultExpectation = expectation(description: "Should return json data")
-//		
-//		_ = client.jsonRequest(GMusicRequest(type: .track, maxResults: 5, updatedMin: Date(), token: liveToken))
-//			.do(onNext: { result in
-//				print(result)
-//				resultExpectation.fulfill()
-//			})
-//			.do(onError: { print($0) })
-//			.subscribe()
-//		
-//		_ = XCTWaiter.wait(for: [resultExpectation], timeout: 1)
-//	}
+	let token = GMusicToken(accessToken: "", expiresIn: nil, refreshToken: nil)
+	let apiToken = GMusicToken(accessToken: "", expiresIn: nil, refreshToken: nil)
+	
+	var client: GMusicClient!
+	
+	override func setUp() {
+		client = GMusicClient(token: token)
+		client.apiToken = apiToken
+	}
 	
 	func testLoadTracks() {
-		let client = GMusicClient()
-		
 		let resultExpectation = expectation(description: "Should return data")
 		
 		_ = client.tracks(token: liveToken, updatedMin: Date(microsecondsSince1970: 1514132217511863), maxResults: 2)
@@ -52,8 +40,6 @@ class RxGoogleMusicTests: XCTestCase {
 	}
 	
 	func testLoadTracksRecursive() {
-		let client = GMusicClient()
-		
 		let resultExpectation = expectation(description: "Should return data")
 		
 		_ = client.tracks(token: liveToken, updatedMin: Date(microsecondsSince1970: 0), maxResults: 250, recursive: true)
@@ -70,8 +56,6 @@ class RxGoogleMusicTests: XCTestCase {
 	}
 	
 	func testLoadPlaylists() {
-		let client = GMusicClient()
-		
 		let resultExpectation = expectation(description: "Should return data")
 		
 		_ = client.playlists(token: liveToken, updatedMin: Date(microsecondsSince1970: 1514132217511863), maxResults: 2)
@@ -88,8 +72,6 @@ class RxGoogleMusicTests: XCTestCase {
 	}
 	
 	func testLoadPlaylistsRecursive() {
-		let client = GMusicClient()
-		
 		let resultExpectation = expectation(description: "Should return data")
 		
 		_ = client.playlists(token: liveToken, updatedMin: Date(microsecondsSince1970: 0), maxResults: 1, recursive: true)
@@ -106,8 +88,6 @@ class RxGoogleMusicTests: XCTestCase {
 	}
 	
 	func testLoadPlaylistEntriesRecursive() {
-		let client = GMusicClient()
-		
 		let resultExpectation = expectation(description: "Should return data")
 		
 		_ = client.playlistEntries(token: liveToken, updatedMin: Date(microsecondsSince1970: 0), maxResults: 100, recursive: true)
