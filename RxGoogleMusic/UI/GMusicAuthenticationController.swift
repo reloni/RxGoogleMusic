@@ -10,7 +10,7 @@ import UIKit
 import WebKit
 import RxSwift
 
-public class GMusicAuthenticationController: UIViewController {
+open class GMusicAuthenticationController: UIViewController {
 	public enum AuthenticationResult {
 		case authenticated(GMusicToken)
 		case userAborted

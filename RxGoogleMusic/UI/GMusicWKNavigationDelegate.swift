@@ -9,7 +9,7 @@
 import WebKit
 import RxSwift
 
-class GMusicWKNavigationDelegate: NSObject, WKNavigationDelegate {
+open class GMusicWKNavigationDelegate: NSObject, WKNavigationDelegate {
 	let bag = DisposeBag()
 	let oauthCodeCallback: (String) -> Void
 	
@@ -17,7 +17,7 @@ class GMusicWKNavigationDelegate: NSObject, WKNavigationDelegate {
 		self.oauthCodeCallback = oauthCodeCallback
 	}
 	
-	func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+	public func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
 		guard webView.url?.absoluteString.hasSuffix("embedded/close") == true else { return }
 		WKWebsiteDataStore.default().httpCookieStore.getAllCookies { cookies in
 			guard let oauthCode = cookies.first(where: { $0.name == "oauth_code" })?.value else { return }
