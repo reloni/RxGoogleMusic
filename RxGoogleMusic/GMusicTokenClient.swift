@@ -23,42 +23,23 @@ public struct GMusicTokenClient {
 	}
 	
 	public func loadAuthenticationUrl() -> Observable<URL> {
-		return Observable.create { observer in
-			let subscribtion = self.session.jsonRequest(URLRequest.authAdviceRequest())
-				.do(onNext: { json in
-					guard let uri = URL(string: json["uri"] as? String ?? "") else {
-						fatalError("Should throw error here")
-					}
-					
-					observer.onNext(uri)
-					observer.onCompleted()
-				})
-				.do(onError: { observer.onError($0) })
-				.subscribe()
-			
-			return Disposables.create([subscribtion])
+		return session.jsonRequest(URLRequest.authAdviceRequest())
+			.flatMap { json -> Observable<URL> in
+				guard let uri = URL(string: json["uri"] as? String ?? "") else {
+					fatalError("Should throw error here")
+				}
+				return .just(uri)
 		}
 	}
 	
 	public func exchangeOAuthCodeForToken(_ code: String) -> Observable<GMusicToken> {
-		return Observable.create { observer in
-			let subscribtion = self.session.jsonRequest(URLRequest.codeForTokenExchangeRequest(code))
-				.do(onNext: { json in
-					guard let accessToken = json["access_token"] as? String, accessToken.count > 0 else {
-						fatalError("Should throw error here")
-					}
-					
-					let token = GMusicToken(accessToken: accessToken,
-											expiresIn: json["expires_in"] as? Int,
-											refreshToken: json["refresh_token"] as? String)
-					
-					observer.onNext(token)
-					observer.onCompleted()
-				})
-				.do(onError: { observer.onError($0) })
-				.subscribe()
-			
-			return Disposables.create([subscribtion])
+		return session.jsonRequest(URLRequest.codeForTokenExchangeRequest(code))
+			.flatMap { json -> Observable<GMusicToken> in
+				guard let token = GMusicToken(json: json) else {
+					// TODO: Should throw error here
+					fatalError("Unable to create token object")
+				}
+				return .just(token)
 		}
 	}
 	
@@ -73,24 +54,13 @@ public struct GMusicTokenClient {
 //	}
 	
 	public func issueMusicApiToken(withToken token: GMusicToken) -> Observable<GMusicToken> {
-		return Observable.create { observer in
-			let subscribtion = self.session.jsonRequest(URLRequest.issueMusicApiTokenRequest(token: token))
-				.do(onNext: { json in
-					guard let accessToken = json["token"] as? String, accessToken.count > 0 else {
-						fatalError("Should throw error here")
-					}
-					
-					let token = GMusicToken(accessToken: accessToken,
-											expiresIn: Int(json["expiresIn"] as? String ?? ""),
-											refreshToken: nil)
-					
-					observer.onNext(token)
-					observer.onCompleted()
-				})
-				.do(onError: { observer.onError($0) })
-				.subscribe()
-			
-			return Disposables.create([subscribtion])
+		return session.jsonRequest(URLRequest.issueMusicApiTokenRequest(token: token))
+			.flatMap { json -> Observable<GMusicToken> in
+				guard let token = GMusicToken(apiTokenJson: json) else {
+					// TODO: Should throw error here
+					fatalError("Unable to create token object")
+				}
+				return .just(token)
 		}
 	}
 }

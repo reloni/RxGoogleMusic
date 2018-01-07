@@ -142,7 +142,7 @@ extension URLRequest {
 		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
 		request.httpMethod = "POST"
 		let body =
-			"""
+				"""
 				grant_type=\(GrantType.refreshToken.rawValue)&
 				client_id=\(GMusicConstants.clientId)&
 				client_secret=\(GMusicConstants.clientSecret)&

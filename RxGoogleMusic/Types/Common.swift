@@ -59,6 +59,21 @@ public struct GMusicToken {
 		return expiresAt == nil ? true : expiresAt! < Date()
 	}
 	
+	init?(json: JSON) {
+		guard let at = json["access_token"] as? String, at.count > 0 else { return nil }
+		self.init(accessToken: at,
+				  expiresIn: json["expires_in"] as? Int,
+				  refreshToken: json["refresh_token"] as? String)
+	}
+	
+	init?(apiTokenJson json: JSON) {
+		guard let at = json["token"] as? String, at.count > 0 else { return nil }
+		self.init(accessToken: at,
+				  expiresIn: Int(json["expiresIn"] as? String ?? ""),
+				  refreshToken: nil)
+	}
+
+	
 	public init(accessToken: String, expiresIn: Int?, refreshToken: String?) {
 		self.accessToken = accessToken
 		self.expiresIn = expiresIn
