@@ -99,11 +99,9 @@
 		6E0B79251FF2D433008F7800 /* RxGoogleMusic */ = {
 			isa = PBXGroup;
 			children = (
+				6EE30AEC200288E900940C00 /* GMusicClient */,
 				6E30528020016D3700DA0DBB /* UI */,
 				6E3964051FFAA1230016C2FA /* Types */,
-				6E3963FF1FFA88090016C2FA /* GMusicClient.swift */,
-				6ED14CAE1FFC00C500B78078 /* GMusicClient+Base.swift */,
-				6ED14CB01FFC00F900B78078 /* GMusicClient+Requests.swift */,
 				6E3964011FFA93930016C2FA /* Extensions.swift */,
 				6E66AC4E200004D200E3DFD0 /* GMusicTokenClient.swift */,
 				6E0B79271FF2D433008F7800 /* Info.plist */,
@@ -147,6 +145,16 @@
 				6ED14CAC1FFC003200B78078 /* GMusicRequest.swift */,
 			);
 			path = Types;
+			sourceTree = "<group>";
+		};
+		6EE30AEC200288E900940C00 /* GMusicClient */ = {
+			isa = PBXGroup;
+			children = (
+				6E3963FF1FFA88090016C2FA /* GMusicClient.swift */,
+				6ED14CAE1FFC00C500B78078 /* GMusicClient+Base.swift */,
+				6ED14CB01FFC00F900B78078 /* GMusicClient+Requests.swift */,
+			);
+			path = GMusicClient;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

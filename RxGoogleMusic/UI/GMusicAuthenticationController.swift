@@ -41,14 +41,14 @@ open class GMusicAuthenticationController: UIViewController {
 		super.init(nibName: nil, bundle: nil)
 	}
 	
-	public override func viewDidLoad() {
+	open override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		toolBar.translatesAutoresizingMaskIntoConstraints = false
 		webView.translatesAutoresizingMaskIntoConstraints = false
 	}
 	
-	public override func loadView() {
+	open override func loadView() {
 		super.loadView()
 		view.backgroundColor = .white
 		view.addSubview(toolBar)
@@ -82,7 +82,7 @@ open class GMusicAuthenticationController: UIViewController {
 			.disposed(by: bag)
 	}
 	
-	public override func viewDidAppear(_ animated: Bool) {
+	open override func viewDidAppear(_ animated: Bool) {
 		loadAuthenticationUrl()
 	}
 	
