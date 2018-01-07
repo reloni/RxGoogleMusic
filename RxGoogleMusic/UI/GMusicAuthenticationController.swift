@@ -41,10 +41,6 @@ public class GMusicAuthenticationController: UIViewController {
 		super.init(nibName: nil, bundle: nil)
 	}
 	
-	deinit {
-		print("GMusicAuthenticationController deinit")
-	}
-	
 	public override func viewDidLoad() {
 		super.viewDidLoad()
 		
@@ -58,7 +54,9 @@ public class GMusicAuthenticationController: UIViewController {
 		view.addSubview(toolBar)
 		view.addSubview(webView)
 		
-		toolBar.items = [UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(backButttonTapped))]
+		toolBar.items = [UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(backButttonTapped)),
+						 UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
+						 UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(loadAuthenticationUrl))]
 		
 		webView.navigationDelegate = webViewDelegate
 	
@@ -75,13 +73,17 @@ public class GMusicAuthenticationController: UIViewController {
 		callback(.userAborted)
 	}
 	
-	public override func viewDidAppear(_ animated: Bool) {
+	@objc func loadAuthenticationUrl() {
 		tokenClient.loadAuthenticationUrl()
 			.observeOn(MainScheduler.instance)
 			.do(onNext: { [weak self] url in self?.webView.load(URLRequest.loginPageRequest(url)) })
 			.do(onError: { [weak self] in self?.showErrorAlert($0) })
 			.subscribe()
 			.disposed(by: bag)
+	}
+	
+	public override func viewDidAppear(_ animated: Bool) {
+		loadAuthenticationUrl()
 	}
 	
 	func showErrorAlert(_ error: Error) {
