@@ -36,7 +36,62 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="136.80000000000001" y="124.58770614692655"/>
+            <point key="canvasLocation" x="-812" y="29"/>
+        </scene>
+        <!--Library Controller-->
+        <scene sceneID="8EW-iS-umK">
+            <objects>
+                <viewController storyboardIdentifier="LibraryController" id="XSd-V9-EsN" customClass="LibraryController" customModule="ExampleApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="LLt-En-0Yu">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wGx-xF-Zj2">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <items>
+                                    <barButtonItem title="Log off" id="6UO-bn-Avx">
+                                        <connections>
+                                            <action selector="logOff:" destination="XSd-V9-EsN" id="sGm-tZ-yWs"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
+                            <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="o2j-GL-9xL">
+                                <rect key="frame" x="0.0" y="44" width="375" height="29"/>
+                                <segments>
+                                    <segment title="Playlists"/>
+                                    <segment title="Stations"/>
+                                    <segment title="Tracks"/>
+                                </segments>
+                            </segmentedControl>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="evG-I3-9N1">
+                                <rect key="frame" x="0.0" y="72" width="375" height="595"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="evG-I3-9N1" firstAttribute="top" secondItem="o2j-GL-9xL" secondAttribute="bottom" id="2Tz-Tg-5Ad"/>
+                            <constraint firstItem="b72-vH-10h" firstAttribute="trailing" secondItem="evG-I3-9N1" secondAttribute="trailing" id="4Tw-xf-Ltk"/>
+                            <constraint firstItem="b72-vH-10h" firstAttribute="bottom" secondItem="evG-I3-9N1" secondAttribute="bottom" id="5dQ-1Y-sV0"/>
+                            <constraint firstItem="b72-vH-10h" firstAttribute="trailing" secondItem="o2j-GL-9xL" secondAttribute="trailing" id="9aj-G5-RSK"/>
+                            <constraint firstItem="evG-I3-9N1" firstAttribute="leading" secondItem="b72-vH-10h" secondAttribute="leading" id="Icd-JU-xKe"/>
+                            <constraint firstItem="o2j-GL-9xL" firstAttribute="leading" secondItem="b72-vH-10h" secondAttribute="leading" id="Rbt-UC-81b"/>
+                            <constraint firstItem="wGx-xF-Zj2" firstAttribute="top" secondItem="LLt-En-0Yu" secondAttribute="top" id="VK7-Ex-qof"/>
+                            <constraint firstItem="wGx-xF-Zj2" firstAttribute="trailing" secondItem="b72-vH-10h" secondAttribute="trailing" id="VUv-Lf-OmD"/>
+                            <constraint firstItem="o2j-GL-9xL" firstAttribute="top" secondItem="wGx-xF-Zj2" secondAttribute="bottom" id="pqW-Ev-qUo"/>
+                            <constraint firstItem="wGx-xF-Zj2" firstAttribute="leading" secondItem="b72-vH-10h" secondAttribute="leading" id="zFC-YD-JCt"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="b72-vH-10h"/>
+                    </view>
+                    <connections>
+                        <outlet property="segmentControl" destination="o2j-GL-9xL" id="BOs-k8-IYE"/>
+                        <outlet property="tableView" destination="evG-I3-9N1" id="0ae-Yf-VvY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="YlI-4t-MIX" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-14" y="28"/>
         </scene>
     </scenes>
 </document>

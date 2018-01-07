@@ -21,7 +21,23 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func authenticate(_ sender: Any) {
-		let controller = GMusicAuthenticationController(callback: { print($0) })
+		let controller = GMusicAuthenticationController { [unowned self] result in
+			switch result {
+			case .userAborted: print("aborted")
+			case .authenticated(let token): self.showLibrary(accessToken: token)
+			}
+		}
+		present(controller, animated: true, completion: nil)
+	}
+	
+	func showLibrary(accessToken token: GMusicToken) {
+		let storyboard = UIStoryboard(name: "Main", bundle: nil)
+		let controller = storyboard.instantiateViewController(withIdentifier: "LibraryController") as! LibraryController
+		
+		controller.client = GMusicClient(token: token,
+										 session: URLSession(configuration: URLSessionConfiguration.default),
+										 locale: Locale.current)
+		
 		present(controller, animated: true, completion: nil)
 	}
 }

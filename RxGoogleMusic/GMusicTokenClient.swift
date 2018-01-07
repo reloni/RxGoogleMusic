@@ -63,6 +63,9 @@ public struct GMusicTokenClient {
 					// TODO: Should throw error here
 					fatalError("Unable to create token object")
 				}
+				#if DEBUG
+					print("Issued API token: \(token.accessToken)")
+				#endif
 				return .just(token)
 		}
 	}
