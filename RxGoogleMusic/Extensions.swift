@@ -19,7 +19,23 @@ extension CharacterSet {
 }
 
 extension URLSession {
-	func invoke(request: URLRequest) -> Observable<Data> {
+	func jsonRequest(_ request: URLRequest) -> Observable<JSON> {
+		return dataRequest(request)
+			.flatMap { data -> Observable<JSON> in
+				do {
+					guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? JSON else {
+						// TODO: throw error here
+						fatalError("Unable to parse JSON")
+					}
+					return .just(json)
+				} catch let error {
+					// TODO: Maybe it's better to wrap this error
+					return .error(error)
+				}
+			}
+	}
+	
+	func dataRequest(_ request: URLRequest) -> Observable<Data> {
 		return Observable.create { [weak self] observer in
 			guard let session = self else { observer.onCompleted(); return Disposables.create() }
 			let task = session.dataTask(with: request) { data, response, error in
@@ -115,6 +131,22 @@ extension URLRequest {
 				client_id=\(GMusicConstants.clientId)&
 				client_secret=\(GMusicConstants.clientSecret)&
 				scope=\(Scope.oauthLogin.rawValue)
+				"""
+				.replacingOccurrences(of: "\n", with: "")
+		request.httpBody = body.data(using: .utf8)
+		return request
+	}
+	
+	private static func tokenRefreshRequest(forRefreshToken token: String) -> URLRequest {
+		var request = URLRequest(url: GMusicConstants.tokenUrl)
+		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
+		request.httpMethod = "POST"
+		let body =
+			"""
+				grant_type=\(GrantType.refreshToken.rawValue)&
+				client_id=\(GMusicConstants.clientId)&
+				client_secret=\(GMusicConstants.clientSecret)&
+				refresh_token=\(token)
 				"""
 				.replacingOccurrences(of: "\n", with: "")
 		request.httpBody = body.data(using: .utf8)

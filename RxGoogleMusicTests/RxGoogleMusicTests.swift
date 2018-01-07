@@ -11,7 +11,7 @@ import RxSwift
 @testable import RxGoogleMusic
 
 class RxGoogleMusicTests: XCTestCase {
-	let liveToken = ""
+	let liveToken = "ya29.GooBOwW8MCJc76mBF_q9BdMxB0lOyyXi9ldxrMagXU3plSlYYDT9dSA58RE9LDs6uVcp-f-WulWri_L36bNtZiUL4peVRcAnpZZtvHoqflhllEWekdsSCtbK_-T-WaWe-6QxI9fJPhlcJMWd6we1lZ7X_R49au-rNY2CK_sU-XLJiYOTvOz5yNNbC1ii"
 	
 	let token = GMusicToken(accessToken: "", expiresIn: nil, refreshToken: nil)
 	let apiToken = GMusicToken(accessToken: "", expiresIn: nil, refreshToken: nil)

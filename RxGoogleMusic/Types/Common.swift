@@ -54,6 +54,19 @@ public struct GMusicToken {
 	public let accessToken: String
 	public let expiresIn: Int?
 	public let refreshToken: String?
+	public let expiresAt: Date?
+	var isTokenExpired: Bool {
+		return expiresAt == nil ? true : expiresAt! < Date()
+	}
+	
+	public init(accessToken: String, expiresIn: Int?, refreshToken: String?) {
+		self.accessToken = accessToken
+		self.expiresIn = expiresIn
+		self.refreshToken = refreshToken
+		
+		self.expiresAt = expiresIn == nil ? nil : Date().addingTimeInterval(Double(expiresIn!))
+		
+	}
 }
 
 public enum GMusicEntityType: String {

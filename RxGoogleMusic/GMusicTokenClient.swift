@@ -24,12 +24,8 @@ public struct GMusicTokenClient {
 	
 	public func loadAuthenticationUrl() -> Observable<URL> {
 		return Observable.create { observer in
-			let subscribtion = self.session.invoke(request: URLRequest.authAdviceRequest())
-				.do(onNext: { data in
-					guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-						fatalError("Should throw error here")
-					}
-					
+			let subscribtion = self.session.jsonRequest(URLRequest.authAdviceRequest())
+				.do(onNext: { json in
 					guard let uri = URL(string: json["uri"] as? String ?? "") else {
 						fatalError("Should throw error here")
 					}
@@ -46,12 +42,8 @@ public struct GMusicTokenClient {
 	
 	public func exchangeOAuthCodeForToken(_ code: String) -> Observable<GMusicToken> {
 		return Observable.create { observer in
-			let subscribtion = self.session.invoke(request: URLRequest.codeForTokenExchangeRequest(code))
-				.do(onNext: { data in
-					guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-						fatalError("Should throw error here")
-					}
-					
+			let subscribtion = self.session.jsonRequest(URLRequest.codeForTokenExchangeRequest(code))
+				.do(onNext: { json in
 					guard let accessToken = json["access_token"] as? String, accessToken.count > 0 else {
 						fatalError("Should throw error here")
 					}
@@ -70,14 +62,20 @@ public struct GMusicTokenClient {
 		}
 	}
 	
+//	public func refreshToken(_ token: GMusicToken, force: Bool) -> Observable<GMusicToken> {
+//		guard let refreshToken = token.refreshToken, (token.isTokenExpired || force) else {
+//			// TODO: Maybe should return error if there is no refresh token
+//			return .just(token)
+//		}
+//		
+//		return .empty()
+////		guard let refreshToken =
+//	}
+	
 	public func issueMusicApiToken(withToken token: GMusicToken) -> Observable<GMusicToken> {
 		return Observable.create { observer in
-			let subscribtion = self.session.invoke(request: URLRequest.issueMusicApiTokenRequest(token: token))
-				.do(onNext: { data in
-					guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] else {
-						fatalError("Should throw error here")
-					}
-					
+			let subscribtion = self.session.jsonRequest(URLRequest.issueMusicApiTokenRequest(token: token))
+				.do(onNext: { json in
 					guard let accessToken = json["token"] as? String, accessToken.count > 0 else {
 						fatalError("Should throw error here")
 					}
