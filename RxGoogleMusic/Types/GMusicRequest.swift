@@ -12,32 +12,24 @@ public struct GMusicRequest {
 	public let type: GMusicEntityType
 	public let maxResults: Int
 	public let updatedMin: Date
-	public let token: String
 	public let locale: Locale
-	public let tier: String
 	public let pageToken: String?
 	
-	public init(type: GMusicEntityType, maxResults: Int, updatedMin: Date, token: String, pageToken: String? = nil, locale: Locale = Locale.current, tier: String = "aa") {
+	public init(type: GMusicEntityType, maxResults: Int, updatedMin: Date, pageToken: String? = nil, locale: Locale = Locale.current) {
 		self.type = type
 		self.maxResults = maxResults
 		self.updatedMin = updatedMin
-		self.token = token
 		self.locale = locale
-		self.tier = tier
 		self.pageToken = pageToken
 	}
 	
 	public var urlParameters: [String: String] {
-		return ["dv": "3000038001007",
+		return ["dv": GMusicConstants.dv,
 				"hl": locale.identifier,
 				"max-results": "\(maxResults)",
-			"prettyPrint": "false",
-			"tier": tier,
-			"updated-min": "\(updatedMin.microsecondsSince1970)"]
-	}
-	
-	public var headers: [String: String] {
-		return ["Authorization": "Bearer \(token)"]
+				"prettyPrint": "false",
+				"tier": GMusicConstants.tier,
+				"updated-min": "\(updatedMin.microsecondsSince1970)"]
 	}
 	
 	var escapedPageToken: String? {
@@ -45,7 +37,7 @@ public struct GMusicRequest {
 	}
 	
 	public func withNew(nextPageToken: String) -> GMusicRequest {
-		return GMusicRequest(type: type, maxResults: maxResults, updatedMin: updatedMin, token: token, pageToken: nextPageToken, locale: locale, tier: tier)
+		return GMusicRequest(type: type, maxResults: maxResults, updatedMin: updatedMin, pageToken: nextPageToken, locale: locale)
 	}
 	
 	func buildUrl(for baseUrl: URL) -> URL {
@@ -54,7 +46,7 @@ public struct GMusicRequest {
 		return URL(string: "\(url.absoluteString)&start-token=\(token)")!
 	}
 	
-	func createGMusicRequest(for baseUrl: URL) -> URLRequest {
-		return URLRequest(url: buildUrl(for: baseUrl), headers: headers)
+	func createGMusicRequest(for baseUrl: URL, withToken token: GMusicToken) -> URLRequest {
+		return URLRequest(url: buildUrl(for: baseUrl), headers: Dictionary(dictionaryLiteral: token.header))
 	}
 }

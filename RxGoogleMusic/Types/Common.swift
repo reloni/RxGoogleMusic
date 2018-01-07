@@ -21,6 +21,8 @@ struct GMusicConstants {
 	static let clientSecret = "KWsJlkaMn1jGLxQpWxMnOox-"
 	static let redirectUri = "com.google.sso.228293309116-bs4u7ofpm4p6p6da7i1jkan3hfr6h38o:/authCallback"
 	static let packageName = "com.google.PlayMusic"
+	static let dv = "3000038001007" // required magic paramerer ¯\_(ツ)_/¯
+	static let tier = "aa" // another requered parameter
 	
 	static let systemVersion = UIDevice.current.systemVersion
 	static let deviceModel = UIDevice.current.model
@@ -57,6 +59,9 @@ public struct GMusicToken {
 	public let expiresAt: Date?
 	var isTokenExpired: Bool {
 		return expiresAt == nil ? true : expiresAt! < Date()
+	}
+	var header: (String, String) {
+		return ("Authorization", "Bearer \(accessToken)")
 	}
 	
 	init?(json: JSON) {

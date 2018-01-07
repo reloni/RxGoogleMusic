@@ -34,7 +34,8 @@ public struct GMusicTokenClient {
 		return session.jsonRequest(URLRequest.authAdviceRequest())
 			.flatMap { json -> Observable<URL> in
 				guard let uri = URL(string: json["uri"] as? String ?? "") else {
-					fatalError("Should throw error here")
+					// TODO: Should throw error here
+					fatalError("Unable to get uri")
 				}
 				return .just(uri)
 		}

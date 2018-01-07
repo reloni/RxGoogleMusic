@@ -11,22 +11,14 @@ import RxSwift
 @testable import RxGoogleMusic
 
 class RxGoogleMusicTests: XCTestCase {
-	let liveToken = "ya29.GooBOwW8MCJc76mBF_q9BdMxB0lOyyXi9ldxrMagXU3plSlYYDT9dSA58RE9LDs6uVcp-f-WulWri_L36bNtZiUL4peVRcAnpZZtvHoqflhllEWekdsSCtbK_-T-WaWe-6QxI9fJPhlcJMWd6we1lZ7X_R49au-rNY2CK_sU-XLJiYOTvOz5yNNbC1ii"
-	
-	let token = GMusicToken(accessToken: "", expiresIn: nil, refreshToken: nil)
-	let apiToken = GMusicToken(accessToken: "", expiresIn: nil, refreshToken: nil)
-	
-	var client: GMusicClient!
-	
-	override func setUp() {
-		client = GMusicClient(token: token)
-		client.apiToken = apiToken
-	}
-	
+	let client = GMusicClient(token: GMusicToken(accessToken: "",
+												 expiresIn: 0,
+												 refreshToken: ""))
+
 	func testLoadTracks() {
 		let resultExpectation = expectation(description: "Should return data")
 		
-		_ = client.tracks(token: liveToken, updatedMin: Date(microsecondsSince1970: 1514132217511863), maxResults: 2)
+		_ = client.tracks(updatedMin: Date(microsecondsSince1970: 1514132217511863), maxResults: 2)
 			.do(onNext: { result in
 				print(result)
 				XCTAssertEqual(2, result.items.count)
@@ -42,7 +34,7 @@ class RxGoogleMusicTests: XCTestCase {
 	func testLoadTracksRecursive() {
 		let resultExpectation = expectation(description: "Should return data")
 		
-		_ = client.tracks(token: liveToken, updatedMin: Date(microsecondsSince1970: 0), maxResults: 250, recursive: true)
+		_ = client.tracks(updatedMin: Date(microsecondsSince1970: 0), maxResults: 250, recursive: true)
 			.do(onNext: { result in
 				print("Tracks loaded: \(result.items.count)")
 				print("First track: \(result.items.first?.title ?? "none")")
@@ -58,7 +50,7 @@ class RxGoogleMusicTests: XCTestCase {
 	func testLoadPlaylists() {
 		let resultExpectation = expectation(description: "Should return data")
 		
-		_ = client.playlists(token: liveToken, updatedMin: Date(microsecondsSince1970: 1514132217511863), maxResults: 2)
+		_ = client.playlists(updatedMin: Date(microsecondsSince1970: 1514132217511863), maxResults: 2)
 			.do(onNext: { result in
 				print(result)
 				XCTAssertEqual(1, result.items.count)
@@ -74,7 +66,7 @@ class RxGoogleMusicTests: XCTestCase {
 	func testLoadPlaylistsRecursive() {
 		let resultExpectation = expectation(description: "Should return data")
 		
-		_ = client.playlists(token: liveToken, updatedMin: Date(microsecondsSince1970: 0), maxResults: 1, recursive: true)
+		_ = client.playlists(updatedMin: Date(microsecondsSince1970: 0), maxResults: 1, recursive: true)
 			.do(onNext: { result in
 				print("Playlists loaded: \(result.items.count)")
 				print("First playlist: \(result.items.first?.name ?? "none")")
@@ -90,7 +82,7 @@ class RxGoogleMusicTests: XCTestCase {
 	func testLoadPlaylistEntriesRecursive() {
 		let resultExpectation = expectation(description: "Should return data")
 		
-		_ = client.playlistEntries(token: liveToken, updatedMin: Date(microsecondsSince1970: 0), maxResults: 100, recursive: true)
+		_ = client.playlistEntries(updatedMin: Date(microsecondsSince1970: 0), maxResults: 100, recursive: true)
 			.do(onNext: { result in
 				print("Entries loaded: \(result.items.count)")
 				print("First entry track title: \(result.items.first?.track?.title ?? "none")")

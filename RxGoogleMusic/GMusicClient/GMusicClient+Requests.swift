@@ -10,18 +10,18 @@ import Foundation
 import RxSwift
 
 public extension GMusicClient {
-	func tracks(token: String, updatedMin: Date, maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicTrack>> {
-		let request = GMusicRequest(type: .track, maxResults: maxResults, updatedMin: updatedMin, token: token, locale: locale, tier: tier)
+	func tracks(updatedMin: Date, maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicTrack>> {
+		let request = GMusicRequest(type: .track, maxResults: maxResults, updatedMin: updatedMin, locale: locale)
 		return collectionRequest(request, recursive: recursive)
 	}
 	
-	func playlists(token: String, updatedMin: Date, maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicPlaylist>> {
-		let request = GMusicRequest(type: .playlist, maxResults: maxResults, updatedMin: updatedMin, token: token, locale: locale, tier: tier)
+	func playlists(updatedMin: Date, maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicPlaylist>> {
+		let request = GMusicRequest(type: .playlist, maxResults: maxResults, updatedMin: updatedMin, locale: locale)
 		return collectionRequest(request, recursive: recursive)
 	}
 	
-	func playlistEntries(token: String, updatedMin: Date, maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicPlaylistEntry>> {
-		let request = GMusicRequest(type: .playlistEntry, maxResults: maxResults, updatedMin: updatedMin, token: token, locale: locale, tier: tier)
+	func playlistEntries(updatedMin: Date, maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicPlaylistEntry>> {
+		let request = GMusicRequest(type: .playlistEntry, maxResults: maxResults, updatedMin: updatedMin, locale: locale)
 		return collectionRequest(request, recursive: recursive)
 	}
 }

@@ -17,7 +17,7 @@ extension GMusicClient {
 	
 	func issueApiToken(force: Bool) -> Observable<GMusicToken> {
 		guard apiToken?.expiresAt ?? Date(timeIntervalSince1970: 0) < Date() || force else {
-			// if api token existed and not expired, return empty
+			// if api token existed and not expired, return it
 			return .just(apiToken!)
 		}
 		

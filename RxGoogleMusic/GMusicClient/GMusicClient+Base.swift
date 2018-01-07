@@ -41,7 +41,7 @@ extension GMusicClient {
 	}
 	
 	func collectionRequest<T>(_ request: GMusicRequest) -> Observable<GMusicCollection<T>> {
-		return session.dataRequest(request.createGMusicRequest(for: baseUrl)).flatMap { data -> Observable<GMusicCollection<T>> in
+		return apiRequest(request).flatMap { data -> Observable<GMusicCollection<T>> in
 			let result = try JSONDecoder().decode(GMusicCollection<T>.self, from: data)
 			return .just(result)
 		}
@@ -49,9 +49,9 @@ extension GMusicClient {
 	
 	func apiRequest(_ request: GMusicRequest) -> Observable<Data> {
 		return issueApiToken(force: false)
-			.flatMap { [weak self] _ -> Observable<Data> in
+			.flatMap { [weak self] apiToken -> Observable<Data> in
 				guard let client = self else { return .empty() }
-				return client.session.dataRequest(request.createGMusicRequest(for: client.baseUrl))
+				return client.session.dataRequest(request.createGMusicRequest(for: client.baseUrl, withToken: apiToken))
 		}
 	}
 }
