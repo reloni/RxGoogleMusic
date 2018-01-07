@@ -14,7 +14,7 @@ final public class GMusicClient {
 	public let session: URLSession
 	public let locale: Locale
 	public let tier: String
-	public let token: GMusicToken
+	public internal (set) var token: GMusicToken
 	public internal (set) var  apiToken: GMusicToken? = nil
 	lazy var tokenClient: GMusicTokenClient = { GMusicTokenClient(session: self.session) }()
 	

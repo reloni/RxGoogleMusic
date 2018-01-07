@@ -46,4 +46,12 @@ extension GMusicClient {
 			return .just(result)
 		}
 	}
+	
+	func apiRequest(_ request: GMusicRequest) -> Observable<Data> {
+		return issueApiToken(force: false)
+			.flatMap { [weak self] _ -> Observable<Data> in
+				guard let client = self else { return .empty() }
+				return client.session.dataRequest(request.createGMusicRequest(for: client.baseUrl))
+		}
+	}
 }
