@@ -22,6 +22,14 @@ public struct GMusicTokenClient {
 		self.session = session
 	}
 	
+	static func tokenJsonToObject(_ json: JSON) -> Observable<GMusicToken> {
+		guard let token = GMusicToken(json: json) else {
+			// TODO: Should throw error here
+			fatalError("Unable to create token object")
+		}
+		return .just(token)
+	}
+	
 	public func loadAuthenticationUrl() -> Observable<URL> {
 		return session.jsonRequest(URLRequest.authAdviceRequest())
 			.flatMap { json -> Observable<URL> in
@@ -34,24 +42,18 @@ public struct GMusicTokenClient {
 	
 	public func exchangeOAuthCodeForToken(_ code: String) -> Observable<GMusicToken> {
 		return session.jsonRequest(URLRequest.codeForTokenExchangeRequest(code))
-			.flatMap { json -> Observable<GMusicToken> in
-				guard let token = GMusicToken(json: json) else {
-					// TODO: Should throw error here
-					fatalError("Unable to create token object")
-				}
-				return .just(token)
-		}
+			.flatMap(GMusicTokenClient.tokenJsonToObject)
 	}
 	
-//	public func refreshToken(_ token: GMusicToken, force: Bool) -> Observable<GMusicToken> {
-//		guard let refreshToken = token.refreshToken, (token.isTokenExpired || force) else {
-//			// TODO: Maybe should return error if there is no refresh token
-//			return .just(token)
-//		}
-//		
-//		return .empty()
-////		guard let refreshToken =
-//	}
+	public func refreshToken(_ token: GMusicToken, force: Bool) -> Observable<GMusicToken> {
+		guard let refreshToken = token.refreshToken, (token.isTokenExpired || force) else {
+			// TODO: Maybe should return error if there is no refresh token
+			return .just(token)
+		}
+		
+		return session.jsonRequest(URLRequest.tokenRefreshRequest(forRefreshToken: refreshToken))
+			.flatMap(GMusicTokenClient.tokenJsonToObject)
+	}
 	
 	public func issueMusicApiToken(withToken token: GMusicToken) -> Observable<GMusicToken> {
 		return session.jsonRequest(URLRequest.issueMusicApiTokenRequest(token: token))

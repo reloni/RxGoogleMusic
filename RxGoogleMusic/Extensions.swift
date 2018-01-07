@@ -137,7 +137,7 @@ extension URLRequest {
 		return request
 	}
 	
-	private static func tokenRefreshRequest(forRefreshToken token: String) -> URLRequest {
+	static func tokenRefreshRequest(forRefreshToken token: String) -> URLRequest {
 		var request = URLRequest(url: GMusicConstants.tokenUrl)
 		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
 		request.httpMethod = "POST"
