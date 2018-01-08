@@ -9,6 +9,7 @@
 import UIKit
 import RxGoogleMusic
 import RxSwift
+import RxCocoa
 
 class LibraryController: UIViewController {
 	@IBOutlet weak var segmentControl: UISegmentedControl!
@@ -17,6 +18,7 @@ class LibraryController: UIViewController {
 	let bag = DisposeBag()
 	
 	var playlists = GMusicCollection<GMusicPlaylist>()
+	var stations = GMusicCollection<GMusicRadioStation>()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,16 +26,21 @@ class LibraryController: UIViewController {
         // Do any additional setup after loading the view.
 		tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
 		tableView.dataSource = self
+		
+		segmentControl.rx.controlEvent(UIControlEvents.valueChanged)
+			.subscribe(onNext: { [weak self] _ in self?.loadData() })
+			.disposed(by: bag)
     }
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		loadData()
+		segmentControl.sendActions(for: .valueChanged)
 	}
 	
 	func loadData() {
 		switch segmentControl.selectedSegmentIndex {
 		case 0: loadPlaylists()
+		case 1: loadStations()
 		default: return
 		}
 	}
@@ -43,6 +50,16 @@ class LibraryController: UIViewController {
 			.observeOn(MainScheduler.instance)
 			.subscribe(onNext: { [weak self] in
 				self?.playlists = $0
+				self?.tableView.reloadData()
+			})
+			.disposed(by: bag)
+	}
+	
+	func loadStations() {
+		client.radioStations()
+			.observeOn(MainScheduler.instance)
+			.subscribe(onNext: { [weak self] in
+				self?.stations = $0
 				self?.tableView.reloadData()
 			})
 			.disposed(by: bag)
@@ -57,6 +74,7 @@ extension LibraryController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
 		switch segmentControl.selectedSegmentIndex {
 		case 0: return playlists.items.count
+		case 1: return stations.items.count
 		default: return 0
 		}
 	}
@@ -64,6 +82,7 @@ extension LibraryController: UITableViewDataSource {
 	func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
 		switch segmentControl.selectedSegmentIndex {
 		case 0: return cell(for: playlists.items[indexPath.row], in: tableView)
+		case 1: return cell(for: stations.items[indexPath.row], in: tableView)
 		default: return UITableViewCell()
 		}
 	}
@@ -72,6 +91,13 @@ extension LibraryController: UITableViewDataSource {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! TableViewCell
 		cell.textLabel?.text = playlist.name
 		cell.detailTextLabel?.text = playlist.description
+		return cell
+	}
+	
+	func cell(for station: GMusicRadioStation, in tableView: UITableView) -> TableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! TableViewCell
+		cell.textLabel?.text = station.name
+		cell.detailTextLabel?.text = station.description
 		return cell
 	}
 }

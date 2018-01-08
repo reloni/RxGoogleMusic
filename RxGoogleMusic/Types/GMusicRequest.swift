@@ -47,6 +47,14 @@ public struct GMusicRequest {
 	}
 	
 	func createGMusicRequest(for baseUrl: URL, withToken token: GMusicToken) -> URLRequest {
-		return URLRequest(url: buildUrl(for: baseUrl), headers: Dictionary(dictionaryLiteral: token.header))
+		switch type {
+		case .radioStation:
+			var request = URLRequest(url: buildUrl(for: baseUrl), headers: Dictionary(dictionaryLiteral: token.header))
+			request.httpBody = "{ \"max-results\": \(maxResults) }".data(using: .utf8)
+			request.httpMethod = HttpMethod.post.rawValue
+			request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+			return request
+		default: return URLRequest(url: buildUrl(for: baseUrl), headers: Dictionary(dictionaryLiteral: token.header))
+		}
 	}
 }
