@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E0F2B4C2003AD23000DA9F9 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0F2B4B2003AD23000DA9F9 /* TableViewCell.swift */; };
 		6E65A0AD2002B13B00A1FB1E /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E65A0AC2002B13B00A1FB1E /* LibraryController.swift */; };
 		6E66AC4B2000045A00E3DFD0 /* RxGoogleMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E66AC4C2000045A00E3DFD0 /* RxGoogleMusic.framework */; };
 		6E66AC4D2000046E00E3DFD0 /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E66AC45200001CA00E3DFD0 /* RxSwift.framework */; };
@@ -18,6 +19,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6E0F2B4B2003AD23000DA9F9 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
 		6E65A0AC2002B13B00A1FB1E /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
 		6E66AC442000016300E3DFD0 /* RxGoogleMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxGoogleMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E66AC45200001CA00E3DFD0 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = ../Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
@@ -83,6 +85,7 @@
 				6E6737661FFD4991006EDA4F /* LaunchScreen.storyboard */,
 				6E6737691FFD4991006EDA4F /* Info.plist */,
 				6E65A0AC2002B13B00A1FB1E /* LibraryController.swift */,
+				6E0F2B4B2003AD23000DA9F9 /* TableViewCell.swift */,
 			);
 			path = ExampleApp;
 			sourceTree = "<group>";
@@ -179,6 +182,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E6737601FFD4991006EDA4F /* ViewController.swift in Sources */,
+				6E0F2B4C2003AD23000DA9F9 /* TableViewCell.swift in Sources */,
 				6E65A0AD2002B13B00A1FB1E /* LibraryController.swift in Sources */,
 				6E67375E1FFD4991006EDA4F /* AppDelegate.swift in Sources */,
 			);

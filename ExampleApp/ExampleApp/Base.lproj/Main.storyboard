@@ -47,7 +47,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wGx-xF-Zj2">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="20" width="375" height="44"/>
                                 <items>
                                     <barButtonItem title="Log off" id="6UO-bn-Avx">
                                         <connections>
@@ -57,7 +57,7 @@
                                 </items>
                             </toolbar>
                             <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="o2j-GL-9xL">
-                                <rect key="frame" x="0.0" y="44" width="375" height="29"/>
+                                <rect key="frame" x="0.0" y="121" width="375" height="29"/>
                                 <segments>
                                     <segment title="Playlists"/>
                                     <segment title="Stations"/>
@@ -65,21 +65,32 @@
                                 </segments>
                             </segmentedControl>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="evG-I3-9N1">
-                                <rect key="frame" x="0.0" y="72" width="375" height="595"/>
+                                <rect key="frame" x="0.0" y="150" width="375" height="517"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="b9A-R5-IH7">
+                                <rect key="frame" x="0.0" y="64" width="375" height="56"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                <scopeButtonTitles>
+                                    <string>Title</string>
+                                    <string>Title</string>
+                                </scopeButtonTitles>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="evG-I3-9N1" firstAttribute="top" secondItem="o2j-GL-9xL" secondAttribute="bottom" id="2Tz-Tg-5Ad"/>
+                            <constraint firstItem="b9A-R5-IH7" firstAttribute="leading" secondItem="b72-vH-10h" secondAttribute="leading" id="0Uj-kC-Zge"/>
+                            <constraint firstItem="evG-I3-9N1" firstAttribute="top" secondItem="o2j-GL-9xL" secondAttribute="bottom" constant="1" id="2Tz-Tg-5Ad"/>
                             <constraint firstItem="b72-vH-10h" firstAttribute="trailing" secondItem="evG-I3-9N1" secondAttribute="trailing" id="4Tw-xf-Ltk"/>
                             <constraint firstItem="b72-vH-10h" firstAttribute="bottom" secondItem="evG-I3-9N1" secondAttribute="bottom" id="5dQ-1Y-sV0"/>
                             <constraint firstItem="b72-vH-10h" firstAttribute="trailing" secondItem="o2j-GL-9xL" secondAttribute="trailing" id="9aj-G5-RSK"/>
                             <constraint firstItem="evG-I3-9N1" firstAttribute="leading" secondItem="b72-vH-10h" secondAttribute="leading" id="Icd-JU-xKe"/>
                             <constraint firstItem="o2j-GL-9xL" firstAttribute="leading" secondItem="b72-vH-10h" secondAttribute="leading" id="Rbt-UC-81b"/>
-                            <constraint firstItem="wGx-xF-Zj2" firstAttribute="top" secondItem="LLt-En-0Yu" secondAttribute="top" id="VK7-Ex-qof"/>
+                            <constraint firstItem="wGx-xF-Zj2" firstAttribute="top" secondItem="b72-vH-10h" secondAttribute="top" id="VK7-Ex-qof"/>
                             <constraint firstItem="wGx-xF-Zj2" firstAttribute="trailing" secondItem="b72-vH-10h" secondAttribute="trailing" id="VUv-Lf-OmD"/>
-                            <constraint firstItem="o2j-GL-9xL" firstAttribute="top" secondItem="wGx-xF-Zj2" secondAttribute="bottom" id="pqW-Ev-qUo"/>
+                            <constraint firstItem="b9A-R5-IH7" firstAttribute="top" secondItem="wGx-xF-Zj2" secondAttribute="bottom" id="WBN-zu-IZI"/>
+                            <constraint firstItem="b9A-R5-IH7" firstAttribute="trailing" secondItem="b72-vH-10h" secondAttribute="trailing" id="juw-yY-oXG"/>
+                            <constraint firstItem="o2j-GL-9xL" firstAttribute="top" secondItem="b9A-R5-IH7" secondAttribute="bottom" constant="1" id="pqW-Ev-qUo"/>
                             <constraint firstItem="wGx-xF-Zj2" firstAttribute="leading" secondItem="b72-vH-10h" secondAttribute="leading" id="zFC-YD-JCt"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="b72-vH-10h"/>
@@ -91,7 +102,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="YlI-4t-MIX" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-14" y="28"/>
+            <point key="canvasLocation" x="-15.199999999999999" y="27.436281859070466"/>
         </scene>
     </scenes>
 </document>

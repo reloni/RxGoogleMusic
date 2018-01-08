@@ -110,6 +110,12 @@ public struct GMusicCollection<T: Codable>: Codable {
 	public let nextPageToken: String?
 	public let items: [T]
 	
+	public init() {
+		kind = ""
+		nextPageToken = nil
+		items = []
+	}
+	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		

@@ -22,4 +22,5 @@ public struct GMusicPlaylist: Codable {
 	public let ownerName: String
 	public let ownerProfilePhotoUrl: URL?
 	public let accessControlled: Bool
+	public let description: String?
 }
