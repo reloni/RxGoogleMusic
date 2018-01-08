@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		6E0B792D1FF2D434008F7800 /* RxGoogleMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E0B79231FF2D433008F7800 /* RxGoogleMusic.framework */; };
 		6E0B79321FF2D434008F7800 /* RxGoogleMusicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0B79311FF2D434008F7800 /* RxGoogleMusicTests.swift */; };
+		6E0F2B4E2003CE19000DA9F9 /* GMusicRadioStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0F2B4D2003CE19000DA9F9 /* GMusicRadioStation.swift */; };
+		6E0F2B502003CF4E000DA9F9 /* GMusicArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0F2B4F2003CF4E000DA9F9 /* GMusicArtist.swift */; };
 		6E30527F200161BF00DA0DBB /* GMusicAuthenticationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E30527E200161BF00DA0DBB /* GMusicAuthenticationController.swift */; };
 		6E30528220016D7A00DA0DBB /* GMusicWKNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E30528120016D7A00DA0DBB /* GMusicWKNavigationDelegate.swift */; };
 		6E3963F91FFA86610016C2FA /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E3963F81FFA86610016C2FA /* RxSwift.framework */; };
@@ -42,6 +44,8 @@
 		6E0B792C1FF2D434008F7800 /* RxGoogleMusicTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = RxGoogleMusicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E0B79311FF2D434008F7800 /* RxGoogleMusicTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxGoogleMusicTests.swift; sourceTree = "<group>"; };
 		6E0B79331FF2D434008F7800 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6E0F2B4D2003CE19000DA9F9 /* GMusicRadioStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicRadioStation.swift; sourceTree = "<group>"; };
+		6E0F2B4F2003CF4E000DA9F9 /* GMusicArtist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicArtist.swift; sourceTree = "<group>"; };
 		6E30527E200161BF00DA0DBB /* GMusicAuthenticationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicAuthenticationController.swift; sourceTree = "<group>"; };
 		6E30528120016D7A00DA0DBB /* GMusicWKNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicWKNavigationDelegate.swift; sourceTree = "<group>"; };
 		6E3963F81FFA86610016C2FA /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
@@ -145,6 +149,8 @@
 				6ED14CAA1FFBFF9F00B78078 /* GMusicPlaylist.swift */,
 				6ED14CB21FFC065800B78078 /* PlaylistEntry.swift */,
 				6ED14CAC1FFC003200B78078 /* GMusicRequest.swift */,
+				6E0F2B4D2003CE19000DA9F9 /* GMusicRadioStation.swift */,
+				6E0F2B4F2003CF4E000DA9F9 /* GMusicArtist.swift */,
 			);
 			path = Types;
 			sourceTree = "<group>";
@@ -289,6 +295,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E0F2B4E2003CE19000DA9F9 /* GMusicRadioStation.swift in Sources */,
 				6E30527F200161BF00DA0DBB /* GMusicAuthenticationController.swift in Sources */,
 				6ED14CAF1FFC00C500B78078 /* GMusicClient+Base.swift in Sources */,
 				6EE30AEE2002897A00940C00 /* GMusicClient+Token.swift in Sources */,
@@ -298,6 +305,7 @@
 				6E3964001FFA88090016C2FA /* GMusicClient.swift in Sources */,
 				6E3964041FFA981E0016C2FA /* GMusicTrack.swift in Sources */,
 				6ED14CB11FFC00F900B78078 /* GMusicClient+Requests.swift in Sources */,
+				6E0F2B502003CF4E000DA9F9 /* GMusicArtist.swift in Sources */,
 				6ED14CB31FFC065800B78078 /* PlaylistEntry.swift in Sources */,
 				6E3964021FFA93930016C2FA /* Extensions.swift in Sources */,
 				6ED14CAB1FFBFF9F00B78078 /* GMusicPlaylist.swift in Sources */,

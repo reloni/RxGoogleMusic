@@ -93,6 +93,7 @@ public enum GMusicEntityType: String {
 	case track = "tracks"
 	case playlist = "playlists"
 	case playlistEntry = "plentries"
+	case radioStation = "radio/station"
 }
 
 public struct GMusicCollection<T: Codable>: Codable {
@@ -135,6 +136,19 @@ public struct GMusicRef: Codable {
 	public let url: URL
 	public let aspectRatio: String?
 	public let autogen: Bool?
+}
+
+public struct GMusicAlbum: Codable {
+	public let kind: String
+	public let name: String
+	public let albumArtist: String
+	public let albumArtRef: URL
+	public let albumId: String
+	public let artist: String
+	public let artistId: [String]?
+	public let year: Int?
+	public let explicitType: String?
+	//	public let description_attribution
 }
 
 public struct GMusicTimestamp: Codable, CustomDebugStringConvertible {

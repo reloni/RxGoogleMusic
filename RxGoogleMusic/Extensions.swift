@@ -189,3 +189,13 @@ extension Date {
 		self.init(timeIntervalSince1970: Double(microsecondsSince1970) / 1_000_000)
 	}
 }
+
+extension KeyedDecodingContainer {
+	public func decode<T: Decodable>(_ key: Key, as type: T.Type = T.self) throws -> T {
+		return try self.decode(T.self, forKey: key)
+	}
+	
+	public func decodeIfPresent<T: Decodable>(_ key: KeyedDecodingContainer.Key) throws -> T? {
+		return try decodeIfPresent(T.self, forKey: key)
+	}
+}

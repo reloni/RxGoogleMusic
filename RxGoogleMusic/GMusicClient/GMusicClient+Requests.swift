@@ -24,4 +24,9 @@ public extension GMusicClient {
 		let request = GMusicRequest(type: .playlistEntry, maxResults: maxResults, updatedMin: updatedMin, locale: locale)
 		return collectionRequest(request, recursive: recursive)
 	}
+	
+	func radioStations(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicRadioStation>> {
+		let request = GMusicRequest(type: .radioStation, maxResults: maxResults, updatedMin: updatedMin, locale: locale)
+		return collectionRequest(request, recursive: recursive)
+	}
 }
