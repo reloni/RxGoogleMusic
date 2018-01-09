@@ -19,6 +19,7 @@ class LibraryController: UIViewController {
 	
 	var playlists = GMusicCollection<GMusicPlaylist>()
 	var stations = GMusicCollection<GMusicRadioStation>()
+	var tracks = GMusicCollection<GMusicTrack>()
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -41,6 +42,7 @@ class LibraryController: UIViewController {
 		switch segmentControl.selectedSegmentIndex {
 		case 0: loadPlaylists()
 		case 1: loadStations()
+		case 2: loadTracks()
 		default: return
 		}
 	}
@@ -64,6 +66,16 @@ class LibraryController: UIViewController {
 			})
 			.disposed(by: bag)
 	}
+	
+	func loadTracks() {
+		client.tracks()
+			.observeOn(MainScheduler.instance)
+			.subscribe(onNext: { [weak self] in
+				self?.tracks = $0
+				self?.tableView.reloadData()
+			})
+			.disposed(by: bag)
+	}
     
 	@IBAction func logOff(_ sender: Any) {
 		dismiss(animated: true, completion: nil)
@@ -75,6 +87,7 @@ extension LibraryController: UITableViewDataSource {
 		switch segmentControl.selectedSegmentIndex {
 		case 0: return playlists.items.count
 		case 1: return stations.items.count
+		case 2: return tracks.items.count
 		default: return 0
 		}
 	}
@@ -83,6 +96,7 @@ extension LibraryController: UITableViewDataSource {
 		switch segmentControl.selectedSegmentIndex {
 		case 0: return cell(for: playlists.items[indexPath.row], in: tableView)
 		case 1: return cell(for: stations.items[indexPath.row], in: tableView)
+		case 2: return cell(for: tracks.items[indexPath.row], in: tableView)
 		default: return UITableViewCell()
 		}
 	}
@@ -98,6 +112,13 @@ extension LibraryController: UITableViewDataSource {
 		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! TableViewCell
 		cell.textLabel?.text = station.name
 		cell.detailTextLabel?.text = station.description
+		return cell
+	}
+	
+	func cell(for track: GMusicTrack, in tableView: UITableView) -> TableViewCell {
+		let cell = tableView.dequeueReusableCell(withIdentifier: "Cell") as! TableViewCell
+		cell.textLabel?.text = "\(track.title) - \(track.album)"
+		cell.detailTextLabel?.text = track.artist
 		return cell
 	}
 }
