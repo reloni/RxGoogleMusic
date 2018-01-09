@@ -41,42 +41,17 @@ extension GMusicClient {
 	}
 	
 	func collectionRequest<T>(_ request: GMusicRequest) -> Observable<GMusicCollection<T>> {
-		return dataRequest(request).flatMap { data -> Observable<GMusicCollection<T>> in
+		return apiRequest(request).flatMap { data -> Observable<GMusicCollection<T>> in
 			let result = try JSONDecoder().decode(GMusicCollection<T>.self, from: data)
 			return .just(result)
 		}
 	}
 	
-	func dataRequest(_ request: GMusicRequest) -> Observable<Data> {
-		return Observable.create { [weak self] observer in
-			guard let client = self else { observer.onCompleted(); return Disposables.create() }
-			let task = client.session.dataTask(with: request.createGMusicRequest(for: client.baseUrl)) { data, response, error in
-				if let error = error {
-					observer.onError(error)
-					return
-				}
-				
-				guard let data = data else { observer.onCompleted(); return }
-				
-				if !(200...299 ~= (response as? HTTPURLResponse)?.statusCode ?? 0) {
-					print("Internal error: \(String(data: data, encoding: .utf8)!)")
-					fatalError("Now simply trap :(")
-				}
-				
-				observer.onNext(data)
-				observer.onCompleted()
-			}
-			
-			#if DEBUG
-				print("URL \(task.originalRequest!.url!.absoluteString)")
-			#endif
-			
-			task.resume()
-			
-			return Disposables.create {
-				task.cancel()
-				observer.onCompleted()
-			}
+	func apiRequest(_ request: GMusicRequest) -> Observable<Data> {
+		return issueApiToken(force: false)
+			.flatMap { [weak self] apiToken -> Observable<Data> in
+				guard let client = self else { return .empty() }
+				return client.session.dataRequest(request.createGMusicRequest(for: client.baseUrl, withToken: apiToken))
 		}
 	}
 }
