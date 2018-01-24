@@ -13,9 +13,9 @@ public struct GMusicRequest {
 	public let maxResults: Int
 	public let updatedMin: Date
 	public let locale: Locale
-	public let pageToken: String?
+	public let pageToken: GMusicNextPageToken
 	
-	public init(type: GMusicEntityType, maxResults: Int, updatedMin: Date, pageToken: String? = nil, locale: Locale = Locale.current) {
+	public init(type: GMusicEntityType, maxResults: Int, updatedMin: Date, pageToken: GMusicNextPageToken = .begin, locale: Locale = Locale.current) {
 		self.type = type
 		self.maxResults = maxResults
 		self.updatedMin = updatedMin
@@ -33,10 +33,11 @@ public struct GMusicRequest {
 	}
 	
 	var escapedPageToken: String? {
-		return pageToken?.addingPercentEncoding(withAllowedCharacters: CharacterSet.nextPageTokenAllowed)
+		guard case GMusicNextPageToken.token(let token) = pageToken else { return nil }
+		return token.addingPercentEncoding(withAllowedCharacters: CharacterSet.nextPageTokenAllowed)
 	}
 	
-	public func withNew(nextPageToken: String) -> GMusicRequest {
+	public func withNew(nextPageToken: GMusicNextPageToken) -> GMusicRequest {
 		return GMusicRequest(type: type, maxResults: maxResults, updatedMin: updatedMin, pageToken: nextPageToken, locale: locale)
 	}
 	

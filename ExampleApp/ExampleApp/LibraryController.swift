@@ -17,9 +17,9 @@ class LibraryController: UIViewController {
 	var client: GMusicClient!
 	let bag = DisposeBag()
 	
-	var playlists = GMusicCollection<GMusicPlaylist>()
-	var stations = GMusicCollection<GMusicRadioStation>()
-	var tracks = GMusicCollection<GMusicTrack>()
+	var playlists = GMusicCollection<GMusicPlaylist>(kind: "")
+	var stations = GMusicCollection<GMusicRadioStation>(kind: "")
+	var tracks = GMusicCollection<GMusicTrack>(kind: "")
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,37 +48,48 @@ class LibraryController: UIViewController {
 	}
 	
 	func loadPlaylists() {
-		client.playlists()
+		client.playlists(maxResults: 15, pageToken: playlists.nextPageToken, recursive: false)
 			.observeOn(MainScheduler.instance)
 			.subscribe(onNext: { [weak self] in
-				self?.playlists = $0
-				self?.tableView.reloadData()
-			})
+				guard let controller = self else { return }
+				controller.playlists = controller.playlists.appended(nextCollection: $0)
+				}, onCompleted: { [weak self] in self?.tableView.reloadData() })
 			.disposed(by: bag)
 	}
 	
 	func loadStations() {
-		client.radioStations()
+		client.radioStations(maxResults: 15, pageToken: stations.nextPageToken, recursive: false)
 			.observeOn(MainScheduler.instance)
 			.subscribe(onNext: { [weak self] in
-				self?.stations = $0
-				self?.tableView.reloadData()
-			})
+				guard let controller = self else { return }
+				controller.stations = controller.stations.appended(nextCollection: $0)
+			}, onCompleted: { [weak self] in self?.tableView.reloadData() })
 			.disposed(by: bag)
 	}
 	
 	func loadTracks() {
-		client.tracks()
+		client.tracks(maxResults: 15, pageToken: tracks.nextPageToken, recursive: false)
 			.observeOn(MainScheduler.instance)
 			.subscribe(onNext: { [weak self] in
-				self?.tracks = $0
-				self?.tableView.reloadData()
-			})
+				guard let controller = self else { return }
+				controller.tracks = controller.tracks.appended(nextCollection: $0)
+			}, onCompleted: { [weak self] in self?.tableView.reloadData() })
 			.disposed(by: bag)
 	}
     
 	@IBAction func logOff(_ sender: Any) {
 		dismiss(animated: true, completion: nil)
+	}
+}
+
+extension LibraryController: UITableViewDelegate {
+	func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+		guard tableView.numberOfSections > 0 else { return }
+		
+		guard tableView.contentSize.height > tableView.frame.size.height else { return }
+		guard tableView.contentOffset.y >= (tableView.contentSize.height - tableView.frame.size.height + 50) else { return }
+		
+		loadData()
 	}
 }
 

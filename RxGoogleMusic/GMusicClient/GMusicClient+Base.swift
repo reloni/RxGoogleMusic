@@ -11,6 +11,9 @@ import RxSwift
 
 extension GMusicClient {	
 	func collectionRequest<T>(_ request: GMusicRequest, recursive: Bool) -> Observable<GMusicCollection<T>> {
+		if case GMusicNextPageToken.end = request.pageToken {
+			return .empty()
+		}
 		guard recursive else { return collectionRequest(request) }
 		return Observable.create { [weak self] observer in
 			guard let client = self else { observer.onCompleted(); return Disposables.create() }
@@ -34,9 +37,9 @@ extension GMusicClient {
 			
 			observer.onNext(result)
 			
-			guard let nextPage = result.nextPageToken else { observer.onCompleted(); return .empty() }
+			guard case GMusicNextPageToken.token = result.nextPageToken else { observer.onCompleted(); return .empty() }
 			
-			return client.collectionRequest(request: request.withNew(nextPageToken: nextPage), invokeRequest: invokeRequest, observer: observer)
+			return client.collectionRequest(request: request.withNew(nextPageToken: result.nextPageToken), invokeRequest: invokeRequest, observer: observer)
 		}
 	}
 	

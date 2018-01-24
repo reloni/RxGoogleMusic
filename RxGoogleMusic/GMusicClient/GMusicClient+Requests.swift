@@ -10,23 +10,23 @@ import Foundation
 import RxSwift
 
 public extension GMusicClient {
-	func tracks(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicTrack>> {
-		let request = GMusicRequest(type: .track, maxResults: maxResults, updatedMin: updatedMin, locale: locale)
+	func tracks(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, pageToken: GMusicNextPageToken = .begin, recursive: Bool = false) -> Observable<GMusicCollection<GMusicTrack>> {
+		let request = GMusicRequest(type: .track, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
 		return collectionRequest(request, recursive: recursive)
 	}
 	
-	func playlists(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicPlaylist>> {
-		let request = GMusicRequest(type: .playlist, maxResults: maxResults, updatedMin: updatedMin, locale: locale)
+	func playlists(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, pageToken: GMusicNextPageToken = .begin, recursive: Bool = false) -> Observable<GMusicCollection<GMusicPlaylist>> {
+		let request = GMusicRequest(type: .playlist, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
 		return collectionRequest(request, recursive: recursive)
 	}
 	
-	func playlistEntries(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicPlaylistEntry>> {
-		let request = GMusicRequest(type: .playlistEntry, maxResults: maxResults, updatedMin: updatedMin, locale: locale)
+	func playlistEntries(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, pageToken: GMusicNextPageToken = .begin, recursive: Bool = false) -> Observable<GMusicCollection<GMusicPlaylistEntry>> {
+		let request = GMusicRequest(type: .playlistEntry, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
 		return collectionRequest(request, recursive: recursive)
 	}
 	
-	func radioStations(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, recursive: Bool = false) -> Observable<GMusicCollection<GMusicRadioStation>> {
-		let request = GMusicRequest(type: .radioStation, maxResults: maxResults, updatedMin: updatedMin, locale: locale)
+	func radioStations(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, pageToken: GMusicNextPageToken = .begin, recursive: Bool = false) -> Observable<GMusicCollection<GMusicRadioStation>> {
+		let request = GMusicRequest(type: .radioStation, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
 		return collectionRequest(request, recursive: recursive)
 	}
 }
