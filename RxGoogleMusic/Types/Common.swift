@@ -96,6 +96,12 @@ public enum GMusicEntityType: String {
 	case radioStation = "radio/station"
 }
 
+public enum GMusicNextPageToken {
+	case begin
+	case token(String)
+	case end
+}
+
 public struct GMusicCollection<T: Codable>: Codable {
 	enum CodingKeys: String, CodingKey {
 		case kind
@@ -108,26 +114,36 @@ public struct GMusicCollection<T: Codable>: Codable {
 	}
 	
 	public let kind: String
-	public let nextPageToken: String?
+	public let nextPageToken: GMusicNextPageToken
 	public let items: [T]
 	
-	public init() {
-		kind = ""
-		nextPageToken = nil
-		items = []
+	public init(kind: String, nextPageToken: GMusicNextPageToken = .begin, items: [T] = []) {
+		self.kind = kind
+		self.nextPageToken = nextPageToken
+		self.items = items
 	}
 	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		
 		kind = try container.decode(String.self, forKey: .kind)
-		nextPageToken = try container.decodeIfPresent(String.self, forKey: .nextPageToken)
+		if let token = try container.decodeIfPresent(String.self, forKey: .nextPageToken) {
+			nextPageToken = .token(token)
+		} else {
+			nextPageToken = .end
+		}
+		
 		let nestedContainer = try? container.nestedContainer(keyedBy: NestedDataKeys.self, forKey: .data)
 		items = try nestedContainer?.decodeIfPresent([T].self, forKey: .items) ?? []
 	}
 	
 	public func encode(to encoder: Encoder) throws {
 		fatalError("Not implemented")
+	}
+	
+	public func appended(nextCollection: GMusicCollection<T>) -> GMusicCollection<T> {
+		let newItems = items + nextCollection.items
+		return GMusicCollection(kind: nextCollection.kind, nextPageToken: nextCollection.nextPageToken, items: newItems)
 	}
 }
 
