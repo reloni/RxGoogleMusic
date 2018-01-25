@@ -53,7 +53,9 @@ class LibraryController: UIViewController {
 			.subscribe(onNext: { [weak self] in
 				guard let controller = self else { return }
 				controller.playlists = controller.playlists.appended(nextCollection: $0)
-				}, onCompleted: { [weak self] in self?.tableView.reloadData() })
+				},
+					   onError: { [weak self] in self?.showErrorAlert($0) },
+					   onCompleted: { [weak self] in self?.tableView.reloadData() })
 			.disposed(by: bag)
 	}
 	
@@ -63,7 +65,9 @@ class LibraryController: UIViewController {
 			.subscribe(onNext: { [weak self] in
 				guard let controller = self else { return }
 				controller.stations = controller.stations.appended(nextCollection: $0)
-			}, onCompleted: { [weak self] in self?.tableView.reloadData() })
+			},
+					   onError: { [weak self] in self?.showErrorAlert($0) },
+					   onCompleted: { [weak self] in self?.tableView.reloadData() })
 			.disposed(by: bag)
 	}
 	
@@ -73,13 +77,36 @@ class LibraryController: UIViewController {
 			.subscribe(onNext: { [weak self] in
 				guard let controller = self else { return }
 				controller.tracks = controller.tracks.appended(nextCollection: $0)
-			}, onCompleted: { [weak self] in self?.tableView.reloadData() })
+			},
+					   onError: { [weak self] in self?.showErrorAlert($0) },
+					   onCompleted: { [weak self] in self?.tableView.reloadData() })
 			.disposed(by: bag)
 	}
     
 	@IBAction func logOff(_ sender: Any) {
 		dismiss(animated: true, completion: nil)
 	}
+	
+	func showErrorAlert(_ error: Error) {
+		let message = getMessage(for: error)
+		let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+		let ok = UIAlertAction(title: "OK", style: .default, handler: nil)
+		alert.addAction(ok)
+		present(alert, animated: true, completion: nil)
+	}
+	
+	func getMessage(for error: Error) -> String {
+		guard let gmusicError = error as? GMusicError else { return error.localizedDescription }
+		switch gmusicError {
+		case .unableToRetrieveAuthenticationUri: return "Unable to load authentication URI"
+		case .jsonParseError(let e): return "Error while parsing JSON (\(e.localizedDescription))"
+		case .unableToRetrieveAccessToken: return "Unable to retrieve access token"
+		case .urlRequestError: return "Error while performing URL request"
+		case .urlRequestLocalError(let e): return e.localizedDescription
+		default: return "Unknown error"
+		}
+	}
+
 }
 
 extension LibraryController: UITableViewDelegate {

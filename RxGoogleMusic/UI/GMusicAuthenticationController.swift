@@ -14,6 +14,7 @@ open class GMusicAuthenticationController: UIViewController {
 	public enum AuthenticationResult {
 		case authenticated(GMusicToken)
 		case userAborted
+		case error(GMusicError)
 	}
 	
 	let bag = DisposeBag()
@@ -27,7 +28,7 @@ open class GMusicAuthenticationController: UIViewController {
 			object.tokenClient.exchangeOAuthCodeForToken(oauthCode)
 				.observeOn(MainScheduler.instance)
 				.do(onNext: { [weak self] token in self?.complete(with: token) })
-				.do(onError: { [weak self] in self?.showErrorAlert($0) })
+				.do(onError: { [weak self] in self?.callback(.error(GMusicAuthenticationController.createGMusicError($0))) })
 				.subscribe()
 				.disposed(by: object.bag)
 		}
@@ -77,7 +78,7 @@ open class GMusicAuthenticationController: UIViewController {
 		tokenClient.loadAuthenticationUrl()
 			.observeOn(MainScheduler.instance)
 			.do(onNext: { [weak self] url in self?.webView.load(URLRequest.loginPageRequest(url)) })
-			.do(onError: { [weak self] in self?.showErrorAlert($0) })
+			.do(onError: { [weak self] in self?.callback(.error(GMusicAuthenticationController.createGMusicError($0))) })
 			.subscribe()
 			.disposed(by: bag)
 	}
@@ -86,8 +87,9 @@ open class GMusicAuthenticationController: UIViewController {
 		loadAuthenticationUrl()
 	}
 	
-	func showErrorAlert(_ error: Error) {
-		fatalError("Should handle error here")
+	static func createGMusicError(_ value: Error) -> GMusicError {
+		if let gmusicError = value as? GMusicError { return gmusicError  }
+		return GMusicError.unknown(value)
 	}
 	
 	func setupConstraints() {

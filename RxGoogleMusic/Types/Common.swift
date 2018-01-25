@@ -52,6 +52,16 @@ enum GrantType: String {
 	case refreshToken = "refresh_token"
 }
 
+public enum GMusicError: Error {
+	case jsonParseError(Error)
+	case unknownJsonStructure
+	case urlRequestError(response: URLResponse, data: Data?)
+	case urlRequestLocalError(Error)
+	case unableToRetrieveAccessToken(json: [String: Any])
+	case unableToRetrieveAuthenticationUri(json:[String: Any])
+	case unknown(Error)
+}
+
 public struct GMusicToken {
 	public let accessToken: String
 	public let expiresIn: Int?
@@ -102,7 +112,7 @@ public enum GMusicNextPageToken {
 	case end
 }
 
-public struct GMusicCollection<T: Codable>: Codable {
+public struct GMusicCollection<T: Codable>: Decodable {
 	enum CodingKeys: String, CodingKey {
 		case kind
 		case nextPageToken
@@ -135,10 +145,6 @@ public struct GMusicCollection<T: Codable>: Codable {
 		
 		let nestedContainer = try? container.nestedContainer(keyedBy: NestedDataKeys.self, forKey: .data)
 		items = try nestedContainer?.decodeIfPresent([T].self, forKey: .items) ?? []
-	}
-	
-	public func encode(to encoder: Encoder) throws {
-		fatalError("Not implemented")
 	}
 	
 	public func appended(nextCollection: GMusicCollection<T>) -> GMusicCollection<T> {
