@@ -52,6 +52,13 @@ enum GrantType: String {
 	case refreshToken = "refresh_token"
 }
 
+public enum GMusicError: Error {
+	case jsonParseError(Error)
+	case unknownJsonStructure
+	case urlRequestError(response: URLResponse, data: Data?)
+	case urlRequestLocalError(Error)
+}
+
 public struct GMusicToken {
 	public let accessToken: String
 	public let expiresIn: Int?

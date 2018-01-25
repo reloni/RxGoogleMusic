@@ -24,13 +24,11 @@ extension URLSession {
 			.flatMap { data -> Observable<JSON> in
 				do {
 					guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? JSON else {
-						// TODO: throw error here
-						fatalError("Unable to parse JSON")
+						return .error(GMusicError.unknownJsonStructure)
 					}
 					return .just(json)
 				} catch let error {
-					// TODO: Maybe it's better to wrap this error
-					return .error(error)
+					return .error(GMusicError.jsonParseError(error))
 				}
 			}
 	}
@@ -40,16 +38,16 @@ extension URLSession {
 			guard let session = self else { observer.onCompleted(); return Disposables.create() }
 			let task = session.dataTask(with: request) { data, response, error in
 				if let error = error {
-					observer.onError(error)
+					observer.onError(GMusicError.urlRequestLocalError(error))
+					return
+				}
+
+				if !(200...299 ~= (response as? HTTPURLResponse)?.statusCode ?? 0) {
+					observer.onError(GMusicError.urlRequestError(response: response!, data: data))
 					return
 				}
 				
 				guard let data = data else { observer.onCompleted(); return }
-				
-				if !(200...299 ~= (response as? HTTPURLResponse)?.statusCode ?? 0) {
-					print("Internal error: \(String(data: data, encoding: .utf8)!)")
-					fatalError("Now simply trap :(")
-				}
 				
 				observer.onNext(data)
 				observer.onCompleted()
