@@ -24,8 +24,7 @@ public struct GMusicTokenClient {
 	
 	static func tokenJsonToObject(_ json: JSON) -> Observable<GMusicToken> {
 		guard let token = GMusicToken(json: json) else {
-			// TODO: Should throw error here
-			fatalError("Unable to create token object")
+			return .error(GMusicError.unableToRetrieveAccessToken(json: json))
 		}
 		return .just(token)
 	}
@@ -34,8 +33,7 @@ public struct GMusicTokenClient {
 		return session.jsonRequest(URLRequest.authAdviceRequest())
 			.flatMap { json -> Observable<URL> in
 				guard let uri = URL(string: json["uri"] as? String ?? "") else {
-					// TODO: Should throw error here
-					fatalError("Unable to get uri")
+					return .error(GMusicError.unableToRetrieveAuthenticationUri(json: json))
 				}
 				return .just(uri)
 		}
@@ -60,8 +58,7 @@ public struct GMusicTokenClient {
 		return session.jsonRequest(URLRequest.issueMusicApiTokenRequest(token: token))
 			.flatMap { json -> Observable<GMusicToken> in
 				guard let token = GMusicToken(apiTokenJson: json) else {
-					// TODO: Should throw error here
-					fatalError("Unable to create token object")
+					return .error(GMusicError.unableToRetrieveAccessToken(json: json))
 				}
 				#if DEBUG
 					print("Issued API token: \(token.accessToken)")
