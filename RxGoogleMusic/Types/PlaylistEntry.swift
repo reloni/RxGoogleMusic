@@ -21,5 +21,5 @@ public struct GMusicPlaylistEntry: Codable, GMusicEntity {
 	public let source: String
 	public let track: GMusicTrack?
 	
-	public static var type: GMusicEntityType = .playlistEntry
+	public static var requestPath: GMusicRequestPath = .playlistEntry
 }

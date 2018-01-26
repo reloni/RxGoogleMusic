@@ -43,6 +43,12 @@ extension URLSession {
 				}
 
 				if !(200...299 ~= (response as? HTTPURLResponse)?.statusCode ?? 0) {
+					#if DEBUG
+						if let data = data, let responseString = String.init(data: data, encoding: .utf8) {
+							print("Response string: \(responseString)")
+						}
+					#endif
+					
 					observer.onError(GMusicError.urlRequestError(response: response!, data: data))
 					return
 				}

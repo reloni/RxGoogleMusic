@@ -25,4 +25,9 @@ public extension GMusicClient {
 	func radioStations(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, pageToken: GMusicNextPageToken = .begin, recursive: Bool = false) -> Observable<GMusicCollection<GMusicRadioStation>> {
 		return entityCollection(updatedMin: updatedMin, maxResults: maxResults, pageToken: pageToken, recursive: recursive)
 	}
+	
+	func favorites(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, pageToken: GMusicNextPageToken = .begin, recursive: Bool = false) -> Observable<GMusicCollection<GMusicTrack>> {
+		let request = GMusicRequest(type: .favorites, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
+		return entityCollection(request: request, recursive: recursive)
+	}
 }

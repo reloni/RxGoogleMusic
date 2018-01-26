@@ -12,7 +12,7 @@ import UIKit
 typealias JSON = [String: Any]
 
 public protocol GMusicEntity {
-	static var type: GMusicEntityType { get }
+	static var requestPath: GMusicRequestPath { get }
 }
 
 struct GMusicConstants {
@@ -103,11 +103,12 @@ public struct GMusicToken {
 	}
 }
 
-public enum GMusicEntityType: String {
+public enum GMusicRequestPath: String {
 	case track = "tracks"
 	case playlist = "playlists"
 	case playlistEntry = "plentries"
 	case radioStation = "radio/station"
+	case favorites = "ephemeral/top"
 }
 
 public enum GMusicNextPageToken {

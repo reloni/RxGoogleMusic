@@ -9,13 +9,13 @@
 import Foundation
 
 public struct GMusicRequest {
-	public let type: GMusicEntityType
+	public let type: GMusicRequestPath
 	public let maxResults: Int
 	public let updatedMin: Date
 	public let locale: Locale
 	public let pageToken: GMusicNextPageToken
 	
-	public init(type: GMusicEntityType, maxResults: Int, updatedMin: Date, pageToken: GMusicNextPageToken = .begin, locale: Locale = Locale.current) {
+	public init(type: GMusicRequestPath, maxResults: Int, updatedMin: Date, pageToken: GMusicNextPageToken = .begin, locale: Locale = Locale.current) {
 		self.type = type
 		self.maxResults = maxResults
 		self.updatedMin = updatedMin
@@ -49,7 +49,7 @@ public struct GMusicRequest {
 	
 	func createGMusicRequest(for baseUrl: URL, withToken token: GMusicToken) -> URLRequest {
 		switch type {
-		case .radioStation:
+		case .radioStation, .favorites:
 			var request = URLRequest(url: buildUrl(for: baseUrl), headers: Dictionary(dictionaryLiteral: token.header))
 			request.httpBody = "{ \"max-results\": \(maxResults) }".data(using: .utf8)
 			request.httpMethod = HttpMethod.post.rawValue
