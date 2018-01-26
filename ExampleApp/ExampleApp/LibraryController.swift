@@ -20,6 +20,7 @@ class LibraryController: UIViewController {
 	var playlists = GMusicCollection<GMusicPlaylist>(kind: "")
 	var stations = GMusicCollection<GMusicRadioStation>(kind: "")
 	var tracks = GMusicCollection<GMusicTrack>(kind: "")
+	var favorites = GMusicCollection<GMusicTrack>(kind: "")
 	
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,6 +44,7 @@ class LibraryController: UIViewController {
 		case 0: loadPlaylists()
 		case 1: loadStations()
 		case 2: loadTracks()
+		case 3: loadFavorites()
 		default: return
 		}
 	}
@@ -78,6 +80,18 @@ class LibraryController: UIViewController {
 				guard let controller = self else { return }
 				controller.tracks = controller.tracks.appended(nextCollection: $0)
 			},
+					   onError: { [weak self] in self?.showErrorAlert($0) },
+					   onCompleted: { [weak self] in self?.tableView.reloadData() })
+			.disposed(by: bag)
+	}
+	
+	func loadFavorites() {
+		client.favorites(maxResults: 15, pageToken: favorites.nextPageToken, recursive: false)
+			.observeOn(MainScheduler.instance)
+			.subscribe(onNext: { [weak self] in
+				guard let controller = self else { return }
+				controller.favorites = controller.favorites.appended(nextCollection: $0)
+				},
 					   onError: { [weak self] in self?.showErrorAlert($0) },
 					   onCompleted: { [weak self] in self?.tableView.reloadData() })
 			.disposed(by: bag)
@@ -126,6 +140,7 @@ extension LibraryController: UITableViewDataSource {
 		case 0: return playlists.items.count
 		case 1: return stations.items.count
 		case 2: return tracks.items.count
+		case 3: return favorites.items.count
 		default: return 0
 		}
 	}
@@ -135,6 +150,7 @@ extension LibraryController: UITableViewDataSource {
 		case 0: return cell(for: playlists.items[indexPath.row], in: tableView)
 		case 1: return cell(for: stations.items[indexPath.row], in: tableView)
 		case 2: return cell(for: tracks.items[indexPath.row], in: tableView)
+		case 3: return cell(for: favorites.items[indexPath.row], in: tableView)
 		default: return UITableViewCell()
 		}
 	}

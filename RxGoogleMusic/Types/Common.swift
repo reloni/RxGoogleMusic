@@ -11,6 +11,10 @@ import UIKit
 
 typealias JSON = [String: Any]
 
+public protocol GMusicEntity {
+	static var requestPath: GMusicRequestPath { get }
+}
+
 struct GMusicConstants {
 	static let apiBaseUrl = URL(string: "https://mclients.googleapis.com/sj/v2.5")!
 	static let tokenUrl = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
@@ -99,11 +103,12 @@ public struct GMusicToken {
 	}
 }
 
-public enum GMusicEntityType: String {
+public enum GMusicRequestPath: String {
 	case track = "tracks"
 	case playlist = "playlists"
 	case playlistEntry = "plentries"
 	case radioStation = "radio/station"
+	case favorites = "ephemeral/top"
 }
 
 public enum GMusicNextPageToken {

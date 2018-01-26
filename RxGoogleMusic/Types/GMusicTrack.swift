@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct GMusicTrack: Codable {
+public struct GMusicTrack: Codable, GMusicEntity {
 	public let kind: String
 	public let id: UUID?
 	public let clientId: String?
@@ -41,4 +41,6 @@ public struct GMusicTrack: Codable {
 	public let trackAvailableForSubscription: Bool?
 	public let trackAvailableForPurchase: Bool?
 	public let albumAvailableForPurchase: Bool?
+	
+	public static var requestPath: GMusicRequestPath = .track
 }
