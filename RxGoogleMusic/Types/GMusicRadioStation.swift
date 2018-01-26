@@ -20,7 +20,7 @@ public struct GMusicRadioSeedMetadata: Codable {
 	public let artist: GMusicArtist
 }
 
-public struct GMusicRadioStation: Codable {
+public struct GMusicRadioStation: Codable, GMusicEntity {
 	enum CodingKeys: String, CodingKey {
 		case kind
 		case id
@@ -54,6 +54,8 @@ public struct GMusicRadioStation: Codable {
 	public let compositeArtRefs: [GMusicRef]
 	public let deleted: Bool
 	public let inLibrary: Bool
+	
+	public static var type: GMusicEntityType = .radioStation
 	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)

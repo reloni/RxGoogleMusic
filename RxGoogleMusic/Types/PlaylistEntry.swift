@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct GMusicPlaylistEntry: Codable {
+public struct GMusicPlaylistEntry: Codable, GMusicEntity {
 	public let kind: String
 	public let id: UUID
 	public let clientId: String?
@@ -20,4 +20,6 @@ public struct GMusicPlaylistEntry: Codable {
 	public let deleted: Bool
 	public let source: String
 	public let track: GMusicTrack?
+	
+	public static var type: GMusicEntityType = .playlistEntry
 }

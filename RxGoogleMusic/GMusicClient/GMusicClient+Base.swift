@@ -9,7 +9,15 @@
 import Foundation
 import RxSwift
 
-extension GMusicClient {	
+extension GMusicClient {
+	func entityCollection<Element: GMusicEntity>(updatedMin: Date,
+												 maxResults: Int,
+												 pageToken: GMusicNextPageToken,
+												 recursive: Bool) -> Observable<GMusicCollection<Element>> {
+		let request = GMusicRequest(type: Element.type, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
+		return collectionRequest(request, recursive: recursive)
+	}
+	
 	func collectionRequest<T>(_ request: GMusicRequest, recursive: Bool) -> Observable<GMusicCollection<T>> {
 		if case GMusicNextPageToken.end = request.pageToken {
 			return .empty()

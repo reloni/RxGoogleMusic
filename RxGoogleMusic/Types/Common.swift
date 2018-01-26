@@ -11,6 +11,10 @@ import UIKit
 
 typealias JSON = [String: Any]
 
+public protocol GMusicEntity {
+	static var type: GMusicEntityType { get }
+}
+
 struct GMusicConstants {
 	static let apiBaseUrl = URL(string: "https://mclients.googleapis.com/sj/v2.5")!
 	static let tokenUrl = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
