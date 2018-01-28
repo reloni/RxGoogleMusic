@@ -22,6 +22,7 @@ public enum GMusicRequestPath: String {
 	case radioStation = "radio/station"
 	case favorites = "ephemeral/top"
 	case artist = "fetchartist"
+	case album = "fetchalbum"
 }
 
 struct GMusicConstants {
@@ -177,6 +178,7 @@ public struct GMusicAlbum: Codable {
 	public let year: Int?
 	public let explicitType: String?
 	//	public let description_attribution
+	public let tracks: [GMusicTrack]?
 }
 
 public struct GMusicTimestamp: Codable, CustomDebugStringConvertible {

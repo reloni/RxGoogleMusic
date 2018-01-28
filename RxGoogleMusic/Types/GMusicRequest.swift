@@ -19,10 +19,14 @@ public struct GMusicRequest {
 	public let includeBio: Bool?
 	public let numRelatedArtists: Int?
 	public let numTopTracks: Int?
+	public let includeDescription: Bool?
+	public let includeTracks: Bool?
+	
 	
 	public init(type: GMusicRequestPath, maxResults: Int? = nil, updatedMin: Date? = nil, pageToken: GMusicNextPageToken = .begin,
 				locale: Locale = Locale.current, nid: String? = nil, includeAlbums: Bool? = nil, includeBio: Bool? = nil,
-				numRelatedArtists: Int? = nil, numTopTracks: Int? = nil) {
+				numRelatedArtists: Int? = nil, numTopTracks: Int? = nil,
+				includeDescription: Bool? = nil, includeTracks: Bool? = nil) {
 		self.type = type
 		self.maxResults = maxResults
 		self.updatedMin = updatedMin
@@ -33,6 +37,8 @@ public struct GMusicRequest {
 		self.includeBio = includeBio
 		self.numRelatedArtists = numRelatedArtists
 		self.numTopTracks = numTopTracks
+		self.includeDescription = includeDescription
+		self.includeTracks = includeTracks
 	}
 	
 	public var urlParameters: [String: String] {
@@ -46,7 +52,9 @@ public struct GMusicRequest {
 									 getUrlParameter(key: "include-albums", value: includeAlbums),
 									 getUrlParameter(key: "include-bio", value: includeBio),
 									 getUrlParameter(key: "num-related-artists", value: numRelatedArtists),
-									 getUrlParameter(key: "num-top-tracks", value: numTopTracks)
+									 getUrlParameter(key: "num-top-tracks", value: numTopTracks),
+									 getUrlParameter(key: "include-description", value: includeDescription),
+									 getUrlParameter(key: "include-tracks", value: includeTracks)
 			].flatMap { $0 }
 		return Dictionary.init(uniqueKeysWithValues: dictionaryValues)
 	}

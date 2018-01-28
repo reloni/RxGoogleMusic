@@ -36,4 +36,9 @@ public extension GMusicClient {
 									numRelatedArtists: numRelatedArtists, numTopTracks: numTopTracks)
 		return entityRequest(request)
 	}
+	
+	func album(_ id: String, includeDescription: Bool = false, includeTracks: Bool = false) -> Observable<GMusicAlbum> {
+		let request = GMusicRequest(type: .album, locale: locale, nid: id, includeDescription: includeDescription, includeTracks: includeTracks)
+		return entityRequest(request)
+	}
 }

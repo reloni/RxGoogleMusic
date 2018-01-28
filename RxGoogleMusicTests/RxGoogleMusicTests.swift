@@ -12,7 +12,7 @@ import RxSwift
 
 class RxGoogleMusicTests: XCTestCase {
 	let client = GMusicClient(token: GMusicToken(accessToken: "",
-												 expiresIn: 0,
+												 expiresIn: 99999999,
 												 refreshToken: ""))
 
 	func testLoadTracks() {
@@ -102,6 +102,22 @@ class RxGoogleMusicTests: XCTestCase {
 			.do(onNext: { result in
 				print("artist name: \(result.name)")
 				print("first album: \(result.albums.first?.name ?? "empty")")
+			})
+			.do(onError: { print($0) })
+			.do(onCompleted: { resultExpectation.fulfill() })
+			.subscribe()
+		
+		let result = XCTWaiter.wait(for: [resultExpectation], timeout: 2)
+		XCTAssertEqual(result, .completed)
+	}
+	
+	func testFetchAlbum() {
+		let resultExpectation = expectation(description: "Should return data")
+		
+		_ = client.album("Bl2h34y6vwttexbvcznuidhwpyu", includeDescription: true, includeTracks: true)
+			.do(onNext: { result in
+				print("album name: \(result.name)")
+				print("first track: \(result.tracks?.first?.title ?? "empty")")
 			})
 			.do(onError: { print($0) })
 			.do(onCompleted: { resultExpectation.fulfill() })
