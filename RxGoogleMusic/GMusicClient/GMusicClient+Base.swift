@@ -14,7 +14,7 @@ extension GMusicClient {
 												 maxResults: Int,
 												 pageToken: GMusicNextPageToken,
 												 recursive: Bool) -> Observable<GMusicCollection<Element>> {
-		let request = GMusicRequest(type: Element.requestPath, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
+		let request = GMusicRequest(type: Element.collectionRequestPath, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
 		return entityCollection(request: request, recursive: recursive)
 	}
 	

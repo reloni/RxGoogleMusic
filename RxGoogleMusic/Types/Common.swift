@@ -12,7 +12,16 @@ import UIKit
 typealias JSON = [String: Any]
 
 public protocol GMusicEntity {
-	static var requestPath: GMusicRequestPath { get }
+	static var collectionRequestPath: GMusicRequestPath { get }
+}
+
+public enum GMusicRequestPath: String {
+	case track = "tracks"
+	case playlist = "playlists"
+	case playlistEntry = "plentries"
+	case radioStation = "radio/station"
+	case favorites = "ephemeral/top"
+	case artist = "fetchartist"
 }
 
 struct GMusicConstants {
@@ -101,15 +110,6 @@ public struct GMusicToken {
 		self.expiresAt = expiresIn == nil ? nil : Date().addingTimeInterval(Double(expiresIn!))
 		
 	}
-}
-
-public enum GMusicRequestPath: String {
-	case track = "tracks"
-	case playlist = "playlists"
-	case playlistEntry = "plentries"
-	case radioStation = "radio/station"
-	case favorites = "ephemeral/top"
-	case artist = "fetchartist"
 }
 
 public enum GMusicNextPageToken {
