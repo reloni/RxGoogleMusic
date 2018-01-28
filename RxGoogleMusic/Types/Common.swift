@@ -12,7 +12,17 @@ import UIKit
 typealias JSON = [String: Any]
 
 public protocol GMusicEntity {
-	static var requestPath: GMusicRequestPath { get }
+	static var collectionRequestPath: GMusicRequestPath { get }
+}
+
+public enum GMusicRequestPath: String {
+	case track = "tracks"
+	case playlist = "playlists"
+	case playlistEntry = "plentries"
+	case radioStation = "radio/station"
+	case favorites = "ephemeral/top"
+	case artist = "fetchartist"
+	case album = "fetchalbum"
 }
 
 struct GMusicConstants {
@@ -103,14 +113,6 @@ public struct GMusicToken {
 	}
 }
 
-public enum GMusicRequestPath: String {
-	case track = "tracks"
-	case playlist = "playlists"
-	case playlistEntry = "plentries"
-	case radioStation = "radio/station"
-	case favorites = "ephemeral/top"
-}
-
 public enum GMusicNextPageToken {
 	case begin
 	case token(String)
@@ -169,13 +171,14 @@ public struct GMusicAlbum: Codable {
 	public let kind: String
 	public let name: String
 	public let albumArtist: String
-	public let albumArtRef: URL
+	public let albumArtRef: URL?
 	public let albumId: String
 	public let artist: String
 	public let artistId: [String]?
 	public let year: Int?
 	public let explicitType: String?
 	//	public let description_attribution
+	public let tracks: [GMusicTrack]?
 }
 
 public struct GMusicTimestamp: Codable, CustomDebugStringConvertible {

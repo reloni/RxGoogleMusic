@@ -14,7 +14,7 @@ extension GMusicClient {
 												 maxResults: Int,
 												 pageToken: GMusicNextPageToken,
 												 recursive: Bool) -> Observable<GMusicCollection<Element>> {
-		let request = GMusicRequest(type: Element.requestPath, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
+		let request = GMusicRequest(type: Element.collectionRequestPath, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
 		return entityCollection(request: request, recursive: recursive)
 	}
 	
@@ -58,6 +58,13 @@ extension GMusicClient {
 	func collectionRequest<T>(_ request: GMusicRequest) -> Observable<GMusicCollection<T>> {
 		return apiRequest(request).flatMap { data -> Observable<GMusicCollection<T>> in
 			let result = try JSONDecoder().decode(GMusicCollection<T>.self, from: data)
+			return .just(result)
+		}
+	}
+	
+	func entityRequest<T: Decodable>(_ request: GMusicRequest) -> Observable<T> {
+		return apiRequest(request).flatMap { data -> Observable<T> in
+			let result = try JSONDecoder().decode(T.self, from: data)
 			return .just(result)
 		}
 	}

@@ -42,5 +42,5 @@ public struct GMusicTrack: Codable, GMusicEntity {
 	public let trackAvailableForPurchase: Bool?
 	public let albumAvailableForPurchase: Bool?
 	
-	public static var requestPath: GMusicRequestPath = .track
+	public static var collectionRequestPath: GMusicRequestPath = .track
 }

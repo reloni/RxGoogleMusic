@@ -24,5 +24,5 @@ public struct GMusicPlaylist: Codable, GMusicEntity {
 	public let accessControlled: Bool
 	public let description: String?
 	
-	public static var requestPath: GMusicRequestPath = .playlist
+	public static var collectionRequestPath: GMusicRequestPath = .playlist
 }

@@ -30,4 +30,15 @@ public extension GMusicClient {
 		let request = GMusicRequest(type: .favorites, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
 		return entityCollection(request: request, recursive: recursive)
 	}
+	
+	func artist(_ id: String, includeAlbums: Bool = false, includeBio: Bool = false, numRelatedArtists: Int? = nil, numTopTracks: Int? = nil) -> Observable<GMusicArtist> {
+		let request = GMusicRequest(type: .artist, locale: locale, nid: id, includeAlbums: includeAlbums, includeBio: includeBio,
+									numRelatedArtists: numRelatedArtists, numTopTracks: numTopTracks)
+		return entityRequest(request)
+	}
+	
+	func album(_ id: String, includeDescription: Bool = false, includeTracks: Bool = false) -> Observable<GMusicAlbum> {
+		let request = GMusicRequest(type: .album, locale: locale, nid: id, includeDescription: includeDescription, includeTracks: includeTracks)
+		return entityRequest(request)
+	}
 }

@@ -55,7 +55,7 @@ public struct GMusicRadioStation: Codable, GMusicEntity {
 	public let deleted: Bool
 	public let inLibrary: Bool
 	
-	public static var requestPath: GMusicRequestPath = .radioStation
+	public static var collectionRequestPath: GMusicRequestPath = .radioStation
 	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
