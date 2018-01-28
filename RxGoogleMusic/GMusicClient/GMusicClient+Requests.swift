@@ -30,4 +30,9 @@ public extension GMusicClient {
 		let request = GMusicRequest(type: .favorites, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
 		return entityCollection(request: request, recursive: recursive)
 	}
+	
+	func artist(_ id: String) -> Observable<GMusicArtist> {
+//		let request = GMusicRequest(type: .favorites, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
+		return .empty()
+	}
 }

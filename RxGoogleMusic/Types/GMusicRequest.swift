@@ -10,12 +10,12 @@ import Foundation
 
 public struct GMusicRequest {
 	public let type: GMusicRequestPath
-	public let maxResults: Int
-	public let updatedMin: Date
+	public let maxResults: Int?
+	public let updatedMin: Date?
 	public let locale: Locale
 	public let pageToken: GMusicNextPageToken
 	
-	public init(type: GMusicRequestPath, maxResults: Int, updatedMin: Date, pageToken: GMusicNextPageToken = .begin, locale: Locale = Locale.current) {
+	public init(type: GMusicRequestPath, maxResults: Int? = nil, updatedMin: Date? = nil, pageToken: GMusicNextPageToken = .begin, locale: Locale = Locale.current) {
 		self.type = type
 		self.maxResults = maxResults
 		self.updatedMin = updatedMin
@@ -24,12 +24,19 @@ public struct GMusicRequest {
 	}
 	
 	public var urlParameters: [String: String] {
-		return ["dv": GMusicConstants.dv,
-				"hl": locale.identifier,
-				"max-results": "\(maxResults)",
-				"prettyPrint": "false",
-				"tier": GMusicConstants.tier,
-				"updated-min": "\(updatedMin.microsecondsSince1970)"]
+		let dictionaryValues: [(String, String)] = [getUrlParameter(key: "dv", value: GMusicConstants.dv),
+									 getUrlParameter(key: "hl", value: locale.identifier),
+									 getUrlParameter(key: "max-results", value: maxResults),
+									 getUrlParameter(key: "prettyPrint", value: false),
+									 getUrlParameter(key: "tier", value: GMusicConstants.tier),
+									 getUrlParameter(key: "updated-min", value: updatedMin?.microsecondsSince1970)
+			].flatMap { $0 }
+		return Dictionary.init(uniqueKeysWithValues: dictionaryValues)
+	}
+	
+	func getUrlParameter<T>(key: String, value: T?) -> (String, String)? {
+		guard let v = value else { return nil }
+		return (key, String(describing: v))
 	}
 	
 	var escapedPageToken: String? {
@@ -51,7 +58,7 @@ public struct GMusicRequest {
 		switch type {
 		case .radioStation, .favorites:
 			var request = URLRequest(url: buildUrl(for: baseUrl), headers: Dictionary(dictionaryLiteral: token.header))
-			request.httpBody = "{ \"max-results\": \(maxResults) }".data(using: .utf8)
+			request.httpBody = "{ \"max-results\": \(maxResults ?? 0) }".data(using: .utf8)
 			request.httpMethod = HttpMethod.post.rawValue
 			request.addValue("application/json", forHTTPHeaderField: "Content-Type")
 			return request
