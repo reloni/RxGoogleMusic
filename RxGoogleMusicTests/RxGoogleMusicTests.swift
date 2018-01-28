@@ -95,6 +95,22 @@ class RxGoogleMusicTests: XCTestCase {
 		XCTAssertEqual(result, .completed)
 	}
 	
+	func testFetchArtist() {
+		let resultExpectation = expectation(description: "Should return data")
+		
+		_ = client.artist("Ad3ihvu6n5vlut7aotw4h5nxnii", includeAlbums: true, includeBio: true, numRelatedArtists: 10, numTopTracks: 10)
+			.do(onNext: { result in
+				print("artist name: \(result.name)")
+				print("first album: \(result.albums.first?.name ?? "empty")")
+			})
+			.do(onError: { print($0) })
+			.do(onCompleted: { resultExpectation.fulfill() })
+			.subscribe()
+		
+		let result = XCTWaiter.wait(for: [resultExpectation], timeout: 2)
+		XCTAssertEqual(result, .completed)
+	}
+	
 	func testEscapeNextPageToken() {
 		let token = "KngKS/fiRWcN/////zzrdXkSE0wf/wD+//6Ynpaexc/Pz8/Pz5rGx5nKyM2dms/Fy8zFy8zei43FzsrPz8jKx8/Oyc7Ix8fIys/Oz8v//hBkIRzbqFg2k+ObOQAAAADymLodSANQAFoLCc72Cz/OJRQ6EAJg0fbfswYyDQoLCgAo+Nns25vUyAI="
 		var chars = CharacterSet.urlHostAllowed

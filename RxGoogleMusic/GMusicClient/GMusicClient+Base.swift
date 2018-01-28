@@ -62,6 +62,13 @@ extension GMusicClient {
 		}
 	}
 	
+	func entityRequest<T: Decodable>(_ request: GMusicRequest) -> Observable<T> {
+		return apiRequest(request).flatMap { data -> Observable<T> in
+			let result = try JSONDecoder().decode(T.self, from: data)
+			return .just(result)
+		}
+	}
+	
 	func apiRequest(_ request: GMusicRequest) -> Observable<Data> {
 		return issueApiToken(force: false)
 			.flatMap { [weak self] apiToken -> Observable<Data> in

@@ -109,6 +109,7 @@ public enum GMusicRequestPath: String {
 	case playlistEntry = "plentries"
 	case radioStation = "radio/station"
 	case favorites = "ephemeral/top"
+	case artist = "fetchartist"
 }
 
 public enum GMusicNextPageToken {
@@ -169,7 +170,7 @@ public struct GMusicAlbum: Codable {
 	public let kind: String
 	public let name: String
 	public let albumArtist: String
-	public let albumArtRef: URL
+	public let albumArtRef: URL?
 	public let albumId: String
 	public let artist: String
 	public let artistId: [String]?

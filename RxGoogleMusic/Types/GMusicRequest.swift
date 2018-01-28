@@ -14,13 +14,25 @@ public struct GMusicRequest {
 	public let updatedMin: Date?
 	public let locale: Locale
 	public let pageToken: GMusicNextPageToken
+	public let nid: String?
+	public let includeAlbums: Bool?
+	public let includeBio: Bool?
+	public let numRelatedArtists: Int?
+	public let numTopTracks: Int?
 	
-	public init(type: GMusicRequestPath, maxResults: Int? = nil, updatedMin: Date? = nil, pageToken: GMusicNextPageToken = .begin, locale: Locale = Locale.current) {
+	public init(type: GMusicRequestPath, maxResults: Int? = nil, updatedMin: Date? = nil, pageToken: GMusicNextPageToken = .begin,
+				locale: Locale = Locale.current, nid: String? = nil, includeAlbums: Bool? = nil, includeBio: Bool? = nil,
+				numRelatedArtists: Int? = nil, numTopTracks: Int? = nil) {
 		self.type = type
 		self.maxResults = maxResults
 		self.updatedMin = updatedMin
 		self.locale = locale
 		self.pageToken = pageToken
+		self.nid = nid
+		self.includeAlbums = includeAlbums
+		self.includeBio = includeBio
+		self.numRelatedArtists = numRelatedArtists
+		self.numTopTracks = numTopTracks
 	}
 	
 	public var urlParameters: [String: String] {
@@ -29,7 +41,12 @@ public struct GMusicRequest {
 									 getUrlParameter(key: "max-results", value: maxResults),
 									 getUrlParameter(key: "prettyPrint", value: false),
 									 getUrlParameter(key: "tier", value: GMusicConstants.tier),
-									 getUrlParameter(key: "updated-min", value: updatedMin?.microsecondsSince1970)
+									 getUrlParameter(key: "updated-min", value: updatedMin?.microsecondsSince1970),
+									 getUrlParameter(key: "nid", value: nid),
+									 getUrlParameter(key: "include-albums", value: includeAlbums),
+									 getUrlParameter(key: "include-bio", value: includeBio),
+									 getUrlParameter(key: "num-related-artists", value: numRelatedArtists),
+									 getUrlParameter(key: "num-top-tracks", value: numTopTracks)
 			].flatMap { $0 }
 		return Dictionary.init(uniqueKeysWithValues: dictionaryValues)
 	}
