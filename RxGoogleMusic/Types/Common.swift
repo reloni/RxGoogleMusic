@@ -67,8 +67,10 @@ enum GrantType: String {
 }
 
 public enum GMusicError: Error {
+    case clientDisposed
 	case jsonParseError(Error)
 	case unknownJsonStructure
+    case emptyDataResponse
 	case urlRequestError(response: URLResponse, data: Data?)
 	case urlRequestLocalError(Error)
 	case unableToRetrieveAccessToken(json: [String: Any])

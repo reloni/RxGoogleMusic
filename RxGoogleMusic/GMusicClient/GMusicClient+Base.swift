@@ -26,13 +26,13 @@ extension GMusicClient {
 		if case GMusicNextPageToken.end = request.pageToken {
 			return .empty()
 		}
-		guard recursive else { return collectionRequest(request) }
+		guard recursive else { return collectionRequest(request).asObservable() }
 		return Observable.create { [weak self] observer in
-			guard let client = self else { observer.onCompleted(); return Disposables.create() }
+			guard let client = self else { observer.onError(GMusicError.clientDisposed); return Disposables.create() }
 			
 			let subscription =
 				client.collectionRequest(request: request,
-										 invokeRequest: { [weak self] in self?.collectionRequest($0) ?? .empty() },
+										 invokeRequest: { [weak self] in self?.collectionRequest($0) ?? Single.error(GMusicError.clientDisposed) },
 										 observer: observer)
 					.do(onError: { observer.onError($0) })
 					.subscribe()
@@ -42,9 +42,9 @@ extension GMusicClient {
 	}
 	
 	func collectionRequest<T>(request: GMusicRequest,
-							  invokeRequest: @escaping  (GMusicRequest) -> Observable<GMusicCollection<T>>,
+							  invokeRequest: @escaping  (GMusicRequest) -> Single<GMusicCollection<T>>,
 							  observer: AnyObserver<GMusicCollection<T>>) -> Observable<Void> {
-		return invokeRequest(request).flatMap { [weak self] result -> Observable<Void> in
+		return invokeRequest(request).asObservable().flatMap { [weak self] result -> Observable<Void> in
 			guard let client = self else { observer.onCompleted(); return .empty() }
 			
 			observer.onNext(result)
@@ -55,24 +55,24 @@ extension GMusicClient {
 		}
 	}
 	
-	func collectionRequest<T>(_ request: GMusicRequest) -> Observable<GMusicCollection<T>> {
-		return apiRequest(request).flatMap { data -> Observable<GMusicCollection<T>> in
+	func collectionRequest<T>(_ request: GMusicRequest) -> Single<GMusicCollection<T>> {
+		return apiRequest(request).flatMap { data -> Single<GMusicCollection<T>> in
 			let result = try JSONDecoder().decode(GMusicCollection<T>.self, from: data)
 			return .just(result)
 		}
 	}
 	
-	func entityRequest<T: Decodable>(_ request: GMusicRequest) -> Observable<T> {
-		return apiRequest(request).flatMap { data -> Observable<T> in
+	func entityRequest<T: Decodable>(_ request: GMusicRequest) -> Single<T> {
+		return apiRequest(request).flatMap { data -> Single<T> in
 			let result = try JSONDecoder().decode(T.self, from: data)
 			return .just(result)
 		}
 	}
 	
-	func apiRequest(_ request: GMusicRequest) -> Observable<Data> {
+	func apiRequest(_ request: GMusicRequest) -> Single<Data> {
 		return issueApiToken(force: false)
-			.flatMap { [weak self] apiToken -> Observable<Data> in
-				guard let client = self else { return .empty() }
+			.flatMap { [weak self] apiToken -> Single<Data> in
+				guard let client = self else { return .error(GMusicError.clientDisposed) }
 				return client.session.dataRequest(request.createGMusicRequest(for: client.baseUrl, withToken: apiToken))
 		}
 	}

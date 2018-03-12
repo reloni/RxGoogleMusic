@@ -19,9 +19,9 @@ extension CharacterSet {
 }
 
 extension URLSession {
-	func jsonRequest(_ request: URLRequest) -> Observable<JSON> {
+	func jsonRequest(_ request: URLRequest) -> Single<JSON> {
 		return dataRequest(request)
-			.flatMap { data -> Observable<JSON> in
+			.flatMap { data -> Single<JSON> in
 				do {
 					guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? JSON else {
 						return .error(GMusicError.unknownJsonStructure)
@@ -33,12 +33,12 @@ extension URLSession {
 			}
 	}
 	
-	func dataRequest(_ request: URLRequest) -> Observable<Data> {
-		return Observable.create { [weak self] observer in
-			guard let session = self else { observer.onCompleted(); return Disposables.create() }
+	func dataRequest(_ request: URLRequest) -> Single<Data> {
+		return Single.create { [weak self] single in
+			guard let session = self else { return Disposables.create() }
 			let task = session.dataTask(with: request) { data, response, error in
 				if let error = error {
-					observer.onError(GMusicError.urlRequestLocalError(error))
+                    single(.error(GMusicError.urlRequestLocalError(error)))
 					return
 				}
 
@@ -49,14 +49,16 @@ extension URLSession {
 						}
 					#endif
 					
-					observer.onError(GMusicError.urlRequestError(response: response!, data: data))
+                    single(.error(GMusicError.urlRequestError(response: response!, data: data)))
 					return
 				}
 				
-				guard let data = data else { observer.onCompleted(); return }
+				guard let data = data else {
+                    single(.error(GMusicError.emptyDataResponse))
+                    return
+                }
 				
-				observer.onNext(data)
-				observer.onCompleted()
+                single(.success(data))
 			}
 			
 			#if DEBUG
@@ -65,10 +67,7 @@ extension URLSession {
 			
 			task.resume()
 			
-			return Disposables.create {
-				task.cancel()
-				observer.onCompleted()
-			}
+			return Disposables.create { task.cancel() }
 		}
 	}
 }

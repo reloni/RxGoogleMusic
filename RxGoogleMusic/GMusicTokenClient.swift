@@ -22,16 +22,16 @@ public struct GMusicTokenClient {
 		self.session = session
 	}
 	
-	static func tokenJsonToObject(_ json: JSON) -> Observable<GMusicToken> {
+	static func tokenJsonToObject(_ json: JSON) -> Single<GMusicToken> {
 		guard let token = GMusicToken(json: json) else {
 			return .error(GMusicError.unableToRetrieveAccessToken(json: json))
 		}
 		return .just(token)
 	}
 	
-	public func loadAuthenticationUrl() -> Observable<URL> {
+	public func loadAuthenticationUrl() -> Single<URL> {
 		return session.jsonRequest(URLRequest.authAdviceRequest())
-			.flatMap { json -> Observable<URL> in
+			.flatMap { json -> Single<URL> in
 				guard let uri = URL(string: json["uri"] as? String ?? "") else {
 					return .error(GMusicError.unableToRetrieveAuthenticationUri(json: json))
 				}
@@ -39,12 +39,12 @@ public struct GMusicTokenClient {
 		}
 	}
 	
-	public func exchangeOAuthCodeForToken(_ code: String) -> Observable<GMusicToken> {
+	public func exchangeOAuthCodeForToken(_ code: String) -> Single<GMusicToken> {
 		return session.jsonRequest(URLRequest.codeForTokenExchangeRequest(code))
 			.flatMap(GMusicTokenClient.tokenJsonToObject)
 	}
 	
-	public func refreshToken(_ token: GMusicToken, force: Bool) -> Observable<GMusicToken> {
+	public func refreshToken(_ token: GMusicToken, force: Bool) -> Single<GMusicToken> {
 		guard let refreshToken = token.refreshToken, (token.isTokenExpired || force) else {
 			// TODO: Maybe should return error if there is no refresh token
 			return .just(token)
@@ -54,9 +54,9 @@ public struct GMusicTokenClient {
 			.flatMap(GMusicTokenClient.tokenJsonToObject)
 	}
 	
-	public func issueMusicApiToken(withToken token: GMusicToken) -> Observable<GMusicToken> {
+	public func issueMusicApiToken(withToken token: GMusicToken) -> Single<GMusicToken> {
 		return session.jsonRequest(URLRequest.issueMusicApiTokenRequest(token: token))
-			.flatMap { json -> Observable<GMusicToken> in
+			.flatMap { json -> Single<GMusicToken> in
 				guard let token = GMusicToken(apiTokenJson: json) else {
 					return .error(GMusicError.unableToRetrieveAccessToken(json: json))
 				}

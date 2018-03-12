@@ -10,19 +10,19 @@ import Foundation
 import RxSwift
 
 extension GMusicClient {
-	func refreshToken(force: Bool) -> Observable<GMusicToken> {
+	func refreshToken(force: Bool) -> Single<GMusicToken> {
 		return tokenClient.refreshToken(token, force: force)
 			.do(onNext: { [weak self] in self?.token = $0 })
 	}
 	
-	func issueApiToken(force: Bool) -> Observable<GMusicToken> {
+	func issueApiToken(force: Bool) -> Single<GMusicToken> {
 		guard apiToken?.expiresAt ?? Date(timeIntervalSince1970: 0) < Date() || force else {
 			// if api token existed and not expired, return it
 			return .just(apiToken!)
 		}
 		
 		return tokenClient.refreshToken(token, force: force)
-			.flatMap { [weak self] token in return self?.tokenClient.issueMusicApiToken(withToken: token) ?? .empty() }
+			.flatMap { [weak self] token in return self?.tokenClient.issueMusicApiToken(withToken: token) ?? Single.error(GMusicError.clientDisposed) }
 			.do(onNext: { [weak self] in self?.apiToken = $0 })
 	}
 }

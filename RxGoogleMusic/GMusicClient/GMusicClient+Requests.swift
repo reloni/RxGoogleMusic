@@ -31,13 +31,13 @@ public extension GMusicClient {
 		return entityCollection(request: request, recursive: recursive)
 	}
 	
-	func artist(_ id: String, includeAlbums: Bool = false, includeBio: Bool = false, numRelatedArtists: Int? = nil, numTopTracks: Int? = nil) -> Observable<GMusicArtist> {
+	func artist(_ id: String, includeAlbums: Bool = false, includeBio: Bool = false, numRelatedArtists: Int? = nil, numTopTracks: Int? = nil) -> Single<GMusicArtist> {
 		let request = GMusicRequest(type: .artist, locale: locale, nid: id, includeAlbums: includeAlbums, includeBio: includeBio,
 									numRelatedArtists: numRelatedArtists, numTopTracks: numTopTracks)
 		return entityRequest(request)
 	}
 	
-	func album(_ id: String, includeDescription: Bool = false, includeTracks: Bool = false) -> Observable<GMusicAlbum> {
+	func album(_ id: String, includeDescription: Bool = false, includeTracks: Bool = false) -> Single<GMusicAlbum> {
 		let request = GMusicRequest(type: .album, locale: locale, nid: id, includeDescription: includeDescription, includeTracks: includeTracks)
 		return entityRequest(request)
 	}
