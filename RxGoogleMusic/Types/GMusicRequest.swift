@@ -42,20 +42,21 @@ public struct GMusicRequest {
 	}
 	
 	public var urlParameters: [String: String] {
-		let dictionaryValues: [(String, String)] = [getUrlParameter(key: "dv", value: GMusicConstants.dv),
-									 getUrlParameter(key: "hl", value: locale.identifier),
-									 getUrlParameter(key: "max-results", value: maxResults),
-									 getUrlParameter(key: "prettyPrint", value: false),
-									 getUrlParameter(key: "tier", value: GMusicConstants.tier),
-									 getUrlParameter(key: "updated-min", value: updatedMin?.microsecondsSince1970),
-									 getUrlParameter(key: "nid", value: nid),
-									 getUrlParameter(key: "include-albums", value: includeAlbums),
-									 getUrlParameter(key: "include-bio", value: includeBio),
-									 getUrlParameter(key: "num-related-artists", value: numRelatedArtists),
-									 getUrlParameter(key: "num-top-tracks", value: numTopTracks),
-									 getUrlParameter(key: "include-description", value: includeDescription),
-									 getUrlParameter(key: "include-tracks", value: includeTracks)
-			].flatMap { $0 }
+        let dictionaryValues: [(String, String)] = [
+            getUrlParameter(key: "dv", value: GMusicConstants.dv),
+            getUrlParameter(key: "hl", value: locale.identifier),
+            getUrlParameter(key: "max-results", value: maxResults),
+            getUrlParameter(key: "prettyPrint", value: false),
+            getUrlParameter(key: "tier", value: GMusicConstants.tier),
+            getUrlParameter(key: "updated-min", value: updatedMin?.microsecondsSince1970),
+            getUrlParameter(key: "nid", value: nid),
+            getUrlParameter(key: "include-albums", value: includeAlbums),
+            getUrlParameter(key: "include-bio", value: includeBio),
+            getUrlParameter(key: "num-related-artists", value: numRelatedArtists),
+            getUrlParameter(key: "num-top-tracks", value: numTopTracks),
+            getUrlParameter(key: "include-description", value: includeDescription),
+            getUrlParameter(key: "include-tracks", value: includeTracks)
+            ].compactMap { $0 }
 		return Dictionary.init(uniqueKeysWithValues: dictionaryValues)
 	}
 	

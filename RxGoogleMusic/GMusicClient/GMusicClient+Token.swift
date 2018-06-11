@@ -12,7 +12,7 @@ import RxSwift
 extension GMusicClient {
 	func refreshToken(force: Bool) -> Single<GMusicToken> {
 		return tokenClient.refreshToken(token, force: force)
-			.do(onNext: { [weak self] in self?.token = $0 })
+			.do(onSuccess: { [weak self] in self?.token = $0 })
 	}
 	
 	func issueApiToken(force: Bool) -> Single<GMusicToken> {
@@ -23,6 +23,6 @@ extension GMusicClient {
 		
 		return tokenClient.refreshToken(token, force: force)
 			.flatMap { [weak self] token in return self?.tokenClient.issueMusicApiToken(withToken: token) ?? Single.error(GMusicError.clientDisposed) }
-			.do(onNext: { [weak self] in self?.apiToken = $0 })
+			.do(onSuccess: { [weak self] in self?.apiToken = $0 })
 	}
 }
