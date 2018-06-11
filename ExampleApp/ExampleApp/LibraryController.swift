@@ -29,14 +29,14 @@ class LibraryController: UIViewController {
 		tableView.register(TableViewCell.self, forCellReuseIdentifier: "Cell")
 		tableView.dataSource = self
 		
-		segmentControl.rx.controlEvent(UIControlEvents.valueChanged)
+		segmentControl.rx.controlEvent(UIControl.Event.valueChanged)
 			.subscribe(onNext: { [weak self] _ in self?.loadData() })
 			.disposed(by: bag)
     }
 	
 	override func viewDidAppear(_ animated: Bool) {
 		super.viewDidAppear(animated)
-		segmentControl.sendActions(for: .valueChanged)
+		segmentControl.sendActions(for: UIControl.Event.valueChanged)
 	}
 	
 	func loadData() {
