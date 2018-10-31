@@ -99,12 +99,11 @@ class RxGoogleMusicTests: XCTestCase {
 		let resultExpectation = expectation(description: "Should return data")
 		
 		_ = client.artist("Ad3ihvu6n5vlut7aotw4h5nxnii", includeAlbums: true, includeBio: true, numRelatedArtists: 10, numTopTracks: 10)
-			.do(onNext: { result in
-				print("artist name: \(result.name)")
-				print("first album: \(result.albums.first?.name ?? "empty")")
-			})
+            .do(onSuccess: { result in
+                print("artist name: \(result.name)")
+                print("first album: \(result.albums.first?.name ?? "empty")")
+                resultExpectation.fulfill() })
 			.do(onError: { print($0) })
-			.do(onCompleted: { resultExpectation.fulfill() })
 			.subscribe()
 		
 		let result = XCTWaiter.wait(for: [resultExpectation], timeout: 2)
@@ -115,12 +114,12 @@ class RxGoogleMusicTests: XCTestCase {
 		let resultExpectation = expectation(description: "Should return data")
 		
 		_ = client.album("Bl2h34y6vwttexbvcznuidhwpyu", includeDescription: true, includeTracks: true)
-			.do(onNext: { result in
+			.do(onSuccess: { result in
 				print("album name: \(result.name)")
 				print("first track: \(result.tracks?.first?.title ?? "empty")")
+                resultExpectation.fulfill()
 			})
 			.do(onError: { print($0) })
-			.do(onCompleted: { resultExpectation.fulfill() })
 			.subscribe()
 		
 		let result = XCTWaiter.wait(for: [resultExpectation], timeout: 2)
