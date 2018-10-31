@@ -70,10 +70,9 @@ extension GMusicClient {
 	}
 	
 	func apiRequest(_ request: GMusicRequest) -> Single<Data> {
+        let dataRequest = self.dataRequest
+        let baseUrl = self.baseUrl
 		return issueApiToken(force: false)
-			.flatMap { [weak self] apiToken -> Single<Data> in
-				guard let client = self else { return .error(GMusicError.clientDisposed) }
-				return client.session.dataRequest(request.createGMusicRequest(for: client.baseUrl, withToken: apiToken))
-		}
+			.flatMap { dataRequest(request.createGMusicRequest(for: baseUrl, withToken: $0)) }
 	}
 }

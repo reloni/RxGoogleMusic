@@ -16,6 +16,7 @@ final public class GMusicClient {
 	public internal (set) var token: GMusicToken
 	public internal (set) var  apiToken: GMusicToken? = nil
 	lazy var tokenClient: GMusicTokenClient = { GMusicTokenClient(session: self.session) }()
+    let dataRequest: (URLRequest) -> Single<Data>
 	
 	public convenience init(token: GMusicToken, session: URLSession = URLSession.shared, locale: Locale = Locale.current) {
 		self.init(token: token, session: session, locale: locale, baseUrl: GMusicConstants.apiBaseUrl)
@@ -26,5 +27,6 @@ final public class GMusicClient {
 		self.session = session
 		self.locale = locale
 		self.baseUrl = baseUrl
+        self.dataRequest = sessionDataRequest(session)
 	}
 }
