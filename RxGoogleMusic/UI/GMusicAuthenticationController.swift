@@ -21,6 +21,7 @@ open class GMusicAuthenticationController: UIViewController {
 	let webView = WKWebView()
 	let toolBar = UIToolbar()
 	let tokenClient: GMusicTokenClient
+    let session: URLSession
 	let callback: (AuthenticationResult) -> ()
 	lazy var webViewDelegate: GMusicWKNavigationDelegate = {
 		return GMusicWKNavigationDelegate { [weak self] oauthCode in
@@ -35,9 +36,11 @@ open class GMusicAuthenticationController: UIViewController {
 	}()
 	
 	public init(tokenClient: GMusicTokenClient = GMusicTokenClient(),
+                session: URLSession = URLSession.shared,
 				callback: @escaping (AuthenticationResult) -> ()) {
 		self.tokenClient = tokenClient
 		self.callback = callback
+        self.session = session
 		
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -75,7 +78,7 @@ open class GMusicAuthenticationController: UIViewController {
 	}
 	
 	@objc func loadAuthenticationUrl() {
-		tokenClient.loadAuthenticationUrl()
+		gMusicAuthenticationUrl(for: session)
 			.observeOn(MainScheduler.instance)
 			.do(onSuccess: { [weak self] url in self?.webView.load(URLRequest.loginPageRequest(url)) })
 			.do(onError: { [weak self] in self?.callback(.error(GMusicAuthenticationController.createGMusicError($0))) })

@@ -29,15 +29,15 @@ public struct GMusicTokenClient {
 		return .just(token)
 	}
 	
-	public func loadAuthenticationUrl() -> Single<URL> {
-		return jsonRequest(URLRequest.authAdviceRequest())
-			.flatMap { json -> Single<URL> in
-				guard let uri = URL(string: json["uri"] as? String ?? "") else {
-					return .error(GMusicError.unableToRetrieveAuthenticationUri(json: json))
-				}
-				return .just(uri)
-		}
-	}
+//    public func loadAuthenticationUrl() -> Single<URL> {
+//        return jsonRequest(URLRequest.authAdviceRequest())
+//            .flatMap { json -> Single<URL> in
+//                guard let uri = URL(string: json["uri"] as? String ?? "") else {
+//                    return .error(GMusicError.unableToRetrieveAuthenticationUri(json: json))
+//                }
+//                return .just(uri)
+//        }
+//    }
 	
 	public func exchangeOAuthCodeForToken(_ code: String) -> Single<GMusicToken> {
 		return jsonRequest(URLRequest.codeForTokenExchangeRequest(code))
