@@ -18,60 +18,6 @@ extension CharacterSet {
 	}()
 }
 
-extension URLSession {
-	func jsonRequest(_ request: URLRequest) -> Single<JSON> {
-		return dataRequest(request)
-			.flatMap { data -> Single<JSON> in
-				do {
-					guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? JSON else {
-						return .error(GMusicError.unknownJsonStructure)
-					}
-					return .just(json)
-				} catch let error {
-					return .error(GMusicError.jsonParseError(error))
-				}
-			}
-	}
-	
-	func dataRequest(_ request: URLRequest) -> Single<Data> {
-		return Single.create { [weak self] single in
-			guard let session = self else { return Disposables.create() }
-			let task = session.dataTask(with: request) { data, response, error in
-				if let error = error {
-                    single(.error(GMusicError.urlRequestLocalError(error)))
-					return
-				}
-
-				if !(200...299 ~= (response as? HTTPURLResponse)?.statusCode ?? 0) {
-					#if DEBUG
-						if let data = data, let responseString = String.init(data: data, encoding: .utf8) {
-							print("Response string: \(responseString)")
-						}
-					#endif
-					
-                    single(.error(GMusicError.urlRequestError(response: response!, data: data)))
-					return
-				}
-				
-				guard let data = data else {
-                    single(.error(GMusicError.emptyDataResponse))
-                    return
-                }
-				
-                single(.success(data))
-			}
-			
-			#if DEBUG
-				print("URL \(task.originalRequest!.url!.absoluteString)")
-			#endif
-			
-			task.resume()
-			
-			return Disposables.create { task.cancel() }
-		}
-	}
-}
-
 extension URL {
 	init?(baseUrl: String, parameters: [String: String]) {
 		var components = URLComponents(string: baseUrl)
