@@ -64,9 +64,7 @@ func jsonRequest(_ request: Single<Data>) -> Single<JSON> {
 let sessionDataRequest = flip(curry(dataRequest))
 
 let sessionJsonRequest = { (session: URLSession) -> (URLRequest) -> Single<JSON> in
-    return { request in
-        return request
-            |> (session |> sessionDataRequest)
-            |> jsonRequest
-    }
+    let request = (session |> sessionDataRequest) >>> jsonRequest
+    
+    return { return $0 |> request }
 }
