@@ -40,7 +40,9 @@ open class GMusicAuthenticationController: UIViewController {
 				callback: @escaping (AuthenticationResult) -> ()) {
 		self.callback = callback
         self.session = session
-        self.exchangeRequest = session |> sessionExchangeOAuthCodeForToken
+        self.exchangeRequest = session
+            |> jsonRequest
+            |> sessionExchangeOAuthCodeForToken
 		
 		super.init(nibName: nil, bundle: nil)
 	}
@@ -78,7 +80,7 @@ open class GMusicAuthenticationController: UIViewController {
 	}
 	
 	@objc func loadAuthenticationUrl() {
-		gMusicAuthenticationUrl(for: session)
+		gMusicAuthenticationUrl(for: session |> jsonRequest)
 			.observeOn(MainScheduler.instance)
 			.do(onSuccess: { [weak self] url in self?.webView.load(URLRequest.loginPageRequest(url)) })
 			.do(onError: { [weak self] in self?.callback(.error(GMusicAuthenticationController.createGMusicError($0))) })

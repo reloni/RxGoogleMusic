@@ -30,14 +30,10 @@ func tokenJsonToObject(_ json: JSON) -> Single<GMusicToken> {
 }
 
 // MARK: Authentication URL
-func gMusicAuthenticationUrl(_ request: URLRequest, in session: URLSession) -> Single<URL> {
-    return request
-        |> (session |> jsonRequest)
+func gMusicAuthenticationUrl(for jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<URL> {
+    return URLRequest.authAdviceRequest()
+        |> jsonRequest
         |> gMusicAuthenticationUrl
-}
-
-func gMusicAuthenticationUrl(for session: URLSession) -> Single<URL> {
-    return gMusicAuthenticationUrl(URLRequest.authAdviceRequest(), in: session)
 }
 
 func gMusicAuthenticationUrl(from request: Single<JSON>) -> Single<URL> {
@@ -50,32 +46,31 @@ func gMusicAuthenticationUrl(from request: Single<JSON>) -> Single<URL> {
 }
 
 // MARK: Token exchange
-func exchangeOAuthCodeForToken(code: String, session: URLSession) -> Single<GMusicToken> {
+func exchangeOAuthCodeForToken(code: String, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return code
         |> tokenRequestFromCode
-        |> (session |> jsonRequest)
+        |> jsonRequest
         |> tokenJsonToObject
 }
 
-let sessionExchangeOAuthCodeForToken = exchangeOAuthCodeForToken
-    |> curry
+let sessionExchangeOAuthCodeForToken = curry(exchangeOAuthCodeForToken)
     |> flip
 
 
 // Mark: Refresh token
-func refreshToken(_ token: String, request: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
+func refreshToken(_ token: String, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return token
         |> refreshTokenRequest
-        |> request
+        |> jsonRequest
         |> tokenJsonToObject
 }
 
 
-func refreshToken(_ token: GMusicToken, force: Bool, request: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
+func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     guard let current = token.refreshToken, (token.isTokenExpired || force) else {
         // TODO: Maybe should return error if there is no refresh token
         return .just(token)
     }
 
-    return refreshToken(current, request: request)
+    return refreshToken(current, jsonRequest: jsonRequest)
 }

@@ -11,7 +11,7 @@ import RxSwift
 
 extension GMusicClient {
 	func refreshToken(force: Bool) -> Single<GMusicToken> {
-        return RxGoogleMusic.refreshToken(token, force: force, request: dataRequest >>> jsonRequest)
+        return RxGoogleMusic.refreshToken(token, force: force, jsonRequest: dataRequest >>> jsonRequest)
             .do(onSuccess: { [weak self] in self?.token = $0 })
 	}
 	
