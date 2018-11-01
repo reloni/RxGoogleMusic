@@ -24,10 +24,30 @@ public func curry<A, B, C>(_ f: @escaping (A, B) -> C) -> (A) -> (B) -> C {
     }
 }
 
+public func curry<A, B, C, D>(_ f: @escaping (A, B, C) -> D) -> (A) -> (B) -> (C) -> D {
+    return { a in
+        return { b in
+            return { c in
+                return f(a, b, c)
+            }
+        }
+    }
+}
+
 public func flip<A, B, C>(_ f: @escaping (A) -> (B) -> C) -> (B) -> (A) -> C {
     return { b in
         return { a in
             return f(a)(b)
+        }
+    }
+}
+
+public func flip<A, B, C, D>(_ f: @escaping (A) -> (B) -> (C) -> D) -> (C) -> (B) -> (A) -> D {
+    return { c in
+        return { b in
+            return { a in
+                return f(a)(b)(c)
+            }
         }
     }
 }

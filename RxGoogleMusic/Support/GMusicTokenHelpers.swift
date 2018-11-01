@@ -14,6 +14,10 @@ func tokenRequestFromCode(_ code: String) -> URLRequest {
     return code |> URLRequest.codeForTokenExchangeRequest
 }
 
+func refreshTokenRequest(from refreshToken: String) -> URLRequest {
+    return refreshToken |> URLRequest.tokenRefreshRequest
+}
+
 func tokenJsonToObject(_ request: Single<JSON>) -> Single<GMusicToken> {
     return request.flatMap(tokenJsonToObject)
 }
@@ -57,3 +61,21 @@ let sessionExchangeOAuthCodeForToken = exchangeOAuthCodeForToken
     |> curry
     |> flip
 
+
+// Mark: Refresh token
+func refreshToken(_ token: String, request: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
+    return token
+        |> refreshTokenRequest
+        |> request
+        |> tokenJsonToObject
+}
+
+
+func refreshToken(_ token: GMusicToken, force: Bool, request: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
+    guard let current = token.refreshToken, (token.isTokenExpired || force) else {
+        // TODO: Maybe should return error if there is no refresh token
+        return .just(token)
+    }
+
+    return refreshToken(current, request: request)
+}

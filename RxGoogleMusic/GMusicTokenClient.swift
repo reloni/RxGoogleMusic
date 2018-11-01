@@ -23,12 +23,12 @@ public struct GMusicTokenClient {
         self.request = session |> jsonRequest
 	}
 	
-	static func tokenJsonToObject(_ json: JSON) -> Single<GMusicToken> {
-		guard let token = GMusicToken(json: json) else {
-			return .error(GMusicError.unableToRetrieveAccessToken(json: json))
-		}
-		return .just(token)
-	}
+//    static func tokenJsonToObject(_ json: JSON) -> Single<GMusicToken> {
+//        guard let token = GMusicToken(json: json) else {
+//            return .error(GMusicError.unableToRetrieveAccessToken(json: json))
+//        }
+//        return .just(token)
+//    }
 	
 //    public func loadAuthenticationUrl() -> Single<URL> {
 //        return jsonRequest(URLRequest.authAdviceRequest())
@@ -45,15 +45,15 @@ public struct GMusicTokenClient {
 //            .flatMap(GMusicTokenClient.tokenJsonToObject)
 //    }
 	
-	public func refreshToken(_ token: GMusicToken, force: Bool) -> Single<GMusicToken> {
-		guard let refreshToken = token.refreshToken, (token.isTokenExpired || force) else {
-			// TODO: Maybe should return error if there is no refresh token
-			return .just(token)
-		}
-		
-		return request(URLRequest.tokenRefreshRequest(forRefreshToken: refreshToken))
-			.flatMap(GMusicTokenClient.tokenJsonToObject)
-	}
+//    public func refreshToken(_ token: GMusicToken, force: Bool) -> Single<GMusicToken> {
+//        guard let refreshToken = token.refreshToken, (token.isTokenExpired || force) else {
+//            // TODO: Maybe should return error if there is no refresh token
+//            return .just(token)
+//        }
+//
+//        return request(URLRequest.tokenRefreshRequest(forRefreshToken: refreshToken))
+//            .flatMap(GMusicTokenClient.tokenJsonToObject)
+//    }
 	
 	public func issueMusicApiToken(withToken token: GMusicToken) -> Single<GMusicToken> {
 		return request(URLRequest.issueMusicApiTokenRequest(token: token))

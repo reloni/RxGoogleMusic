@@ -61,10 +61,13 @@ func jsonRequest(from request: Single<Data>) -> Single<JSON> {
 }
 
 
-let sessionDataRequest = flip(curry(dataRequest))
+let sessionDataRequest = dataRequest
+    |> curry
+    |> flip
 
 func jsonRequest(for session: URLSession) -> (URLRequest) -> Single<JSON> {
     let request = (session |> sessionDataRequest) >>> jsonRequest
     
     return { return $0 |> request }
+    
 }

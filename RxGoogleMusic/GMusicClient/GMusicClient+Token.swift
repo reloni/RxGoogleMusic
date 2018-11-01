@@ -11,8 +11,8 @@ import RxSwift
 
 extension GMusicClient {
 	func refreshToken(force: Bool) -> Single<GMusicToken> {
-		return tokenClient.refreshToken(token, force: force)
-			.do(onSuccess: { [weak self] in self?.token = $0 })
+        return RxGoogleMusic.refreshToken(token, force: force, request: dataRequest >>> jsonRequest)
+            .do(onSuccess: { [weak self] in self?.token = $0 })
 	}
 	
 	func issueApiToken(force: Bool) -> Single<GMusicToken> {
@@ -21,7 +21,7 @@ extension GMusicClient {
 			return .just(apiToken!)
 		}
 		
-		return tokenClient.refreshToken(token, force: force)
+		return refreshToken(force: force)
 			.flatMap { [weak self] token in return self?.tokenClient.issueMusicApiToken(withToken: token) ?? Single.error(GMusicError.clientDisposed) }
 			.do(onSuccess: { [weak self] in self?.apiToken = $0 })
 	}
