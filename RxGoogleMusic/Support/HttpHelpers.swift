@@ -46,7 +46,7 @@ func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> 
     }
 }
 
-func jsonRequest(_ request: Single<Data>) -> Single<JSON> {
+func jsonRequest(from request: Single<Data>) -> Single<JSON> {
     return request
         .flatMap { data -> Single<JSON> in
             do {
@@ -63,7 +63,7 @@ func jsonRequest(_ request: Single<Data>) -> Single<JSON> {
 
 let sessionDataRequest = flip(curry(dataRequest))
 
-let sessionJsonRequest = { (session: URLSession) -> (URLRequest) -> Single<JSON> in
+func jsonRequest(for session: URLSession) -> (URLRequest) -> Single<JSON> {
     let request = (session |> sessionDataRequest) >>> jsonRequest
     
     return { return $0 |> request }

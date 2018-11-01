@@ -8,6 +8,7 @@
 
 precedencegroup ForwardApplication {
     associativity: left
+    higherThan: AssignmentPrecedence
 }
 
 infix operator |>: ForwardApplication

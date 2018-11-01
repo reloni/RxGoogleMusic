@@ -11,7 +11,7 @@ import RxSwift
 
 func gMusicAuthenticationUrl(_ request: URLRequest, in session: URLSession) -> Single<URL> {
     return request
-        |> (session |> sessionJsonRequest)
+        |> (session |> jsonRequest)
         |> gMusicAuthenticationUrl
 }
 

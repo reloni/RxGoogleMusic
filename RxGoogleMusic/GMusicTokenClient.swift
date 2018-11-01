@@ -10,16 +10,16 @@ import Foundation
 import RxSwift
 
 public struct GMusicTokenClient {
-    let jsonRequest: (URLRequest) -> Single<JSON>
+    let request: (URLRequest) -> Single<JSON>
 	
 	public init(session: URLSession = URLSession.shared) {
-        self.jsonRequest = sessionJsonRequest(session)
+        self.request = session |> jsonRequest
 	}
 	
 	init(session: URLSession = URLSession.shared,
 				tokenUrl: URL = GMusicConstants.tokenUrl,
 				issueTokenUrl: URL = GMusicConstants.issueTokenUrl) {
-        self.jsonRequest = sessionJsonRequest(session)
+        self.request = session |> jsonRequest
 	}
 	
 	static func tokenJsonToObject(_ json: JSON) -> Single<GMusicToken> {
@@ -40,7 +40,7 @@ public struct GMusicTokenClient {
 //    }
 	
 	public func exchangeOAuthCodeForToken(_ code: String) -> Single<GMusicToken> {
-		return jsonRequest(URLRequest.codeForTokenExchangeRequest(code))
+		return request(URLRequest.codeForTokenExchangeRequest(code))
 			.flatMap(GMusicTokenClient.tokenJsonToObject)
 	}
 	
@@ -50,12 +50,12 @@ public struct GMusicTokenClient {
 			return .just(token)
 		}
 		
-		return jsonRequest(URLRequest.tokenRefreshRequest(forRefreshToken: refreshToken))
+		return request(URLRequest.tokenRefreshRequest(forRefreshToken: refreshToken))
 			.flatMap(GMusicTokenClient.tokenJsonToObject)
 	}
 	
 	public func issueMusicApiToken(withToken token: GMusicToken) -> Single<GMusicToken> {
-		return jsonRequest(URLRequest.issueMusicApiTokenRequest(token: token))
+		return request(URLRequest.issueMusicApiTokenRequest(token: token))
 			.flatMap { json -> Single<GMusicToken> in
 				guard let token = GMusicToken(apiTokenJson: json) else {
 					return .error(GMusicError.unableToRetrieveAccessToken(json: json))
