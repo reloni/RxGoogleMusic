@@ -10,16 +10,16 @@ import Foundation
 import RxSwift
 
 public struct GMusicTokenClient {
-	let session: URLSession
+    let jsonRequest: (URLRequest) -> Single<JSON>
 	
 	public init(session: URLSession = URLSession.shared) {
-		self.session = session
+        self.jsonRequest = sessionJsonRequest(session)
 	}
 	
 	init(session: URLSession = URLSession.shared,
 				tokenUrl: URL = GMusicConstants.tokenUrl,
 				issueTokenUrl: URL = GMusicConstants.issueTokenUrl) {
-		self.session = session
+        self.jsonRequest = sessionJsonRequest(session)
 	}
 	
 	static func tokenJsonToObject(_ json: JSON) -> Single<GMusicToken> {
@@ -30,7 +30,7 @@ public struct GMusicTokenClient {
 	}
 	
 	public func loadAuthenticationUrl() -> Single<URL> {
-		return session.jsonRequest(URLRequest.authAdviceRequest())
+		return jsonRequest(URLRequest.authAdviceRequest())
 			.flatMap { json -> Single<URL> in
 				guard let uri = URL(string: json["uri"] as? String ?? "") else {
 					return .error(GMusicError.unableToRetrieveAuthenticationUri(json: json))
@@ -40,7 +40,7 @@ public struct GMusicTokenClient {
 	}
 	
 	public func exchangeOAuthCodeForToken(_ code: String) -> Single<GMusicToken> {
-		return session.jsonRequest(URLRequest.codeForTokenExchangeRequest(code))
+		return jsonRequest(URLRequest.codeForTokenExchangeRequest(code))
 			.flatMap(GMusicTokenClient.tokenJsonToObject)
 	}
 	
@@ -50,12 +50,12 @@ public struct GMusicTokenClient {
 			return .just(token)
 		}
 		
-		return session.jsonRequest(URLRequest.tokenRefreshRequest(forRefreshToken: refreshToken))
+		return jsonRequest(URLRequest.tokenRefreshRequest(forRefreshToken: refreshToken))
 			.flatMap(GMusicTokenClient.tokenJsonToObject)
 	}
 	
 	public func issueMusicApiToken(withToken token: GMusicToken) -> Single<GMusicToken> {
-		return session.jsonRequest(URLRequest.issueMusicApiTokenRequest(token: token))
+		return jsonRequest(URLRequest.issueMusicApiTokenRequest(token: token))
 			.flatMap { json -> Single<GMusicToken> in
 				guard let token = GMusicToken(apiTokenJson: json) else {
 					return .error(GMusicError.unableToRetrieveAccessToken(json: json))
