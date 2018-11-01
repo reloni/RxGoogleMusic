@@ -9,6 +9,7 @@
 import Foundation
 import RxSwift
 
+#warning("Remove")
 public struct GMusicTokenClient {
     let request: (URLRequest) -> Single<JSON>
 	
@@ -39,10 +40,10 @@ public struct GMusicTokenClient {
 //        }
 //    }
 	
-	public func exchangeOAuthCodeForToken(_ code: String) -> Single<GMusicToken> {
-		return request(URLRequest.codeForTokenExchangeRequest(code))
-			.flatMap(GMusicTokenClient.tokenJsonToObject)
-	}
+//    public func exchangeOAuthCodeForToken(_ code: String) -> Single<GMusicToken> {
+//        return request(URLRequest.codeForTokenExchangeRequest(code))
+//            .flatMap(GMusicTokenClient.tokenJsonToObject)
+//    }
 	
 	public func refreshToken(_ token: GMusicToken, force: Bool) -> Single<GMusicToken> {
 		guard let refreshToken = token.refreshToken, (token.isTokenExpired || force) else {

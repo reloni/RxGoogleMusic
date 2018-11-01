@@ -20,13 +20,14 @@ open class GMusicAuthenticationController: UIViewController {
 	let bag = DisposeBag()
 	let webView = WKWebView()
 	let toolBar = UIToolbar()
-	let tokenClient: GMusicTokenClient
     let session: URLSession
 	let callback: (AuthenticationResult) -> ()
+    let exchangeRequest: (String) -> Single<GMusicToken>
+    
 	lazy var webViewDelegate: GMusicWKNavigationDelegate = {
 		return GMusicWKNavigationDelegate { [weak self] oauthCode in
 			guard let object = self else { return }
-			object.tokenClient.exchangeOAuthCodeForToken(oauthCode)
+			object.exchangeRequest(oauthCode)
 				.observeOn(MainScheduler.instance)
 				.do(onSuccess: { [weak self] token in self?.complete(with: token) })
 				.do(onError: { [weak self] in self?.callback(.error(GMusicAuthenticationController.createGMusicError($0))) })
@@ -35,12 +36,11 @@ open class GMusicAuthenticationController: UIViewController {
 		}
 	}()
 	
-	public init(tokenClient: GMusicTokenClient = GMusicTokenClient(),
-                session: URLSession = URLSession.shared,
+	public init(session: URLSession = URLSession.shared,
 				callback: @escaping (AuthenticationResult) -> ()) {
-		self.tokenClient = tokenClient
 		self.callback = callback
         self.session = session
+        self.exchangeRequest = session |> sessionExchangeOAuthCodeForToken
 		
 		super.init(nibName: nil, bundle: nil)
 	}
