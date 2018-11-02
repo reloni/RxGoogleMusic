@@ -32,42 +32,12 @@ extension URL {
 }
 
 extension URLRequest {
-	init(url: URL, method: HttpMethod = .get, body: Data? = nil, headers: [String: String]) {
-		self = URLRequest(url: url)
-		self.httpMethod = method.rawValue
-		self.httpBody = body
-		headers.forEach { addValue($0.1, forHTTPHeaderField: $0.0) }
-	}
-	
-	static func authAdviceRequest() -> URLRequest {
-		let json =
-		"""
-		{
-		"report_user_id": "true",
-		"system_version": "\(GMusicConstants.systemVersion)",
-		"app_version": "1.0",
-		"user_id": [],
-		"request_trigger": "ADD_ACCOUNT",
-		"lib_ver": "3.2",
-		"package_name": "\(GMusicConstants.packageName)",
-		"supported_service": ["uca"],
-		"redirect_uri": "\(GMusicConstants.redirectUri)",
-		"device_name": "\(GMusicConstants.deviceModel)",
-		"fast_setup": "true",
-		"mediator_client_id": "\(GMusicConstants.clientId)",
-		"device_id": "\(GMusicConstants.deviceId)",
-		"hl": "\(Locale.current.identifier)",
-		"client_id": "\(GMusicConstants.clientIdLong)"
-		}
-		"""
-		
-		var request = URLRequest(url: GMusicConstants.authAdviceUrl)
-		request.addValue("application/json", forHTTPHeaderField: "content-type")
-		request.httpMethod = "POST"
-		request.httpBody = json.data(using: .utf8)
-		
-		return request
-	}
+    init(url: URL, method: HttpMethod = .get, body: Data? = nil, headers: [String: String]) {
+        self = URLRequest(url: url)
+        self.httpMethod = method.rawValue
+        self.httpBody = body
+        headers.forEach { addValue($0.1, forHTTPHeaderField: $0.0) }
+    }
 	
 	static func codeForTokenExchangeRequest(_ code: String) -> URLRequest {
 		var request = URLRequest(url: GMusicConstants.tokenUrl)

@@ -19,6 +19,7 @@
 		6E3964021FFA93930016C2FA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964011FFA93930016C2FA /* Extensions.swift */; };
 		6E3964041FFA981E0016C2FA /* GMusicTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964031FFA981E0016C2FA /* GMusicTrack.swift */; };
 		6E3964071FFAA1370016C2FA /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964061FFAA1370016C2FA /* Common.swift */; };
+		6E91DC46218CD36A00AF4083 /* HttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E91DC45218CD36A00AF4083 /* HttpRequest.swift */; };
 		6EAF31D7218A27070017A15A /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF31D6218A27070017A15A /* Functions.swift */; };
 		6EAF31D9218A276C0017A15A /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF31D8218A276C0017A15A /* Operators.swift */; };
 		6EAF31DB218A29700017A15A /* HttpHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF31DA218A29700017A15A /* HttpHelpers.swift */; };
@@ -56,6 +57,7 @@
 		6E3964011FFA93930016C2FA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		6E3964031FFA981E0016C2FA /* GMusicTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicTrack.swift; sourceTree = "<group>"; };
 		6E3964061FFAA1370016C2FA /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		6E91DC45218CD36A00AF4083 /* HttpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRequest.swift; sourceTree = "<group>"; };
 		6EAF31D6218A27070017A15A /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		6EAF31D8218A276C0017A15A /* Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
 		6EAF31DA218A29700017A15A /* HttpHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpHelpers.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 			isa = PBXGroup;
 			children = (
 				6E3964011FFA93930016C2FA /* Extensions.swift */,
+				6E91DC45218CD36A00AF4083 /* HttpRequest.swift */,
 				6EAF31DA218A29700017A15A /* HttpHelpers.swift */,
 				6ED3EFBD218B35A4002385A1 /* GMusicTokenHelpers.swift */,
 			);
@@ -323,6 +326,7 @@
 			files = (
 				6E0F2B4E2003CE19000DA9F9 /* GMusicRadioStation.swift in Sources */,
 				6E30527F200161BF00DA0DBB /* GMusicAuthenticationController.swift in Sources */,
+				6E91DC46218CD36A00AF4083 /* HttpRequest.swift in Sources */,
 				6ED14CAF1FFC00C500B78078 /* GMusicClient+Base.swift in Sources */,
 				6EAF31D7218A27070017A15A /* Functions.swift in Sources */,
 				6EE30AEE2002897A00940C00 /* GMusicClient+Token.swift in Sources */,

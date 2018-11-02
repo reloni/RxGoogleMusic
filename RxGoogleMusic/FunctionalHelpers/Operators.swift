@@ -18,3 +18,19 @@ precedencegroup ForwardComposition {
     higherThan: ForwardApplication
 }
 infix operator >>>: ForwardComposition
+
+infix operator .~: ForwardComposition
+
+precedencegroup SingleComposition {
+    associativity: left
+    higherThan: ForwardApplication, ForwardComposition
+}
+infix operator <>: SingleComposition
+
+precedencegroup BackwardsComposition {
+    associativity: right
+    higherThan: ForwardApplication
+}
+infix operator <<<: BackwardsComposition
+
+

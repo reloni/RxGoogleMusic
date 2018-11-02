@@ -35,9 +35,9 @@ private func tokenJsonToObject(_ json: JSON) -> Single<GMusicToken> {
 
 // MARK: Authentication URL
 func gMusicAuthenticationUrl(for jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<URL> {
-    return URLRequest.authAdviceRequest()
+    return authAdviceRequest
         |> jsonRequest
-        |> gMusicAuthenticationUrl
+        >>> gMusicAuthenticationUrl
 }
 
 private func gMusicAuthenticationUrl(from request: Single<JSON>) -> Single<URL> {
@@ -53,16 +53,16 @@ private func gMusicAuthenticationUrl(from request: Single<JSON>) -> Single<URL> 
 func exchangeOAuthCodeForToken(code: String, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return code
         |> tokenRequestFromCode
-        |> jsonRequest
-        |> tokenJsonToObject
+        >>> jsonRequest
+        >>> tokenJsonToObject
 }
 
 // Mark: Refresh token
 private func refreshToken(_ token: String, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return token
         |> refreshTokenRequest
-        |> jsonRequest
-        |> tokenJsonToObject
+        >>> jsonRequest
+        >>> tokenJsonToObject
 }
 
 
@@ -79,8 +79,8 @@ func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URL
 func issueMusicApiToken(withToken token: GMusicToken, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return token
         |> issueMusicApiTokenRequest
-        |> jsonRequest
-        |> issueMusicApiToken
+        >>> jsonRequest
+        >>> issueMusicApiToken
 }
 
 private func issueMusicApiToken(from request: Single<JSON>) -> Single<GMusicToken> {
