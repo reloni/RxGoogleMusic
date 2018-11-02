@@ -18,6 +18,10 @@ func refreshTokenRequest(from refreshToken: String) -> URLRequest {
     return refreshToken |> URLRequest.tokenRefreshRequest
 }
 
+func issueMusicApiTokenRequest(token: GMusicToken) -> URLRequest {
+    return URLRequest.issueMusicApiTokenRequest(token: token)
+}
+
 func tokenJsonToObject(_ request: Single<JSON>) -> Single<GMusicToken> {
     return request.flatMap(tokenJsonToObject)
 }
@@ -73,4 +77,24 @@ func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URL
     }
 
     return refreshToken(current, jsonRequest: jsonRequest)
+}
+
+// Mark: Issue token
+func issueMusicApiToken(withToken token: GMusicToken, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
+    return token
+        |> issueMusicApiTokenRequest
+        |> jsonRequest
+        |> issueMusicApiToken
+}
+
+func issueMusicApiToken(from request: Single<JSON>) -> Single<GMusicToken> {
+    return request.flatMap { json -> Single<GMusicToken> in
+        guard let token = GMusicToken(apiTokenJson: json) else {
+            return .error(GMusicError.unableToRetrieveAccessToken(json: json))
+        }
+        #if DEBUG
+        print("Issued API token: \(token.accessToken)")
+        #endif
+        return .just(token)
+    }
 }

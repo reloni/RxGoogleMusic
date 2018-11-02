@@ -20,9 +20,23 @@ extension GMusicClient {
 			// if api token existed and not expired, return it
 			return .just(apiToken!)
 		}
-		
-		return refreshToken(force: force)
-			.flatMap { [weak self] token in return self?.tokenClient.issueMusicApiToken(withToken: token) ?? Single.error(GMusicError.clientDisposed) }
-			.do(onSuccess: { [weak self] in self?.apiToken = $0 })
+        let saveToken = self |> (saveApiToken |> curry |> flip)
+        return force
+            |> refreshToken
+            |> issueApiToken
+            |> saveToken
 	}
+    
+    func issueApiToken(withRefreshRequest request: Single<GMusicToken>) -> Single<GMusicToken> {
+        let issueRequest = dataRequest
+            >>> jsonRequest
+            |> (curry(issueMusicApiToken) |> flip)
+        
+        return request.flatMap(issueRequest)
+    }
+    
+    func saveApiToken(from request: Single<GMusicToken>, in client: GMusicClient) -> Single<GMusicToken> {
+        return request
+            .do(onSuccess: { client.apiToken = $0 })
+    }
 }
