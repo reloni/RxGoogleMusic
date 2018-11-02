@@ -9,7 +9,7 @@
 import RxSwift
 import Foundation
 
-func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> {
+private func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> {
     return Single.create { single in
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -46,8 +46,8 @@ func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> 
     }
 }
 
-func jsonRequest(from request: Single<Data>) -> Single<JSON> {
-    return request
+func jsonRequest(from dataRequest: Single<Data>) -> Single<JSON> {
+    return dataRequest
         .flatMap { data -> Single<JSON> in
             do {
                 guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? JSON else {
@@ -60,13 +60,13 @@ func jsonRequest(from request: Single<Data>) -> Single<JSON> {
     }
 }
 
-
-let sessionDataRequest = dataRequest
-    |> curry
-    |> flip
+func dataRequest(for session: URLSession) -> (URLRequest) -> Single<Data> {
+    return session
+        |> (dataRequest |> curry |> flip)
+}
 
 func jsonRequest(for session: URLSession) -> (URLRequest) -> Single<JSON> {
-    let request = (session |> sessionDataRequest) >>> jsonRequest
+    let request = (session |> dataRequest) >>> jsonRequest
     
     return { return $0 |> request }
     

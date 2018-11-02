@@ -42,7 +42,7 @@ open class GMusicAuthenticationController: UIViewController {
         self.session = session
         self.exchangeRequest = session
             |> jsonRequest
-            |> sessionExchangeOAuthCodeForToken
+            |> (curry(exchangeOAuthCodeForToken) |> flip)
 		
 		super.init(nibName: nil, bundle: nil)
 	}

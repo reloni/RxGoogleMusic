@@ -24,6 +24,6 @@ final public class GMusicClient {
 		self.token = token
 		self.locale = locale
 		self.baseUrl = baseUrl
-        self.dataRequest = sessionDataRequest(session)
+        self.dataRequest = session |> RxGoogleMusic.dataRequest
 	}
 }
