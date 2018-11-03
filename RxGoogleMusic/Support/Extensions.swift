@@ -38,23 +38,7 @@ extension URLRequest {
         self.httpBody = body
         headers.forEach { addValue($0.1, forHTTPHeaderField: $0.0) }
     }
-	
-	static func tokenRefreshRequest(forRefreshToken token: String) -> URLRequest {
-		var request = URLRequest(url: GMusicConstants.tokenUrl)
-		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
-		request.httpMethod = "POST"
-		let body =
-				"""
-				grant_type=\(GrantType.refreshToken.rawValue)&
-				client_id=\(GMusicConstants.clientId)&
-				client_secret=\(GMusicConstants.clientSecret)&
-				refresh_token=\(token)
-				"""
-				.replacingOccurrences(of: "\n", with: "")
-		request.httpBody = body.data(using: .utf8)
-		return request
-	}
-	
+
 	static func issueMusicApiTokenRequest(token: GMusicToken) -> URLRequest {
 		var request = URLRequest(url: GMusicConstants.issueTokenUrl)
 		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")

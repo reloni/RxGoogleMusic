@@ -31,12 +31,25 @@ private let authAdviceBody =
         """.data(using: .utf8)
 
 private let tokenExchangeBody = { (code: String) in
-    return """
+    return
+        """
         grant_type=\(GrantType.authorizationCode.rawValue)&
         code=\(code)&
         client_id=\(GMusicConstants.clientId)&
         client_secret=\(GMusicConstants.clientSecret)&
         scope=\(Scope.oauthLogin.rawValue)
+        """
+        .replacingOccurrences(of: "\n", with: "")
+        .data(using: .utf8)
+}
+
+let tokenRefreshBody = { (refreshToken: String) in
+    return
+        """
+        grant_type=\(GrantType.refreshToken.rawValue)&
+        client_id=\(GMusicConstants.clientId)&
+        client_secret=\(GMusicConstants.clientSecret)&
+        refresh_token=\(refreshToken)
         """
         .replacingOccurrences(of: "\n", with: "")
         .data(using: .utf8)
@@ -86,4 +99,11 @@ let tokenExchangeRequest = { (code: String) in
         |> urlRequest
         |> postUrlEncoded
         |> (code |> tokenExchangeBody |> setBody)
+}
+
+let tokenRefreshRequest = { (refreshToken: String) in
+    return GMusicConstants.tokenUrl
+        |> urlRequest
+        |> postUrlEncoded
+        |> (refreshToken |> tokenRefreshBody |> setBody)
 }

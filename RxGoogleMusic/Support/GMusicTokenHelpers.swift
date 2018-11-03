@@ -10,10 +10,6 @@ import Foundation
 import RxSwift
 
 // MARK: Helpers
-private func refreshTokenRequest(from refreshToken: String) -> URLRequest {
-    return refreshToken |> URLRequest.tokenRefreshRequest
-}
-
 private func issueMusicApiTokenRequest(token: GMusicToken) -> URLRequest {
     return URLRequest.issueMusicApiTokenRequest(token: token)
 }
@@ -56,13 +52,14 @@ func exchangeOAuthCodeForToken(code: String, jsonRequest: @escaping (URLRequest)
 // Mark: Refresh token
 private func refreshToken(_ token: String, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return token
-        |> refreshTokenRequest
+        |> tokenRefreshRequest
         >>> jsonRequest
         >>> tokenJsonToObject
 }
 
 
 func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
+    #warning("refresh roken dissapearing")
     guard let current = token.refreshToken, (token.isTokenExpired || force) else {
         // TODO: Maybe should return error if there is no refresh token
         return .just(token)
