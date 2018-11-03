@@ -71,5 +71,4 @@ func jsonRequest(for session: URLSession) -> (URLRequest) -> Single<JSON> {
             |> (session |> dataRequest)
             >>> jsonRequest
     }
-    
 }

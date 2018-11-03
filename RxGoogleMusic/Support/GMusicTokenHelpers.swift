@@ -51,17 +51,20 @@ private func refreshToken(_ token: String, jsonRequest: @escaping (URLRequest) -
         |> tokenRefreshRequest
         >>> jsonRequest
         >>> tokenJsonToObject
+        >>> (token |> (attachExistedRefreshToken |> curry))
 }
 
-
 func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
-    #warning("refresh roken dissapearing")
     guard let current = token.refreshToken, (token.isTokenExpired || force) else {
         // TODO: Maybe should return error if there is no refresh token
         return .just(token)
     }
 
     return refreshToken(current, jsonRequest: jsonRequest)
+}
+
+private func attachExistedRefreshToken(_ token: String?, to request: Single<GMusicToken>) -> Single<GMusicToken> {
+    return request.flatMap { $0 |> (\.refreshToken .~ token) >>> Single.just }
 }
 
 // Mark: Issue token
