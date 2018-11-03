@@ -10,10 +10,6 @@ import Foundation
 import RxSwift
 
 // MARK: Helpers
-private func tokenRequestFromCode(_ code: String) -> URLRequest {
-    return code |> URLRequest.codeForTokenExchangeRequest
-}
-
 private func refreshTokenRequest(from refreshToken: String) -> URLRequest {
     return refreshToken |> URLRequest.tokenRefreshRequest
 }
@@ -52,7 +48,7 @@ private func gMusicAuthenticationUrl(from request: Single<JSON>) -> Single<URL> 
 // MARK: Token exchange
 func exchangeOAuthCodeForToken(code: String, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return code
-        |> tokenRequestFromCode
+        |> tokenExchangeRequest
         >>> jsonRequest
         >>> tokenJsonToObject
 }
