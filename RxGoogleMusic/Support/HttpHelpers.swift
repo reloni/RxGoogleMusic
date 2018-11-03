@@ -66,9 +66,10 @@ func dataRequest(for session: URLSession) -> (URLRequest) -> Single<Data> {
 }
 
 func jsonRequest(for session: URLSession) -> (URLRequest) -> Single<JSON> {
-    let request = (session |> dataRequest)
-        >>> jsonRequest
-    
-    return { return $0 |> request }
+    return { request in
+        return request
+            |> (session |> dataRequest)
+            >>> jsonRequest
+    }
     
 }
