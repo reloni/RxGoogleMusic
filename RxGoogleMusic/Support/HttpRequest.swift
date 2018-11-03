@@ -133,3 +133,10 @@ let issueMusicApiTokeRequest = { (token: GMusicToken) in
         >>> setAuthorization(token.accessToken)
         >>> (issueMusicApiTokenBody |> setBody)
 }
+
+let loginPageRequest = { (url: URL) in
+    return url
+        |> urlRequest
+        >>> setHeader(field: "X-IOS-Device-ID", value: GMusicConstants.deviceId)
+        >>> setHeader(field: "X-Browser-View", value: "embedded")
+}

@@ -38,13 +38,6 @@ extension URLRequest {
         self.httpBody = body
         headers.forEach { addValue($0.1, forHTTPHeaderField: $0.0) }
     }
-	
-	static func loginPageRequest(_ url: URL) -> URLRequest {
-		var request = URLRequest(url: url)
-		request.addValue(GMusicConstants.deviceId, forHTTPHeaderField: "X-IOS-Device-ID")
-		request.addValue("embedded", forHTTPHeaderField: "X-Browser-View")
-		return request
-	}
 }
 
 extension Date {

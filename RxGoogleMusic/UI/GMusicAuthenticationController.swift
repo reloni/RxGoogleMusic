@@ -82,7 +82,7 @@ open class GMusicAuthenticationController: UIViewController {
 	@objc func loadAuthenticationUrl() {
 		gMusicAuthenticationUrl(for: session |> jsonRequest)
 			.observeOn(MainScheduler.instance)
-			.do(onSuccess: { [weak self] url in self?.webView.load(URLRequest.loginPageRequest(url)) })
+			.do(onSuccess: { [weak self] url in self?.webView.load(loginPageRequest(url)) })
 			.do(onError: { [weak self] in self?.callback(.error(GMusicAuthenticationController.createGMusicError($0))) })
 			.subscribe()
 			.disposed(by: bag)
