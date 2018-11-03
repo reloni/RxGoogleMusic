@@ -10,10 +10,6 @@ import Foundation
 import RxSwift
 
 // MARK: Helpers
-private func issueMusicApiTokenRequest(token: GMusicToken) -> URLRequest {
-    return URLRequest.issueMusicApiTokenRequest(token: token)
-}
-
 private func tokenJsonToObject(_ request: Single<JSON>) -> Single<GMusicToken> {
     return request.flatMap(tokenJsonToObject)
 }
@@ -71,7 +67,7 @@ func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URL
 // Mark: Issue token
 func issueMusicApiToken(withToken token: GMusicToken, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return token
-        |> issueMusicApiTokenRequest
+        |> issueMusicApiTokeRequest
         >>> jsonRequest
         >>> issueMusicApiToken
 }

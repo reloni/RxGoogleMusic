@@ -38,25 +38,6 @@ extension URLRequest {
         self.httpBody = body
         headers.forEach { addValue($0.1, forHTTPHeaderField: $0.0) }
     }
-
-	static func issueMusicApiTokenRequest(token: GMusicToken) -> URLRequest {
-		var request = URLRequest(url: GMusicConstants.issueTokenUrl)
-		request.addValue("application/x-www-form-urlencoded", forHTTPHeaderField: "content-type")
-		request.setValue("Bearer \(token.accessToken)", forHTTPHeaderField: "Authorization")
-		request.httpMethod = "POST"
-		let body =
-				"""
-				client_id=\(GMusicConstants.clientIdLong)&
-				app_id=\(GMusicConstants.packageName)&
-				device_id=\(GMusicConstants.deviceId)&
-				hl=\(Locale.current.identifier)&
-				response_type=token&
-				scope=\(Scope.skyjam.rawValue) \(Scope.supportcontent.rawValue)
-				"""
-				.replacingOccurrences(of: "\n", with: "")
-		request.httpBody = body.data(using: .utf8)
-		return request
-	}
 	
 	static func loginPageRequest(_ url: URL) -> URLRequest {
 		var request = URLRequest(url: url)
