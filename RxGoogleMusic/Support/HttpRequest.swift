@@ -140,9 +140,3 @@ let loginPageRequest = { (url: URL) in
         >>> setHeader(field: "X-IOS-Device-ID", value: GMusicConstants.deviceId)
         >>> setHeader(field: "X-Browser-View", value: "embedded")
 }
-
-let apiRequest = { (baseUrl: URL, gMusicRequest: GMusicRequest) in
-    return { token in
-        return gMusicRequest.createGMusicRequest(for: baseUrl, withToken: token)
-    }
-}

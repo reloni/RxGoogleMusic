@@ -7,26 +7,30 @@
 //
 
 import Foundation
+import RxSwift
 
-public struct GMusicRequest {
-	public let type: GMusicRequestPath
-	public let maxResults: Int?
-	public let updatedMin: Date?
-	public let locale: Locale
-	public let pageToken: GMusicNextPageToken
-	public let nid: String?
-	public let includeAlbums: Bool?
-	public let includeBio: Bool?
-	public let numRelatedArtists: Int?
-	public let numTopTracks: Int?
-	public let includeDescription: Bool?
-	public let includeTracks: Bool?
+struct GMusicRequest {
+	let type: GMusicRequestPath
+    let baseUrl: URL
+    private let dataRequest: (URLRequest) -> Single<Data>
+	let maxResults: Int?
+	let updatedMin: Date?
+	let locale: Locale
+	let pageToken: GMusicNextPageToken
+	let nid: String?
+	let includeAlbums: Bool?
+	let includeBio: Bool?
+	let numRelatedArtists: Int?
+	let numTopTracks: Int?
+	let includeDescription: Bool?
+	let includeTracks: Bool?
 	
-	public init(type: GMusicRequestPath, maxResults: Int? = nil, updatedMin: Date? = nil, pageToken: GMusicNextPageToken = .begin,
-				locale: Locale = Locale.current, nid: String? = nil, includeAlbums: Bool? = nil, includeBio: Bool? = nil,
-				numRelatedArtists: Int? = nil, numTopTracks: Int? = nil,
-				includeDescription: Bool? = nil, includeTracks: Bool? = nil) {
+    init(type: GMusicRequestPath, baseUrl: URL, dataRequest: @escaping (URLRequest) -> Single<Data>, maxResults: Int? = nil, updatedMin: Date? = nil,
+         pageToken: GMusicNextPageToken = .begin, locale: Locale = Locale.current, nid: String? = nil, includeAlbums: Bool? = nil, includeBio: Bool? = nil,
+				numRelatedArtists: Int? = nil, numTopTracks: Int? = nil, includeDescription: Bool? = nil, includeTracks: Bool? = nil) {
 		self.type = type
+        self.baseUrl = baseUrl
+        self.dataRequest = dataRequest
 		self.maxResults = maxResults
 		self.updatedMin = updatedMin
 		self.locale = locale
@@ -40,7 +44,7 @@ public struct GMusicRequest {
 		self.includeTracks = includeTracks
 	}
 	
-	public var urlParameters: [String: String] {
+	private var urlParameters: [String: String] {
         let dictionaryValues: [(String, String)] = [
             getUrlParameter(key: "dv", value: GMusicConstants.dv),
             getUrlParameter(key: "hl", value: locale.identifier),
@@ -59,27 +63,27 @@ public struct GMusicRequest {
 		return Dictionary.init(uniqueKeysWithValues: dictionaryValues)
 	}
 	
-	func getUrlParameter<T>(key: String, value: T?) -> (String, String)? {
+	private func getUrlParameter<T>(key: String, value: T?) -> (String, String)? {
 		guard let v = value else { return nil }
 		return (key, String(describing: v))
 	}
 	
-	var escapedPageToken: String? {
+	private var escapedPageToken: String? {
 		guard case GMusicNextPageToken.token(let token) = pageToken else { return nil }
 		return token.addingPercentEncoding(withAllowedCharacters: CharacterSet.nextPageTokenAllowed)
 	}
 	
-	public func withNew(nextPageToken: GMusicNextPageToken) -> GMusicRequest {
-		return GMusicRequest(type: type, maxResults: maxResults, updatedMin: updatedMin, pageToken: nextPageToken, locale: locale)
+	func withNew(nextPageToken: GMusicNextPageToken) -> GMusicRequest {
+        return GMusicRequest(type: type, baseUrl: baseUrl, dataRequest: dataRequest, maxResults: maxResults, updatedMin: updatedMin, pageToken: nextPageToken, locale: locale)
 	}
 	
-	func buildUrl(for baseUrl: URL) -> URL {
+	private func buildUrl(for baseUrl: URL) -> URL {
 		let url = URL(baseUrl: baseUrl.appendingPathComponent(type.rawValue).absoluteString, parameters: urlParameters)!
 		guard let token = escapedPageToken else { return url }
 		return URL(string: "\(url.absoluteString)&start-token=\(token)")!
 	}
 	
-	func createGMusicRequest(for baseUrl: URL, withToken token: GMusicToken) -> URLRequest {
+	private func urlRequest(withToken token: GMusicToken) -> URLRequest {
 		switch type {
 		case .radioStation, .favorites:
 			var request = URLRequest(url: buildUrl(for: baseUrl), headers: Dictionary(dictionaryLiteral: token.header))
@@ -90,4 +94,10 @@ public struct GMusicRequest {
 		default: return URLRequest(url: buildUrl(for: baseUrl), headers: Dictionary(dictionaryLiteral: token.header))
 		}
 	}
+    
+    func dataRequest(withToken token: GMusicToken) -> Single<Data> {
+        return token
+            |> urlRequest
+            >>> dataRequest
+    }
 }
