@@ -10,19 +10,44 @@ import Foundation
 import RxSwift
 
 extension GMusicClient {
-	func refreshToken(force: Bool) -> Single<GMusicToken> {
-		return tokenClient.refreshToken(token, force: force)
-			.do(onSuccess: { [weak self] in self?.token = $0 })
+	private func refreshToken(force: Bool) -> Single<GMusicToken> {
+        return force
+            |> (token |> refreshToken)
+            |> saveGMusicToken
 	}
+    
+    private func refreshToken(token: GMusicToken) -> (Bool) -> Single<GMusicToken> {
+        let request = dataRequest >>> jsonRequest
+        return { force in return RxGoogleMusic.refreshToken(token, force: force, jsonRequest: request) }
+    }
+    
+    private func saveGMusicToken(from request: Single<GMusicToken>) -> Single<GMusicToken> {
+        return request
+            .do(onSuccess: { [weak self] in self?.token = $0 })
+    }
 	
 	func issueApiToken(force: Bool) -> Single<GMusicToken> {
 		guard apiToken?.expiresAt ?? Date(timeIntervalSince1970: 0) < Date() || force else {
 			// if api token existed and not expired, return it
 			return .just(apiToken!)
 		}
-		
-		return tokenClient.refreshToken(token, force: force)
-			.flatMap { [weak self] token in return self?.tokenClient.issueMusicApiToken(withToken: token) ?? Single.error(GMusicError.clientDisposed) }
-			.do(onSuccess: { [weak self] in self?.apiToken = $0 })
+
+        return force
+            |> refreshToken
+            |> issueApiToken
+            |> saveApiToken
 	}
+    
+    private func issueApiToken(withRefreshRequest request: Single<GMusicToken>) -> Single<GMusicToken> {
+        let issueRequest = dataRequest
+            >>> jsonRequest
+            |> (curry(issueMusicApiToken) |> flip)
+        
+        return request.flatMap(issueRequest)
+    }
+    
+    private func saveApiToken(from request: Single<GMusicToken>) -> Single<GMusicToken> {
+        return request
+            .do(onSuccess: { [weak self] in self?.apiToken = $0 })
+    }
 }
