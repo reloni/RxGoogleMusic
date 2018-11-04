@@ -64,7 +64,8 @@ func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URL
 }
 
 private func attachExistedRefreshToken(_ token: String?, to request: Single<GMusicToken>) -> Single<GMusicToken> {
-    return request.flatMap { $0 |> (\.refreshToken .~ token) >>> Single.just }
+    return request.map { $0 |> (\.refreshToken .~ token) }
+//    return request.flatMap { $0 |> (\.refreshToken .~ token) >>> Single.just }
 }
 
 // Mark: Issue token
