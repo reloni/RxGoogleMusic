@@ -22,7 +22,6 @@ public struct GMusicRequest {
 	public let includeDescription: Bool?
 	public let includeTracks: Bool?
 	
-	
 	public init(type: GMusicRequestPath, maxResults: Int? = nil, updatedMin: Date? = nil, pageToken: GMusicNextPageToken = .begin,
 				locale: Locale = Locale.current, nid: String? = nil, includeAlbums: Bool? = nil, includeBio: Bool? = nil,
 				numRelatedArtists: Int? = nil, numTopTracks: Int? = nil,
