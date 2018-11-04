@@ -13,17 +13,12 @@ extension GMusicClient {
 	private func refreshToken(force: Bool) -> Single<GMusicToken> {
         return force
             |> (token |> refreshToken)
-            |> saveGMusicToken
+            >>> Single.doOnSuccess { [weak self] in self?.token = $0  }
 	}
     
     private func refreshToken(token: GMusicToken) -> (Bool) -> Single<GMusicToken> {
         let request = dataRequest >>> jsonRequest
         return { force in return RxGoogleMusic.refreshToken(token, force: force, jsonRequest: request) }
-    }
-    
-    private func saveGMusicToken(from request: Single<GMusicToken>) -> Single<GMusicToken> {
-        return request
-            .do(onSuccess: { [weak self] in self?.token = $0 })
     }
 	
 	func issueApiToken(force: Bool) -> Single<GMusicToken> {
@@ -31,11 +26,11 @@ extension GMusicClient {
 			// if api token existed and not expired, return it
 			return .just(apiToken!)
 		}
-
+        
         return force
             |> refreshToken
-            |> issueApiToken
-            |> saveApiToken
+            >>> issueApiToken
+            >>> Single.doOnSuccess { [weak self] in self?.apiToken = $0  }
 	}
     
     private func issueApiToken(withRefreshRequest request: Single<GMusicToken>) -> Single<GMusicToken> {
@@ -44,10 +39,5 @@ extension GMusicClient {
             |> (curry(issueMusicApiToken) |> flip)
         
         return request.flatMap(issueRequest)
-    }
-    
-    private func saveApiToken(from request: Single<GMusicToken>) -> Single<GMusicToken> {
-        return request
-            .do(onSuccess: { [weak self] in self?.apiToken = $0 })
     }
 }

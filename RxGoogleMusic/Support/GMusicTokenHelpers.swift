@@ -10,9 +10,6 @@ import Foundation
 import RxSwift
 
 // MARK: Helpers
-private func tokenJsonToObject(_ request: Single<JSON>) -> Single<GMusicToken> {
-    return request.flatMap(tokenJsonToObject)
-}
 
 private func tokenJsonToObject(_ json: JSON) -> Single<GMusicToken> {
     guard let token = GMusicToken(json: json) else {
@@ -42,7 +39,7 @@ func exchangeOAuthCodeForToken(code: String, jsonRequest: @escaping (URLRequest)
     return code
         |> tokenExchangeRequest
         >>> jsonRequest
-        >>> tokenJsonToObject
+        >>> Single.flatMap(tokenJsonToObject)
 }
 
 // Mark: Refresh token
@@ -50,7 +47,7 @@ private func refreshToken(_ token: String, jsonRequest: @escaping (URLRequest) -
     return token
         |> tokenRefreshRequest
         >>> jsonRequest
-        >>> tokenJsonToObject
+        >>> Single.flatMap(tokenJsonToObject)
         >>> (token |> (attachExistedRefreshToken |> curry))
 }
 
