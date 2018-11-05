@@ -84,3 +84,16 @@ private func issueMusicApiToken(from request: Single<JSON>) -> Single<GMusicToke
         return .just(token)
     }
 }
+
+// Mark: Refresh and Issue
+func refreshAndIssueTokens(gMusicToken token: GMusicToken, force: Bool,
+                           jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<(gMusicToken: GMusicToken, apiToken: GMusicToken)> {
+    let refreshToken = RxGoogleMusic.refreshToken(token, force: force, jsonRequest: jsonRequest)
+    
+    let issueToken = jsonRequest
+        |> (curry(issueMusicApiToken) |> flip)
+
+    return refreshToken.flatMap { gMusicToken in
+            issueToken(gMusicToken).flatMap { apiToken in return .just((gMusicToken, apiToken)) }
+    }
+}

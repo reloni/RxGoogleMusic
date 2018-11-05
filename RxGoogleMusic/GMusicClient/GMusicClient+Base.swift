@@ -73,4 +73,20 @@ extension GMusicClient {
         return issueApiToken(force: false)
             .flatMap(request.dataRequest)
 	}
+    
+    private func issueApiToken(force: Bool) -> Single<GMusicToken> {
+        guard apiToken?.expiresAt ?? Date(timeIntervalSince1970: 0) < Date() || force else {
+            // if api token existed and not expired, return it
+            return .just(apiToken!)
+        }
+        
+        let saveTokens = { [weak self] (gMusicToken: GMusicToken, apiToken: GMusicToken) -> Single<GMusicToken> in
+            self?.apiToken = apiToken
+            self?.token = gMusicToken
+            return apiToken |> Single.just
+        }
+        
+        return refreshAndIssueTokens(gMusicToken: token, force: force, jsonRequest: dataRequest >>> jsonRequest)
+            .flatMap(saveTokens)
+    }
 }
