@@ -42,7 +42,7 @@ func exchangeOAuthCodeForToken(code: String, jsonRequest: @escaping (URLRequest)
         >>> Single.flatMap(tokenJsonToObject)
 }
 
-// Mark: Refresh token
+// MARK: Refresh token
 private func refreshToken(_ token: String, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return token
         |> tokenRefreshRequest
@@ -53,7 +53,7 @@ private func refreshToken(_ token: String, jsonRequest: @escaping (URLRequest) -
 
 func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     guard let current = token.refreshToken, (token.isTokenExpired || force) else {
-        // TODO: Maybe should return error if there is no refresh token
+        #warning("Maybe should return error if there is no refresh token")
         return .just(token)
     }
 
@@ -62,10 +62,9 @@ func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URL
 
 private func attachExistedRefreshToken(_ token: String?, to request: Single<GMusicToken>) -> Single<GMusicToken> {
     return request.map { $0 |> (\.refreshToken .~ token) }
-//    return request.flatMap { $0 |> (\.refreshToken .~ token) >>> Single.just }
 }
 
-// Mark: Issue token
+// MARK: Issue token
 func issueMusicApiToken(withToken token: GMusicToken, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return token
         |> issueMusicApiTokeRequest
@@ -85,7 +84,7 @@ private func issueMusicApiToken(from request: Single<JSON>) -> Single<GMusicToke
     }
 }
 
-// Mark: Refresh and Issue
+// MARK: Refresh and Issue
 func refreshAndIssueTokens(gMusicToken token: GMusicToken, force: Bool,
                            jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<(gMusicToken: GMusicToken, apiToken: GMusicToken)> {
     let refreshToken = RxGoogleMusic.refreshToken(token, force: force, jsonRequest: jsonRequest)
