@@ -10,15 +10,9 @@ import Foundation
 import RxSwift
 
 extension GMusicClient {
-	private func refreshToken(force: Bool) -> Single<GMusicToken> {
-        return force
-            |> (token |> refreshToken)
-            >>> Single.doOnSuccess { [weak self] in self?.token = $0  }
-	}
-    
-    private func refreshToken(token: GMusicToken) -> (Bool) -> Single<GMusicToken> {
-        let request = dataRequest >>> jsonRequest
-        return { force in return RxGoogleMusic.refreshToken(token, force: force, jsonRequest: request) }
+    func refreshToken(force: Bool) -> Single<GMusicToken> {
+        return RxGoogleMusic.refreshToken(token, force: force, jsonRequest: dataRequest >>> jsonRequest)
+            |> Single.doOnSuccess { [weak self] in self?.token = $0 }
     }
 	
 	func issueApiToken(force: Bool) -> Single<GMusicToken> {
@@ -27,17 +21,14 @@ extension GMusicClient {
 			return .just(apiToken!)
 		}
         
-        return force
-            |> refreshToken
-            >>> issueApiToken
-            >>> Single.doOnSuccess { [weak self] in self?.apiToken = $0  }
-	}
-    
-    private func issueApiToken(withRefreshRequest request: Single<GMusicToken>) -> Single<GMusicToken> {
-        let issueRequest = dataRequest
+        let issueToken = dataRequest
             >>> jsonRequest
             |> (curry(issueMusicApiToken) |> flip)
+            |> Single.flatMap
         
-        return request.flatMap(issueRequest)
-    }
+        return force
+            |> refreshToken
+            >>> issueToken
+            >>> Single.doOnSuccess { [weak self] in self?.apiToken = $0 }
+	}
 }
