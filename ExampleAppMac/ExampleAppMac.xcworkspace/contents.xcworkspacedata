@@ -4,4 +4,7 @@
    <FileRef
       location = "group:ExampleAppMac.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:../RxGoogleMusic.xcodeproj">
+   </FileRef>
 </Workspace>

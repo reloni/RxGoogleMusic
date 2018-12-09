@@ -11,7 +11,26 @@
 		6E7D9C1D21BD9A7F0041D38F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7D9C1C21BD9A7F0041D38F /* ViewController.swift */; };
 		6E7D9C1F21BD9A800041D38F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E7D9C1E21BD9A800041D38F /* Assets.xcassets */; };
 		6E7D9C2221BD9A800041D38F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6E7D9C2021BD9A800041D38F /* Main.storyboard */; };
+		6E9F728A21BDA7A600DCE5AC /* RxCocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9F728821BDA7A600DCE5AC /* RxCocoa.framework */; };
+		6E9F728B21BDA7A600DCE5AC /* RxCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9F728821BDA7A600DCE5AC /* RxCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6E9F728C21BDA7A600DCE5AC /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9F728921BDA7A600DCE5AC /* RxSwift.framework */; };
+		6E9F728D21BDA7A600DCE5AC /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E9F728921BDA7A600DCE5AC /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		6E9F728E21BDA7A600DCE5AC /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				6E9F728D21BDA7A600DCE5AC /* RxSwift.framework in Embed Frameworks */,
+				6E9F728B21BDA7A600DCE5AC /* RxCocoa.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		6E7D9C1721BD9A7F0041D38F /* ExampleAppMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleAppMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -21,6 +40,10 @@
 		6E7D9C2121BD9A800041D38F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		6E7D9C2321BD9A800041D38F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E7D9C2421BD9A800041D38F /* ExampleAppMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ExampleAppMac.entitlements; sourceTree = "<group>"; };
+		6E9F728821BDA7A600DCE5AC /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = ../Carthage/Build/Mac/RxCocoa.framework; sourceTree = "<group>"; };
+		6E9F728921BDA7A600DCE5AC /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = ../Carthage/Build/Mac/RxSwift.framework; sourceTree = "<group>"; };
+		6EE7C47C21BD9D3300859164 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = ../Carthage/Build/Mac/RxSwift.framework; sourceTree = "<group>"; };
+		6EE7C47D21BD9D3300859164 /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = ../Carthage/Build/Mac/RxCocoa.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -28,6 +51,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E9F728C21BDA7A600DCE5AC /* RxSwift.framework in Frameworks */,
+				6E9F728A21BDA7A600DCE5AC /* RxCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -37,8 +62,11 @@
 		6E7D9C0E21BD9A7F0041D38F = {
 			isa = PBXGroup;
 			children = (
+				6E9F728821BDA7A600DCE5AC /* RxCocoa.framework */,
+				6E9F728921BDA7A600DCE5AC /* RxSwift.framework */,
 				6E7D9C1921BD9A7F0041D38F /* ExampleAppMac */,
 				6E7D9C1821BD9A7F0041D38F /* Products */,
+				6EE7C47B21BD9D3300859164 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -63,6 +91,15 @@
 			path = ExampleAppMac;
 			sourceTree = "<group>";
 		};
+		6EE7C47B21BD9D3300859164 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6EE7C47D21BD9D3300859164 /* RxCocoa.framework */,
+				6EE7C47C21BD9D3300859164 /* RxSwift.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -73,6 +110,7 @@
 				6E7D9C1321BD9A7F0041D38F /* Sources */,
 				6E7D9C1421BD9A7F0041D38F /* Frameworks */,
 				6E7D9C1521BD9A7F0041D38F /* Resources */,
+				6E9F728E21BDA7A600DCE5AC /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -275,6 +313,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = SJMSRXG797;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = ExampleAppMac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -294,6 +336,10 @@
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				DEVELOPMENT_TEAM = SJMSRXG797;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../Carthage/Build/Mac",
+				);
 				INFOPLIST_FILE = ExampleAppMac/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

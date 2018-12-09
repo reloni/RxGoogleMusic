@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import RxSwift
 
 class ViewController: NSViewController {
 
@@ -22,6 +23,16 @@ class ViewController: NSViewController {
         }
     }
 
-
+    @IBAction func buttonTapped(_ sender: Any) {
+        _ = Observable.from(["Reactive!"]).subscribe(onNext: { self.showAlert(withMessage: $0) })
+    }
+    
+    func showAlert(withMessage message: String) {
+        let alert = NSAlert()
+        alert.messageText = message
+        alert.alertStyle = .informational
+        alert.addButton(withTitle: "OK")
+        alert.runModal()
+    }
 }
 
