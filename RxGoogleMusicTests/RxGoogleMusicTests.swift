@@ -16,4 +16,15 @@ class RxGoogleMusicTests: XCTestCase {
 		let escaped = "KngKS%2FfiRWcN%2F%2F%2F%2F%2FzzrdXkSE0wf%2FwD%2B%2F%2F6Ynpaexc%2FPz8%2FPz5rGx5nKyM2dms%2FFy8zFy8zei43FzsrPz8jKx8%2FOyc7Ix8fIys%2FOz8v%2F%2FhBkIRzbqFg2k%2BObOQAAAADymLodSANQAFoLCc72Cz%2FOJRQ6EAJg0fbfswYyDQoLCgAo%2BNns25vUyAI%3D"
 		XCTAssertEqual(result, escaped)
 	}
+    
+    func testHardwareType() {
+        #if os(iOS)
+        XCTAssertEqual(.iOS, HardwareType.current)
+        #elseif os(macOS)
+        XCTAssertEqual(.macOS, HardwareType.current)
+        #else
+        fatalError()
+        #endif
+        
+    }
 }

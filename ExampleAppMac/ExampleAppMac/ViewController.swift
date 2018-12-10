@@ -8,6 +8,8 @@
 
 import Cocoa
 import RxSwift
+import Foundation
+import RxGoogleMusic
 
 class ViewController: NSViewController {
 
@@ -24,7 +26,7 @@ class ViewController: NSViewController {
     }
 
     @IBAction func buttonTapped(_ sender: Any) {
-        _ = Observable.from(["Reactive!"]).subscribe(onNext: { self.showAlert(withMessage: $0) })
+        _ = Observable.from(["Rx"]).subscribe(onNext: { self.showAlert(withMessage: $0) })
     }
     
     func showAlert(withMessage message: String) {

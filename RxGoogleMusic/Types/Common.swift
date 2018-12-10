@@ -39,15 +39,9 @@ struct GMusicConstants {
 	static let dv = "3000038001007" // required magic paramerer ¯\_(ツ)_/¯
 	static let tier = "aa" // another requered parameter
 	
-    #if os(iOS)
-	static let systemVersion = UIKit.UIDevice.current.systemVersion
-	static let deviceModel = UIDevice.current.model
-	static let deviceId = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
-    #elseif os(macOS)
-    static let systemVersion = ""
-    static let deviceModel = ""
+    static let deviceModel = HardwareType.current.model
+    static let systemVersion = HardwareType.current.osVersion
     static let deviceId = UUID().uuidString
-    #endif
 }
 
 enum Scope: String {
@@ -57,15 +51,15 @@ enum Scope: String {
 }
 
 enum HttpMethod: String {
-	case options = "OPTIONS"
-	case get     = "GET"
-	case head    = "HEAD"
-	case post    = "POST"
-	case put     = "PUT"
-	case patch   = "PATCH"
-	case delete  = "DELETE"
-	case trace   = "TRACE"
-	case connect = "CONNECT"
+    case options = "OPTIONS"
+    case get     = "GET"
+    case head    = "HEAD"
+    case post    = "POST"
+    case put     = "PUT"
+    case patch   = "PATCH"
+    case delete  = "DELETE"
+    case trace   = "TRACE"
+    case connect = "CONNECT"
 }
 
 enum GrantType: String {

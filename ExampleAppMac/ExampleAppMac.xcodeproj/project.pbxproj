@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E4A319321BE93CE00090BB3 /* RxGoogleMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A319221BE93CE00090BB3 /* RxGoogleMusic.framework */; };
+		6E4A319421BE93CE00090BB3 /* RxGoogleMusic.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A319221BE93CE00090BB3 /* RxGoogleMusic.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E7D9C1B21BD9A7F0041D38F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7D9C1A21BD9A7F0041D38F /* AppDelegate.swift */; };
 		6E7D9C1D21BD9A7F0041D38F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7D9C1C21BD9A7F0041D38F /* ViewController.swift */; };
 		6E7D9C1F21BD9A800041D38F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6E7D9C1E21BD9A800041D38F /* Assets.xcassets */; };
@@ -25,6 +27,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				6E9F728D21BDA7A600DCE5AC /* RxSwift.framework in Embed Frameworks */,
+				6E4A319421BE93CE00090BB3 /* RxGoogleMusic.framework in Embed Frameworks */,
 				6E9F728B21BDA7A600DCE5AC /* RxCocoa.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -33,6 +36,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6E4A319221BE93CE00090BB3 /* RxGoogleMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxGoogleMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E7D9C1721BD9A7F0041D38F /* ExampleAppMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ExampleAppMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E7D9C1A21BD9A7F0041D38F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6E7D9C1C21BD9A7F0041D38F /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -52,6 +56,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E9F728C21BDA7A600DCE5AC /* RxSwift.framework in Frameworks */,
+				6E4A319321BE93CE00090BB3 /* RxGoogleMusic.framework in Frameworks */,
 				6E9F728A21BDA7A600DCE5AC /* RxCocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -62,6 +67,7 @@
 		6E7D9C0E21BD9A7F0041D38F = {
 			isa = PBXGroup;
 			children = (
+				6E4A319221BE93CE00090BB3 /* RxGoogleMusic.framework */,
 				6E9F728821BDA7A600DCE5AC /* RxCocoa.framework */,
 				6E9F728921BDA7A600DCE5AC /* RxSwift.framework */,
 				6E7D9C1921BD9A7F0041D38F /* ExampleAppMac */,
