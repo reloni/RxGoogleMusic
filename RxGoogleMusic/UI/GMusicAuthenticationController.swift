@@ -6,6 +6,7 @@
 //  Copyright © 2018 Anton Efimenko. All rights reserved.
 //
 
+#if os(iOS)
 import UIKit
 import WebKit
 import RxSwift
@@ -121,3 +122,4 @@ open class GMusicAuthenticationController: UIViewController {
 		fatalError("init(coder:) has not been implemented")
 	}
 }
+#endif

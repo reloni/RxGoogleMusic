@@ -7,8 +7,9 @@
 //
 
 import Foundation
+#if os(iOS)
 import UIKit
-
+#endif
 typealias JSON = [String: Any]
 
 public protocol GMusicEntity {
@@ -38,9 +39,15 @@ struct GMusicConstants {
 	static let dv = "3000038001007" // required magic paramerer ¯\_(ツ)_/¯
 	static let tier = "aa" // another requered parameter
 	
-	static let systemVersion = UIDevice.current.systemVersion
+    #if os(iOS)
+	static let systemVersion = UIKit.UIDevice.current.systemVersion
 	static let deviceModel = UIDevice.current.model
 	static let deviceId = UIDevice.current.identifierForVendor?.uuidString ?? UUID().uuidString
+    #elseif os(macOS)
+    static let systemVersion = ""
+    static let deviceModel = ""
+    static let deviceId = UUID().uuidString
+    #endif
 }
 
 enum Scope: String {

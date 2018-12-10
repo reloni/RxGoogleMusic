@@ -19,6 +19,7 @@
 		6E3964021FFA93930016C2FA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964011FFA93930016C2FA /* Extensions.swift */; };
 		6E3964041FFA981E0016C2FA /* GMusicTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964031FFA981E0016C2FA /* GMusicTrack.swift */; };
 		6E3964071FFAA1370016C2FA /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964061FFAA1370016C2FA /* Common.swift */; };
+		6E4A318E21BE609A00090BB3 /* Carthage.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 6E4A318D21BE609A00090BB3 /* Carthage.xcconfig */; };
 		6E91DC46218CD36A00AF4083 /* HttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E91DC45218CD36A00AF4083 /* HttpRequest.swift */; };
 		6EAF31D7218A27070017A15A /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF31D6218A27070017A15A /* Functions.swift */; };
 		6EAF31D9218A276C0017A15A /* Operators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EAF31D8218A276C0017A15A /* Operators.swift */; };
@@ -56,6 +57,7 @@
 		6E3964011FFA93930016C2FA /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		6E3964031FFA981E0016C2FA /* GMusicTrack.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicTrack.swift; sourceTree = "<group>"; };
 		6E3964061FFAA1370016C2FA /* Common.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Common.swift; sourceTree = "<group>"; };
+		6E4A318D21BE609A00090BB3 /* Carthage.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = Carthage.xcconfig; sourceTree = "<group>"; };
 		6E91DC45218CD36A00AF4083 /* HttpRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HttpRequest.swift; sourceTree = "<group>"; };
 		6EAF31D6218A27070017A15A /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		6EAF31D8218A276C0017A15A /* Operators.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Operators.swift; sourceTree = "<group>"; };
@@ -117,6 +119,7 @@
 				6E30528020016D3700DA0DBB /* UI */,
 				6E3964051FFAA1230016C2FA /* Types */,
 				6E0B79271FF2D433008F7800 /* Info.plist */,
+				6E4A318D21BE609A00090BB3 /* Carthage.xcconfig */,
 			);
 			path = RxGoogleMusic;
 			sourceTree = "<group>";
@@ -286,6 +289,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E4A318E21BE609A00090BB3 /* Carthage.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +367,7 @@
 /* Begin XCBuildConfiguration section */
 		6E0B79351FF2D434008F7800 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6E4A318D21BE609A00090BB3 /* Carthage.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -425,6 +430,7 @@
 		};
 		6E0B79361FF2D434008F7800 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 6E4A318D21BE609A00090BB3 /* Carthage.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -497,9 +503,11 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.RxGoogleMusic;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -525,9 +533,11 @@
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
 				PRODUCT_BUNDLE_IDENTIFIER = com.AntonEfimenko.RxGoogleMusic;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos macosx";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

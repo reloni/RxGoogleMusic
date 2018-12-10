@@ -7,10 +7,8 @@
 //
 
 import WebKit
-import RxSwift
 
 open class GMusicWKNavigationDelegate: NSObject, WKNavigationDelegate {
-	let bag = DisposeBag()
 	let oauthCodeCallback: (String) -> Void
 	
 	public init(oauthCodeCallback: @escaping (String) -> Void) {
