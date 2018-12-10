@@ -10,9 +10,12 @@ import Cocoa
 import RxSwift
 import Foundation
 import RxGoogleMusic
+import WebKit
 
 class ViewController: NSViewController {
-
+    @IBOutlet weak var webView: WKWebView!
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -26,8 +29,17 @@ class ViewController: NSViewController {
     }
 
     @IBAction func buttonTapped(_ sender: Any) {
-        _ = Observable.from(["Rx"]).subscribe(onNext: { self.showAlert(withMessage: $0) })
+//        _ = Observable.from(["Rx"]).subscribe(onNext: { self.showAlert(withMessage: $0) })
+//        let req = URLRequest(url: URL(string: "https://google.com")!)
+//        webView.load(req)
+        let c = GMusicAuthenticationController_universal { result in
+            print("result: \(result)")
+        }
+//        presentAsSheet(c)
+        presentAsModalWindow(c)
     }
+    
+    
     
     func showAlert(withMessage message: String) {
         let alert = NSAlert()
