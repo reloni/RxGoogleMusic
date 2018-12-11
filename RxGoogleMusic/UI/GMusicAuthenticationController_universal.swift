@@ -31,10 +31,12 @@ open class GMusicAuthenticationController_universal: ViewController {
     
     lazy var webView: WKWebView = {
         let view = WKWebView()
+        
         #if os(macOS)
         // force mobile version
         view.customUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16B91"
         #endif
+        
         return view
     }()
     
@@ -139,35 +141,24 @@ open class GMusicAuthenticationController_universal: ViewController {
     func setupConstraints() {
         #if os(iOS)
         // toolBar bar
-        view.addConstraint(NSLayoutConstraint(item: toolBar, attribute: .top, relatedBy: .equal,
-                                              toItem: view, attribute: .topMargin, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: toolBar, attribute: .leading, relatedBy: .equal,
-                                              toItem: view, attribute: .leading, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: toolBar, attribute: .trailing, relatedBy: .equal,
-                                              toItem: view, attribute: .trailing,multiplier: 1, constant: 0))
+        toolBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        toolBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor).isActive = true
+        toolBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor).isActive = true
         
         // web view
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .top, relatedBy: .equal,
-                                              toItem: toolBar, attribute: .bottom, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .bottom, relatedBy: .equal,
-                                              toItem: view, attribute: .bottomMargin, multiplier: 1, constant: 0))
+        view.topAnchor.constraint(equalTo: toolBar.bottomAnchor).isActive = true
+        view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor).isActive = true
         #elseif os(macOS)
         // web view
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .top, relatedBy: .equal,
-                                              toItem: view, attribute: .top, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .bottom, relatedBy: .equal,
-                                              toItem: view, attribute: .bottom, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .height, relatedBy: .greaterThanOrEqual,
-                                              toItem: nil, attribute: .height, multiplier: 1, constant: 500))
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .width, relatedBy: .greaterThanOrEqual,
-                                              toItem: nil, attribute: .width, multiplier: 1, constant: 500))
+        webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        view.heightAnchor.constraint(greaterThanOrEqualToConstant: 500).isActive = true
+        view.widthAnchor.constraint(greaterThanOrEqualToConstant: 500).isActive = true
         #endif
         
         // web view
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .leading, relatedBy: .equal,
-                                              toItem: view, attribute: .leading, multiplier: 1, constant: 0))
-        view.addConstraint(NSLayoutConstraint(item: webView, attribute: .trailing, relatedBy: .equal,
-                                              toItem: view, attribute: .trailing,multiplier: 1, constant: 0))
+        webView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        webView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
     
     required public init?(coder aDecoder: NSCoder) {
