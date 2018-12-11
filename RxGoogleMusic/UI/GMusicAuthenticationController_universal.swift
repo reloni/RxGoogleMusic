@@ -25,13 +25,18 @@ open class GMusicAuthenticationController_universal: ViewController {
     }
     
     let bag = DisposeBag()
-    let webView = WKWebView()
-    #if os(iOS)
-    let toolBar = UIToolbar()
-    #endif
     let session: URLSession
     let callback: (AuthenticationResult) -> ()
     let exchangeRequest: (String) -> Single<GMusicToken>
+    
+    lazy var webView: WKWebView = {
+        let view = WKWebView()
+        #if os(macOS)
+        // force mobile version
+        view.customUserAgent = "Mozilla/5.0 (iPhone; CPU iPhone OS 12_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16B91"
+        #endif
+        return view
+    }()
     
     lazy var webViewDelegate: GMusicWKNavigationDelegate = {
         return GMusicWKNavigationDelegate { [weak self] oauthCode in
@@ -45,6 +50,11 @@ open class GMusicAuthenticationController_universal: ViewController {
         }
     }()
     
+    
+    #if os(iOS)
+    let toolBar = UIToolbar()
+    #endif
+    
     public init(session: URLSession = URLSession.shared,
                 callback: @escaping (AuthenticationResult) -> ()) {
         self.callback = callback
@@ -54,17 +64,6 @@ open class GMusicAuthenticationController_universal: ViewController {
             |> (curry(exchangeOAuthCodeForToken) |> flip)
         
         super.init(nibName: nil, bundle: nil)
-    }
-    
-    open override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        #if os(iOS)
-        toolBar.translatesAutoresizingMaskIntoConstraints = false
-        #endif
-        webView.translatesAutoresizingMaskIntoConstraints = false
-        
-        loadAuthenticationUrl()
     }
     
     open override func loadView() {
@@ -78,11 +77,22 @@ open class GMusicAuthenticationController_universal: ViewController {
         
         view.addSubview(webView)
         
-        setupToolbar()
-        
         webView.navigationDelegate = webViewDelegate
         
+        setupToolbar()
+        
         setupConstraints()
+    }
+    
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        #if os(iOS)
+        toolBar.translatesAutoresizingMaskIntoConstraints = false
+        #endif
+        webView.translatesAutoresizingMaskIntoConstraints = false
+        
+        loadAuthenticationUrl()
     }
     
     func setupToolbar() {
