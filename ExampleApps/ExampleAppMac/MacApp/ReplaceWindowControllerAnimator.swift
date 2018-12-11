@@ -11,9 +11,9 @@ import Cocoa
 class ReplaceWindowControllerAnimator: NSObject, NSViewControllerPresentationAnimator {
     func animatePresentation(of viewController: NSViewController, from fromViewController: NSViewController) {
         if let window = fromViewController.view.window {
-            NSAnimationContext.runAnimationGroup({ (context) -> Void in
+            NSAnimationContext.runAnimationGroup({ _ in
                 fromViewController.view.animator().alphaValue = 0
-            }, completionHandler: { () -> Void in
+            }, completionHandler: {
                 viewController.view.alphaValue = 0
                 window.contentViewController = viewController
                 viewController.view.animator().alphaValue = 1.0
@@ -23,9 +23,9 @@ class ReplaceWindowControllerAnimator: NSObject, NSViewControllerPresentationAni
     
     func animateDismissal(of viewController: NSViewController, from fromViewController: NSViewController) {
         if let window = viewController.view.window {
-            NSAnimationContext.runAnimationGroup({ (context) -> Void in
+            NSAnimationContext.runAnimationGroup({ _ in
                 viewController.view.animator().alphaValue = 0
-            }, completionHandler: { () -> Void in
+            }, completionHandler: {
                 fromViewController.view.alphaValue = 0
                 window.contentViewController = fromViewController
                 fromViewController.view.animator().alphaValue = 1.0
