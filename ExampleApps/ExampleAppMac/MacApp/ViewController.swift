@@ -13,40 +13,24 @@ import RxGoogleMusic
 import WebKit
 
 class ViewController: NSViewController {
-    @IBOutlet weak var webView: WKWebView!
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override var representedObject: Any? {
-        didSet {
-        // Update the view, if already loaded.
-        }
     }
 
     @IBAction func buttonTapped(_ sender: Any) {
-//        _ = Observable.from(["Rx"]).subscribe(onNext: { self.showAlert(withMessage: $0) })
-//        let req = URLRequest(url: URL(string: "https://google.com")!)
-//        webView.load(req)
-        let c = GMusicAuthenticationController { result in
+        let authController = GMusicAuthenticationController { result in
             print("result: \(result)")
         }
-//        presentAsSheet(c)
-        presentAsModalWindow(c)
+//        presentAsSheet(authController)
+        presentAsModalWindow(authController)
     }
-    
-    
-    
-    func showAlert(withMessage message: String) {
-        let alert = NSAlert()
-        alert.messageText = message
-        alert.alertStyle = .informational
-        alert.addButton(withTitle: "OK")
-        alert.runModal()
-    }
+//    
+//    func showAlert(withMessage message: String) {
+//        let alert = NSAlert()
+//        alert.messageText = message
+//        alert.alertStyle = .informational
+//        alert.addButton(withTitle: "OK")
+//        alert.runModal()
+//    }
 }
 

@@ -66,6 +66,8 @@ open class GMusicAuthenticationController: ViewController {
             |> (curry(exchangeOAuthCodeForToken) |> flip)
         
         super.init(nibName: nil, bundle: nil)
+        
+        title = "Authentication"
     }
     
     open override func loadView() {
@@ -93,8 +95,6 @@ open class GMusicAuthenticationController: ViewController {
     
     open override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
         
         loadAuthenticationUrl()
     }
@@ -155,7 +155,7 @@ open class GMusicAuthenticationController: ViewController {
         webView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         webView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         view.heightAnchor.constraint(greaterThanOrEqualToConstant: 500).isActive = true
-        view.widthAnchor.constraint(greaterThanOrEqualToConstant: 500).isActive = true
+        view.widthAnchor.constraint(greaterThanOrEqualToConstant: 600).isActive = true
         #endif
         
         // web view

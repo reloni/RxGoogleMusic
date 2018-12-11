@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
-        <plugIn identifier="com.apple.WebKit2IBPlugin" version="14460.31"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -675,7 +674,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="ExampleAppMac" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="MacApp" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -690,6 +689,7 @@
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
                         <rect key="contentRect" x="196" y="240" width="480" height="270"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
+                        <value key="minSize" type="size" width="700" height="500"/>
                         <connections>
                             <outlet property="delegate" destination="B8D-0N-5wS" id="98r-iN-zZc"/>
                         </connections>
@@ -705,14 +705,14 @@
         <!--View Controller-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="ExampleAppMac" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="XfG-lQ-9wD" customClass="ViewController" customModule="MacApp" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0BV-RT-fHk">
-                                <rect key="frame" x="14" y="222" width="452" height="32"/>
-                                <buttonCell key="cell" type="push" title="Test" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="tbW-yT-gsP">
+                            <button horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0BV-RT-fHk">
+                                <rect key="frame" x="14" y="222" width="77" height="32"/>
+                                <buttonCell key="cell" type="push" title="Log in" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="tbW-yT-gsP">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>
                                 </buttonCell>
@@ -720,27 +720,13 @@
                                     <action selector="buttonTapped:" target="XfG-lQ-9wD" id="LYa-2f-Iaz"/>
                                 </connections>
                             </button>
-                            <wkWebView wantsLayer="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Q9x-uC-jw1">
-                                <rect key="frame" x="20" y="20" width="440" height="189"/>
-                                <wkWebViewConfiguration key="configuration">
-                                    <audiovisualMediaTypes key="mediaTypesRequiringUserActionForPlayback" none="YES"/>
-                                    <wkPreferences key="preferences"/>
-                                </wkWebViewConfiguration>
-                            </wkWebView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="Q9x-uC-jw1" firstAttribute="top" secondItem="0BV-RT-fHk" secondAttribute="bottom" constant="20" id="8MH-MI-kkP"/>
-                            <constraint firstItem="Q9x-uC-jw1" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="HY5-i5-Sp5"/>
-                            <constraint firstAttribute="bottom" secondItem="Q9x-uC-jw1" secondAttribute="bottom" constant="20" id="J0c-7x-CGX"/>
-                            <constraint firstAttribute="trailing" secondItem="Q9x-uC-jw1" secondAttribute="trailing" constant="20" id="arY-1g-eMG"/>
                             <constraint firstItem="0BV-RT-fHk" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="doJ-v2-kyp"/>
                             <constraint firstItem="0BV-RT-fHk" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="odJ-FV-E0z"/>
-                            <constraint firstAttribute="trailing" secondItem="0BV-RT-fHk" secondAttribute="trailing" constant="20" id="uWP-0Q-dPN"/>
+                            <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="0BV-RT-fHk" secondAttribute="trailing" priority="250" constant="20" id="yPd-Oh-ZPb"/>
                         </constraints>
                     </view>
-                    <connections>
-                        <outlet property="webView" destination="Q9x-uC-jw1" id="hce-jn-o8n"/>
-                    </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
