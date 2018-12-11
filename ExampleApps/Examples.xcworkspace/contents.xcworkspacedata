@@ -5,6 +5,9 @@
       location = "group:../RxGoogleMusic.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:ExampleApp.xcodeproj">
+      location = "group:ExampleAppMac/MacApp.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:ExampleApp/iOSApp.xcodeproj">
    </FileRef>
 </Workspace>
