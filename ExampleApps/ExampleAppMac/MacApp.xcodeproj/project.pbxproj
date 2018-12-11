@@ -17,6 +17,8 @@
 		6E99131921BF9F5000BDC72F /* RxCocoa.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E99131621BF9F5000BDC72F /* RxCocoa.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E99131A21BF9F5000BDC72F /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E99131721BF9F5000BDC72F /* RxSwift.framework */; };
 		6E99131B21BF9F5000BDC72F /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E99131721BF9F5000BDC72F /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6EE97D2C21BFCB360020F461 /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE97D2B21BFCB360020F461 /* LibraryController.swift */; };
+		6EE97D2E21BFD4B70020F461 /* ReplaceWindowControllerAnimator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE97D2D21BFD4B70020F461 /* ReplaceWindowControllerAnimator.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +50,8 @@
 		6E99131721BF9F5000BDC72F /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = ../../Carthage/Build/Mac/RxSwift.framework; sourceTree = "<group>"; };
 		6EE7C47C21BD9D3300859164 /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = ../Carthage/Build/Mac/RxSwift.framework; sourceTree = "<group>"; };
 		6EE7C47D21BD9D3300859164 /* RxCocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxCocoa.framework; path = ../Carthage/Build/Mac/RxCocoa.framework; sourceTree = "<group>"; };
+		6EE97D2B21BFCB360020F461 /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
+		6EE97D2D21BFD4B70020F461 /* ReplaceWindowControllerAnimator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaceWindowControllerAnimator.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -89,6 +93,8 @@
 			children = (
 				6E7D9C1A21BD9A7F0041D38F /* AppDelegate.swift */,
 				6E7D9C1C21BD9A7F0041D38F /* ViewController.swift */,
+				6EE97D2B21BFCB360020F461 /* LibraryController.swift */,
+				6EE97D2D21BFD4B70020F461 /* ReplaceWindowControllerAnimator.swift */,
 				6E7D9C1E21BD9A800041D38F /* Assets.xcassets */,
 				6E7D9C2021BD9A800041D38F /* Main.storyboard */,
 				6E7D9C2321BD9A800041D38F /* Info.plist */,
@@ -183,7 +189,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				6E7D9C1D21BD9A7F0041D38F /* ViewController.swift in Sources */,
+				6EE97D2C21BFCB360020F461 /* LibraryController.swift in Sources */,
 				6E7D9C1B21BD9A7F0041D38F /* AppDelegate.swift in Sources */,
+				6EE97D2E21BFD4B70020F461 /* ReplaceWindowControllerAnimator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

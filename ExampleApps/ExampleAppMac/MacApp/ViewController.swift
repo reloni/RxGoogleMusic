@@ -18,12 +18,26 @@ class ViewController: NSViewController {
     }
 
     @IBAction func buttonTapped(_ sender: Any) {
-        let authController = GMusicAuthenticationController { result in
-            print("result: \(result)")
+        let authController = GMusicAuthenticationController { [weak self] result in
+            switch result {
+            case .authenticated(let token): self?.showLibrary(accessToken: token)
+            case .error(let e):
+                print("error: \(e)")
+            case .userAborted:
+                print("userAborted")
+            }
         }
-//        presentAsSheet(authController)
+
         presentAsModalWindow(authController)
     }
+    
+    func showLibrary(accessToken token: GMusicToken) {
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateController(withIdentifier: "LibraryController") as! LibraryController
+        
+        present(controller, animator: ReplaceWindowControllerAnimator())
+    }
+    
 //    
 //    func showAlert(withMessage message: String) {
 //        let alert = NSAlert()
@@ -33,4 +47,3 @@ class ViewController: NSViewController {
 //        alert.runModal()
 //    }
 }
-

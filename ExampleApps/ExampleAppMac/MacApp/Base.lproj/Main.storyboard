@@ -687,7 +687,7 @@
                     <window key="window" title="Window" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" releasedWhenClosed="NO" visibleAtLaunch="NO" animationBehavior="default" id="IQv-IB-iLA">
                         <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
                         <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
-                        <rect key="contentRect" x="196" y="240" width="480" height="270"/>
+                        <rect key="contentRect" x="196" y="240" width="700" height="500"/>
                         <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1027"/>
                         <value key="minSize" type="size" width="700" height="500"/>
                         <connections>
@@ -730,7 +730,38 @@
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="75" y="655"/>
+            <point key="canvasLocation" x="74" y="811"/>
+        </scene>
+        <!--Library-->
+        <scene sceneID="bfQ-WQ-wBp">
+            <objects>
+                <viewController title="Library" storyboardIdentifier="LibraryController" id="020-qm-5XS" customClass="LibraryController" customModule="MacApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" id="JJ9-kJ-KYm">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <subviews>
+                            <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="cLI-kf-BxH">
+                                <rect key="frame" x="18" y="257" width="414" height="24"/>
+                                <segmentedCell key="cell" borderStyle="border" alignment="left" segmentDistribution="fillEqually" style="rounded" trackingMode="selectOne" id="gZW-aV-OkW">
+                                    <font key="font" metaFont="system"/>
+                                    <segments>
+                                        <segment label="Label 1"/>
+                                        <segment label="Label 2" selected="YES" tag="1"/>
+                                        <segment label="Label 3"/>
+                                    </segments>
+                                </segmentedCell>
+                            </segmentedControl>
+                        </subviews>
+                        <constraints>
+                            <constraint firstItem="cLI-kf-BxH" firstAttribute="top" secondItem="JJ9-kJ-KYm" secondAttribute="top" constant="20" id="Fbx-Ng-286"/>
+                            <constraint firstItem="cLI-kf-BxH" firstAttribute="leading" secondItem="JJ9-kJ-KYm" secondAttribute="leading" constant="20" id="JYi-KJ-8WX"/>
+                            <constraint firstAttribute="trailing" secondItem="cLI-kf-BxH" secondAttribute="trailing" constant="20" id="SkY-3u-Pjg"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <customObject id="KA3-sU-jRY" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="579" y="826"/>
         </scene>
     </scenes>
 </document>
