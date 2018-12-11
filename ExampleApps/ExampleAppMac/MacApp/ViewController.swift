@@ -32,7 +32,7 @@ class ViewController: NSViewController {
 //        _ = Observable.from(["Rx"]).subscribe(onNext: { self.showAlert(withMessage: $0) })
 //        let req = URLRequest(url: URL(string: "https://google.com")!)
 //        webView.load(req)
-        let c = GMusicAuthenticationController_universal { result in
+        let c = GMusicAuthenticationController { result in
             print("result: \(result)")
         }
 //        presentAsSheet(c)
