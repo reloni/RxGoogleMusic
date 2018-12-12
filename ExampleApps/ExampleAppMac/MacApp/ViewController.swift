@@ -35,15 +35,10 @@ class ViewController: NSViewController {
         let storyboard = NSStoryboard(name: "Main", bundle: nil)
         let controller = storyboard.instantiateController(withIdentifier: "LibraryController") as! LibraryController
         
+        controller.client = GMusicClient(token: token,
+                                         session: URLSession(configuration: URLSessionConfiguration.default),
+                                         locale: Locale.current)
+        
         present(controller, animator: ReplaceWindowControllerAnimator())
     }
-    
-//    
-//    func showAlert(withMessage message: String) {
-//        let alert = NSAlert()
-//        alert.messageText = message
-//        alert.alertStyle = .informational
-//        alert.addButton(withTitle: "OK")
-//        alert.runModal()
-//    }
 }

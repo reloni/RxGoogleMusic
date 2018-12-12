@@ -745,11 +745,22 @@
                                 <segmentedCell key="cell" borderStyle="border" alignment="left" segmentDistribution="fillEqually" style="rounded" trackingMode="selectOne" id="gZW-aV-OkW">
                                     <font key="font" metaFont="system"/>
                                     <segments>
-                                        <segment label="Label 1"/>
-                                        <segment label="Label 2" selected="YES" tag="1"/>
-                                        <segment label="Label 3"/>
+                                        <segment label="Playlists"/>
+                                        <segment label="Stations" tag="1"/>
+                                        <segment label="Tracks"/>
+                                        <segment label="Favorites"/>
                                     </segments>
+                                    <connections>
+                                        <binding destination="020-qm-5XS" name="selectedIndex" keyPath="selectedSegment" id="45t-49-cJF">
+                                            <dictionary key="options">
+                                                <integer key="NSNullPlaceholder" value="0"/>
+                                            </dictionary>
+                                        </binding>
+                                    </connections>
                                 </segmentedCell>
+                                <connections>
+                                    <binding destination="020-qm-5XS" name="selectedIndex" keyPath="selectedSegment" id="r7W-vT-kZw"/>
+                                </connections>
                             </segmentedControl>
                         </subviews>
                         <constraints>
@@ -758,8 +769,12 @@
                             <constraint firstAttribute="trailing" secondItem="cLI-kf-BxH" secondAttribute="trailing" constant="20" id="SkY-3u-Pjg"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="segmentControl" destination="cLI-kf-BxH" id="jAp-9I-736"/>
+                    </connections>
                 </viewController>
                 <customObject id="KA3-sU-jRY" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
+                <userDefaultsController representsSharedInstance="YES" id="9bb-zy-Djr"/>
             </objects>
             <point key="canvasLocation" x="579" y="826"/>
         </scene>
