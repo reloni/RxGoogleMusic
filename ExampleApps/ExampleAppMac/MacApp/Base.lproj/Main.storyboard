@@ -711,10 +711,10 @@
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <button horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0BV-RT-fHk">
-                                <rect key="frame" x="14" y="222" width="77" height="32"/>
-                                <buttonCell key="cell" type="push" title="Log in" bezelStyle="rounded" alignment="center" borderStyle="border" inset="2" id="tbW-yT-gsP">
+                                <rect key="frame" x="170" y="102" width="140" height="66"/>
+                                <buttonCell key="cell" type="bevel" title="Log in" bezelStyle="regularSquare" alignment="center" borderStyle="border" inset="2" id="tbW-yT-gsP">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
+                                    <font key="font" metaFont="system" size="45"/>
                                 </buttonCell>
                                 <connections>
                                     <action selector="buttonTapped:" target="XfG-lQ-9wD" id="LYa-2f-Iaz"/>
@@ -722,9 +722,8 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="0BV-RT-fHk" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="doJ-v2-kyp"/>
-                            <constraint firstItem="0BV-RT-fHk" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="20" id="odJ-FV-E0z"/>
-                            <constraint firstAttribute="trailing" relation="lessThanOrEqual" secondItem="0BV-RT-fHk" secondAttribute="trailing" priority="250" constant="20" id="yPd-Oh-ZPb"/>
+                            <constraint firstItem="0BV-RT-fHk" firstAttribute="centerY" secondItem="m2S-Jp-Qdl" secondAttribute="centerY" id="2fT-35-La3"/>
+                            <constraint firstItem="0BV-RT-fHk" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="qS1-Q7-ZLt"/>
                         </constraints>
                     </view>
                 </viewController>
