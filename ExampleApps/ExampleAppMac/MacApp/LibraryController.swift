@@ -11,22 +11,51 @@ import RxGoogleMusic
 import RxSwift
 import RxCocoa
 
+class GridClipTableView: NSTableView {
+    override func drawGrid(inClipRect clipRect: NSRect) { }
+    override func drawBackground(inClipRect clipRect: NSRect) { }
+    override func reloadData() {
+        if numberOfRows > 0 {
+            removeRows(at: IndexSet(0..<numberOfRows), withAnimation: NSTableView.AnimationOptions.effectFade)
+        }
+        
+        guard let rows = dataSource?.numberOfRows?(in: self), rows > 0 else { return }
+        
+        insertRows(at: IndexSet(0..<rows), withAnimation: NSTableView.AnimationOptions.slideDown)
+    }
+}
+
 class LibraryController: NSViewController {
     let bag = DisposeBag()
     var client: GMusicClient!
 
     @IBOutlet weak var segmentControl: NSSegmentedControl!
-    @IBOutlet weak var tableView: NSScrollView!
+    @IBOutlet weak var tableView: NSTableView!
     
     var playlists = GMusicCollection<GMusicPlaylist>(kind: "")
     var stations = GMusicCollection<GMusicRadioStation>(kind: "")
     var tracks = GMusicCollection<GMusicTrack>(kind: "")
     var favorites = GMusicCollection<GMusicTrack>(kind: "")
     
+    var rowsCount: Int {
+        switch selectedSegment {
+        case 0: return playlists.items.count
+        case 1: return stations.items.count
+        case 2: return tracks.items.count
+        case 3: return favorites.items.count
+        default: return 0
+        }
+    }
+    
     @objc dynamic var selectedSegment: Int = 0 {
         didSet {
             loadData()
         }
+    }
+    
+    override func viewDidLoad() {
+        tableView.dataSource = self
+        tableView.delegate = self
     }
     
     override func viewDidAppear() {
@@ -56,7 +85,8 @@ class LibraryController: NSViewController {
     }
     
     func loadPlaylists() {
-        client.playlists(maxResults: 15, pageToken: playlists.nextPageToken, recursive: false)
+        playlists = GMusicCollection<GMusicPlaylist>(kind: "")
+        client.playlists(maxResults: 15, pageToken: .begin, recursive: true)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 guard let controller = self else { return }
@@ -68,7 +98,8 @@ class LibraryController: NSViewController {
     }
     
     func loadStations() {
-        client.radioStations(maxResults: 15, pageToken: stations.nextPageToken, recursive: false)
+        stations = GMusicCollection<GMusicRadioStation>(kind: "")
+        client.radioStations(maxResults: 15, pageToken: .begin, recursive: true)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 guard let controller = self else { return }
@@ -80,7 +111,8 @@ class LibraryController: NSViewController {
     }
     
     func loadTracks() {
-        client.tracks(maxResults: 15, pageToken: tracks.nextPageToken, recursive: false)
+        tracks = GMusicCollection<GMusicTrack>(kind: "")
+        client.tracks(maxResults: 15, pageToken: .begin, recursive: true)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 guard let controller = self else { return }
@@ -92,7 +124,8 @@ class LibraryController: NSViewController {
     }
     
     func loadFavorites() {
-        client.favorites(maxResults: 15, pageToken: favorites.nextPageToken, recursive: false)
+        favorites = GMusicCollection<GMusicTrack>(kind: "")
+        client.favorites(maxResults: 15, pageToken: .begin, recursive: true)
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in
                 guard let controller = self else { return }
@@ -104,13 +137,7 @@ class LibraryController: NSViewController {
     }
     
     func reloadData() {
-        switch selectedSegment {
-        case 0: print(playlists.items.count)
-        case 1: print(stations.items.count)
-        case 2: print(tracks.items.count)
-        case 3: print(favorites.items.count)
-        default: return
-        }
+        tableView.reloadData()
     }
     
     func showErrorAlert(_ error: Error) {
@@ -132,5 +159,62 @@ class LibraryController: NSViewController {
         default: return "Unknown error"
         }
     }
+}
 
+extension LibraryController: NSTableViewDataSource {
+    func numberOfRows(in tableView: NSTableView) -> Int {
+        return rowsCount
+    }
+}
+
+extension LibraryController: NSTableViewDelegate {
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        switch selectedSegment {
+        case 0: return cell(for: playlists.items[row], in: tableView, column: tableColumn)
+        case 1: return cell(for: stations.items[row], in: tableView, column: tableColumn)
+        case 2: return cell(for: tracks.items[row], in: tableView, column: tableColumn)
+        case 3: return cell(for: favorites.items[row], in: tableView, column: tableColumn)
+        default: return nil
+        }
+    }
+    
+    func cell(for playlist: GMusicPlaylist, in tableView: NSTableView, column: NSTableColumn?) -> NSView? {
+        let c = cell(in: tableView, for: column)
+        switch c?.identifier?.rawValue {
+        case "FirstCell": c?.textField?.stringValue = playlist.name
+        case "SecondCell": c?.textField?.stringValue = playlist.ownerName
+        default: break
+        }
+        return c
+    }
+    
+    func cell(for station: GMusicRadioStation, in tableView: NSTableView, column: NSTableColumn?) -> NSView? {
+        let c = cell(in: tableView, for: column)
+        switch c?.identifier?.rawValue {
+        case "FirstCell": c?.textField?.stringValue = station.name
+        case "SecondCell": c?.textField?.stringValue = station.description ?? ""
+        default: break
+        }
+        return c
+    }
+    
+    func cell(for track: GMusicTrack, in tableView: NSTableView, column: NSTableColumn?) -> NSView? {
+        let c = cell(in: tableView, for: column)
+        switch c?.identifier?.rawValue {
+        case "FirstCell": c?.textField?.stringValue = track.title
+        case "SecondCell": c?.textField?.stringValue = "\(track.album) | \(track.artist)"
+        default: break
+        }
+        return c
+    }
+    
+    func cell(in tableView: NSTableView, for column: NSTableColumn?) -> NSTableCellView? {
+        if column == tableView.tableColumns[0] {
+            return tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "FirstCell"), owner: nil) as? NSTableCellView
+        } else if column == tableView.tableColumns[1] {
+            return tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "SecondCell"), owner: nil) as? NSTableCellView
+        } else {
+            return nil
+        }
+    }
 }
