@@ -750,13 +750,6 @@
                                         <segment label="Tracks"/>
                                         <segment label="Favorites"/>
                                     </segments>
-                                    <connections>
-                                        <binding destination="020-qm-5XS" name="selectedIndex" keyPath="selectedSegment" id="45t-49-cJF">
-                                            <dictionary key="options">
-                                                <integer key="NSNullPlaceholder" value="0"/>
-                                            </dictionary>
-                                        </binding>
-                                    </connections>
                                 </segmentedCell>
                                 <connections>
                                     <binding destination="020-qm-5XS" name="selectedIndex" keyPath="selectedSegment" id="r7W-vT-kZw"/>

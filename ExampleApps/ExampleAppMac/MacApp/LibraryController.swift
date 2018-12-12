@@ -33,6 +33,9 @@ class LibraryController: NSViewController {
         super.viewDidAppear()
         view.window?.title = title ?? ""
         segmentControl.selectedSegment = selectedSegment
+        
+        segmentControl.bind(NSBindingName(rawValue: "selectedSegment"), to: self, withKeyPath: "selectedSegment", options: nil)
+        
         loadData()
     }
     
