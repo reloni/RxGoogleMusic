@@ -16,6 +16,7 @@ class LibraryController: NSViewController {
     var client: GMusicClient!
 
     @IBOutlet weak var segmentControl: NSSegmentedControl!
+    @IBOutlet weak var tableView: NSScrollView!
     
     var playlists = GMusicCollection<GMusicPlaylist>(kind: "")
     var stations = GMusicCollection<GMusicRadioStation>(kind: "")
@@ -33,6 +34,12 @@ class LibraryController: NSViewController {
         view.window?.title = title ?? ""
         segmentControl.selectedSegment = selectedSegment
         loadData()
+    }
+    
+    @IBAction func logOff(_ sender: Any) {
+        let storyboard = NSStoryboard(name: "Main", bundle: nil)
+        let controller = storyboard.instantiateController(withIdentifier: "LogInController") as! ViewController
+        present(controller, animator: ReplaceWindowControllerAnimator())
     }
     
     func loadData() {

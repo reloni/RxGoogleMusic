@@ -13,8 +13,9 @@ import RxGoogleMusic
 import WebKit
 
 class ViewController: NSViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear() {
+        super.viewDidAppear()
+        view.window?.title = title ?? ""
     }
 
     @IBAction func buttonTapped(_ sender: Any) {
