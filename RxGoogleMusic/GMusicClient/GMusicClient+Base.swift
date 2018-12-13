@@ -22,7 +22,7 @@ extension GMusicClient {
 		return collectionRequest(request, recursive: recursive)
 	}
 	
-	func collectionRequest<T>(_ request: GMusicRequest, recursive: Bool) -> Observable<GMusicCollection<T>> {
+	private func collectionRequest<T>(_ request: GMusicRequest, recursive: Bool) -> Observable<GMusicCollection<T>> {
 		if case GMusicNextPageToken.end = request.pageToken {
 			return .empty()
 		}
@@ -41,7 +41,7 @@ extension GMusicClient {
 		}
 	}
 	
-	func collectionRequest<T>(request: GMusicRequest,
+	private func collectionRequest<T>(request: GMusicRequest,
 							  invokeRequest: @escaping  (GMusicRequest) -> Single<GMusicCollection<T>>,
 							  observer: AnyObserver<GMusicCollection<T>>) -> Observable<Void> {
 		return invokeRequest(request).asObservable().flatMap { [weak self] result -> Observable<Void> in
@@ -55,7 +55,7 @@ extension GMusicClient {
 		}
 	}
 	
-	func collectionRequest<T>(_ request: GMusicRequest) -> Single<GMusicCollection<T>> {
+	private func collectionRequest<T>(_ request: GMusicRequest) -> Single<GMusicCollection<T>> {
 		return apiRequest(request).flatMap { data -> Single<GMusicCollection<T>> in
 			let result = try JSONDecoder().decode(GMusicCollection<T>.self, from: data)
 			return .just(result)
