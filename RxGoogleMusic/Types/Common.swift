@@ -80,11 +80,11 @@ public enum GMusicError: Error {
 }
 
 public struct GMusicToken {
-	let accessToken: String
-	let expiresIn: Int?
-	var refreshToken: String?
-	let expiresAt: Date?
-	var isTokenExpired: Bool {
+	public let accessToken: String
+	public let expiresIn: Int?
+	public var refreshToken: String?
+	public let expiresAt: Date?
+	public var isTokenExpired: Bool {
 		return expiresAt == nil ? true : expiresAt! < Date()
 	}
 	var header: (String, String) {
@@ -106,7 +106,7 @@ public struct GMusicToken {
 	}
 
 	
-	init(accessToken: String, expiresIn: Int?, refreshToken: String?) {
+	public init(accessToken: String, expiresIn: Int?, refreshToken: String?) {
 		self.accessToken = accessToken
 		self.expiresIn = expiresIn
 		self.refreshToken = refreshToken
