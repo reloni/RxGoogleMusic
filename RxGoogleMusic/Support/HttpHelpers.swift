@@ -71,10 +71,6 @@ private func dataRequest(_ request: URLRequest, in session: URLSession) -> Singl
                 return
             }
             
-            if let data = data, let responseString = String.init(data: data, encoding: .utf8) {
-                print("Response string: \(responseString)")
-            }
-            
             guard let data = data else {
                 single(.error(GMusicError.emptyDataResponse))
                 return
