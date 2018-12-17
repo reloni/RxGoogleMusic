@@ -25,6 +25,13 @@ public extension GMusicClient {
 	func radioStations(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, pageToken: GMusicNextPageToken = .begin, recursive: Bool = false) -> Observable<GMusicCollection<GMusicRadioStation>> {
 		return entityCollection(updatedMin: updatedMin, maxResults: maxResults, pageToken: pageToken, recursive: recursive)
 	}
+    
+    func radioStationFeed(for station: GMusicRadioStation, maxResults: Int = 100) -> Observable<GMusicCollection<GMusicRadioStation>> {
+        guard let stationId = station.id?.uuidString.lowercased() else { return .empty() }
+        print(stationId)
+        let request = GMusicRequest(type: .radioStatioFeed(stationId), baseUrl: baseUrl, dataRequest: dataRequest, maxResults: maxResults, updatedMin: nil, pageToken: .begin, locale: locale)
+        return entityCollection(request: request, recursive: false)
+    }
 	
 	func favorites(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, pageToken: GMusicNextPageToken = .begin, recursive: Bool = false) -> Observable<GMusicCollection<GMusicTrack>> {
 		let request = GMusicRequest(type: .favorites, baseUrl: baseUrl, dataRequest: dataRequest, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken, locale: locale)
@@ -32,8 +39,7 @@ public extension GMusicClient {
 	}
 	
 	func artist(_ id: String, includeAlbums: Bool = false, includeBio: Bool = false, numRelatedArtists: Int? = nil, numTopTracks: Int? = nil) -> Single<GMusicArtist> {
-		let request = GMusicRequest(type: .artist, baseUrl: baseUrl, dataRequest: dataRequest, locale: locale, nid: id, includeAlbums: includeAlbums, includeBio: includeBio,
-									numRelatedArtists: numRelatedArtists, numTopTracks: numTopTracks)
+		let request = GMusicRequest(type: .artist, baseUrl: baseUrl, dataRequest: dataRequest, locale: locale, nid: id, includeAlbums: includeAlbums, includeBio: includeBio, numRelatedArtists: numRelatedArtists, numTopTracks: numTopTracks)
 		return entityRequest(request)
 	}
 	

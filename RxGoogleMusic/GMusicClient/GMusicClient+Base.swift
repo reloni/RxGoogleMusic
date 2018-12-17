@@ -51,7 +51,7 @@ extension GMusicClient {
 			
 			guard case GMusicNextPageToken.token = result.nextPageToken else { observer.onCompleted(); return .empty() }
 			
-			return client.collectionRequest(request: request.withNew(nextPageToken: result.nextPageToken), invokeRequest: invokeRequest, observer: observer)
+			return client.collectionRequest(request: replaced(nextPageToken: result.nextPageToken, in: request), invokeRequest: invokeRequest, observer: observer)
 		}
 	}
 	

@@ -16,14 +16,28 @@ public protocol GMusicEntity {
 	static var collectionRequestPath: GMusicRequestPath { get }
 }
 
-public enum GMusicRequestPath: String {
-	case track = "tracks"
-	case playlist = "playlists"
-	case playlistEntry = "plentries"
-	case radioStation = "radio/station"
-	case favorites = "ephemeral/top"
-	case artist = "fetchartist"
-	case album = "fetchalbum"
+public enum GMusicRequestPath {
+	case track
+	case playlist
+	case playlistEntry
+	case radioStation
+	case favorites
+	case artist
+	case album
+    case radioStatioFeed(String)
+    
+    var path: String {
+        switch self {
+        case .track: return "tracks"
+        case .playlist: return "playlists"
+        case .playlistEntry: return "plentries"
+        case .radioStation: return "radio/station"
+        case .favorites: return "ephemeral/top"
+        case .artist: return "fetchartist"
+        case .album: return "fetchalbum"
+        case .radioStatioFeed: return "radio/stationfeed"
+        }
+    }
 }
 
 struct GMusicConstants {
@@ -125,14 +139,24 @@ public enum GMusicNextPageToken {
 }
 
 public struct GMusicCollection<T: Codable>: Decodable {
+    enum GMusicCollectionNestedKeys: String, CodingKey {
+        case items
+        case stations
+        
+        static func nestedKey(forKind kind: String) -> GMusicCollectionNestedKeys {
+            switch kind {
+            case "sj#radioFeed":
+                return GMusicCollectionNestedKeys.stations
+            default:
+                return GMusicCollectionNestedKeys.items
+            }
+        }
+    }
+    
 	enum CodingKeys: String, CodingKey {
 		case kind
 		case nextPageToken
 		case data
-	}
-	
-	enum NestedDataKeys: String, CodingKey {
-		case items
 	}
 	
 	public let kind: String
@@ -155,8 +179,9 @@ public struct GMusicCollection<T: Codable>: Decodable {
 			nextPageToken = .end
 		}
 		
-		let nestedContainer = try? container.nestedContainer(keyedBy: NestedDataKeys.self, forKey: .data)
-		items = try nestedContainer?.decodeIfPresent([T].self, forKey: .items) ?? []
+        let nested = GMusicCollectionNestedKeys.nestedKey(forKind: kind)
+		let nestedContainer = try? container.nestedContainer(keyedBy: GMusicCollectionNestedKeys.self, forKey: .data)
+		items = try nestedContainer?.decodeIfPresent([T].self, forKey: nested) ?? []
 	}
 	
 	public func appended(nextCollection: GMusicCollection<T>) -> GMusicCollection<T> {

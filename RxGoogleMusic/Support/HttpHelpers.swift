@@ -9,6 +9,49 @@
 import RxSwift
 import Foundation
 
+func urlRequest(from url: URL) -> URLRequest {
+    return URLRequest(url: url)
+}
+
+func dictionaryPair<T>(key: String, value: T?) -> (String, String)? {
+    guard let v = value else { return nil }
+    return (key, String(describing: v))
+}
+
+// MARK: Request setters
+func setBody(_ body: Data?) -> (URLRequest) -> URLRequest {
+    return { request in
+        return request |> (\.httpBody .~ body)
+    }
+}
+
+func setMethod(_ method: HttpMethod) -> (URLRequest) -> URLRequest {
+    return { request in
+        return request |> (\.httpMethod .~ (method.rawValue as String?))
+    }
+}
+
+func setHeader(field: String, value: String?) -> (URLRequest) -> URLRequest {
+    return { request in
+        return request |> ((\.[field] .~ value) |> property(\.allHTTPHeaderFields) <<< map)
+    }
+}
+
+func setAuthorization(_ token: String) -> (URLRequest) -> URLRequest {
+    return { request in
+        return request |> ((\.["Authorization"] .~ "Bearer \(token)") |> property(\.allHTTPHeaderFields) <<< map)
+    }
+}
+
+let defaultHeaders: (URLRequest) -> URLRequest = (\.allHTTPHeaderFields .~ [:])
+let postHeader: (URLRequest) -> URLRequest = defaultHeaders
+    <> setMethod(.post)
+let postJson: (URLRequest) -> URLRequest = postHeader
+    <> setHeader(field: "content-type", value: "application/json")
+let postUrlEncoded: (URLRequest) -> URLRequest = postHeader
+    <> setHeader(field: "content-type", value: "application/x-www-form-urlencoded")
+
+// MARK: Data request
 private func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> {
     return Single.create { single in
         let task = session.dataTask(with: request) { data, response, error in
@@ -26,6 +69,10 @@ private func dataRequest(_ request: URLRequest, in session: URLSession) -> Singl
                 
                 single(.error(GMusicError.urlRequestError(response: response!, data: data)))
                 return
+            }
+            
+            if let data = data, let responseString = String.init(data: data, encoding: .utf8) {
+                print("Response string: \(responseString)")
             }
             
             guard let data = data else {

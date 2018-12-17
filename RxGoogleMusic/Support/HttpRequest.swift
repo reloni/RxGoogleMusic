@@ -67,44 +67,6 @@ private let issueMusicApiTokenBody =
     .replacingOccurrences(of: "\n", with: "")
     .data(using: .utf8)
 
-// MARK: Helpers
-private func urlRequest(from url: URL) -> URLRequest {
-    return URLRequest(url: url)
-}
-
-// MARK: Request setters
-private func setBody(_ body: Data?) -> (URLRequest) -> URLRequest {
-    return { request in
-        return request |> (\.httpBody .~ body)
-    }
-}
-
-private func setMethod(_ method: HttpMethod) -> (URLRequest) -> URLRequest {
-    return { request in
-        return request |> (\.httpMethod .~ (method.rawValue as String?))
-    }
-}
-
-private func setHeader(field: String, value: String?) -> (URLRequest) -> URLRequest {
-    return { request in
-        return request |> ((\.[field] .~ value) |> property(\.allHTTPHeaderFields) <<< map)
-    }
-}
-
-private func setAuthorization(_ token: String) -> (URLRequest) -> URLRequest {
-    return { request in
-        return request |> ((\.["Authorization"] .~ "Bearer \(token)") |> property(\.allHTTPHeaderFields) <<< map)
-    }
-}
-
-private let guaranteeHeaders: (URLRequest) -> URLRequest = (\.allHTTPHeaderFields .~ [:])
-private let postHeader: (URLRequest) -> URLRequest = guaranteeHeaders
-    <> setMethod(.post)
-private let postJson: (URLRequest) -> URLRequest = postHeader
-    <> setHeader(field: "content-type", value: "application/json")
-private let postUrlEncoded: (URLRequest) -> URLRequest = postHeader
-    <> setHeader(field: "content-type", value: "application/x-www-form-urlencoded")
-
 // MARK: Requests
 let authAdviceRequest =
     GMusicConstants.authAdviceUrl

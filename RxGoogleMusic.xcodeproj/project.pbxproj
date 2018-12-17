@@ -31,6 +31,7 @@
 		6ED14CB11FFC00F900B78078 /* GMusicClient+Requests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED14CB01FFC00F900B78078 /* GMusicClient+Requests.swift */; };
 		6ED14CB31FFC065800B78078 /* PlaylistEntry.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED14CB21FFC065800B78078 /* PlaylistEntry.swift */; };
 		6ED3EFBE218B35A4002385A1 /* GMusicTokenHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6ED3EFBD218B35A4002385A1 /* GMusicTokenHelpers.swift */; };
+		6EE26A5621C7B422002CA06F /* GMusicRequest+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EE26A5421C7B3CB002CA06F /* GMusicRequest+Helpers.swift */; };
 		6EF05FA521BE9DFB003C2BE4 /* SupportTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EF05FA421BE9DFB003C2BE4 /* SupportTypes.swift */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 		6ED14CB01FFC00F900B78078 /* GMusicClient+Requests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GMusicClient+Requests.swift"; sourceTree = "<group>"; };
 		6ED14CB21FFC065800B78078 /* PlaylistEntry.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistEntry.swift; sourceTree = "<group>"; };
 		6ED3EFBD218B35A4002385A1 /* GMusicTokenHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicTokenHelpers.swift; sourceTree = "<group>"; };
+		6EE26A5421C7B3CB002CA06F /* GMusicRequest+Helpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GMusicRequest+Helpers.swift"; sourceTree = "<group>"; };
 		6EF05FA421BE9DFB003C2BE4 /* SupportTypes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SupportTypes.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -163,6 +165,7 @@
 				6ED14CAA1FFBFF9F00B78078 /* GMusicPlaylist.swift */,
 				6ED14CB21FFC065800B78078 /* PlaylistEntry.swift */,
 				6ED14CAC1FFC003200B78078 /* GMusicRequest.swift */,
+				6EE26A5421C7B3CB002CA06F /* GMusicRequest+Helpers.swift */,
 				6E0F2B4D2003CE19000DA9F9 /* GMusicRadioStation.swift */,
 				6E0F2B4F2003CF4E000DA9F9 /* GMusicArtist.swift */,
 			);
@@ -344,6 +347,7 @@
 				6E3964041FFA981E0016C2FA /* GMusicTrack.swift in Sources */,
 				6ED14CB11FFC00F900B78078 /* GMusicClient+Requests.swift in Sources */,
 				6E0F2B502003CF4E000DA9F9 /* GMusicArtist.swift in Sources */,
+				6EE26A5621C7B422002CA06F /* GMusicRequest+Helpers.swift in Sources */,
 				6EAF31D9218A276C0017A15A /* Operators.swift in Sources */,
 				6E703C7C21BEB36B00B72DA0 /* GMusicAuthenticationController.swift in Sources */,
 				6ED14CB31FFC065800B78078 /* PlaylistEntry.swift in Sources */,
