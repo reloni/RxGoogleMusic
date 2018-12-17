@@ -81,7 +81,6 @@ public enum GMusicError: Error {
 
 public struct GMusicToken {
 	public let accessToken: String
-	public let expiresIn: Int?
 	public var refreshToken: String?
 	public let expiresAt: Date?
 	public var isTokenExpired: Bool {
@@ -107,13 +106,16 @@ public struct GMusicToken {
 
 	
 	public init(accessToken: String, expiresIn: Int?, refreshToken: String?) {
-		self.accessToken = accessToken
-		self.expiresIn = expiresIn
-		self.refreshToken = refreshToken
-		
-		self.expiresAt = expiresIn == nil ? nil : Date().addingTimeInterval(Double(expiresIn!))
-		
+        self.init(accessToken: accessToken,
+                  expiresAt: expiresIn == nil ? nil : Date().addingTimeInterval(Double(expiresIn!)),
+                  refreshToken: refreshToken)
 	}
+    
+    public init(accessToken: String, expiresAt: Date?, refreshToken: String?) {
+        self.accessToken = accessToken
+        self.refreshToken = refreshToken
+        self.expiresAt = expiresAt
+    }
 }
 
 public enum GMusicNextPageToken {
