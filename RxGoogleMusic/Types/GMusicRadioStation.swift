@@ -37,6 +37,7 @@ public struct GMusicRadioStation: Codable, GMusicEntity {
 		case compositeArtRefs
 		case deleted
 		case inLibrary
+        case tracks
 	}
 	
 	public let kind: String
@@ -54,6 +55,7 @@ public struct GMusicRadioStation: Codable, GMusicEntity {
 	public let compositeArtRefs: [GMusicRef]
 	public let deleted: Bool
 	public let inLibrary: Bool
+    public let tracks: [GMusicTrack]
 	
 	public static var collectionRequestPath: GMusicRequestPath = .radioStation
 	
@@ -74,5 +76,6 @@ public struct GMusicRadioStation: Codable, GMusicEntity {
 		compositeArtRefs = try container.decodeIfPresent(.compositeArtRefs) ?? []
 		deleted = try container.decode(.deleted)
 		inLibrary = try container.decode(.inLibrary)
+        tracks = try container.decodeIfPresent(.tracks) ?? []
 	}
 }
