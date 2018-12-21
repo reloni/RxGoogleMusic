@@ -25,6 +25,15 @@ class RxGoogleMusicTests: XCTestCase {
         #else
         fatalError()
         #endif
+    }
+    
+    func testSignString() {
+        let (sig, slt) = Hmac.sign(string: "Txb2nm5efzvwuhflshdgx46vjla", salt: 1545310567294)
+        XCTAssertEqual(sig, "EXvffRIs4-r2WyQ4V3AwSy_Tcfo=")
+        XCTAssertEqual(slt, "1545310567294")
         
+        let salt = Hmac.currentSalt
+        let current = Int(Date().timeIntervalSince1970 * 1000)
+        XCTAssertEqual(salt, current)
     }
 }

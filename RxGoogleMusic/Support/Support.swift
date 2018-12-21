@@ -55,3 +55,33 @@ private let osVersionString: String = {
     fatalError("Unsupported hardware")
     #endif
 }()
+
+struct Hmac {
+    private static let part1 = Data(base64Encoded: "VzeC4H4h+T2f0VI180nVX8x+Mb5HiTtGnKgH52Otj8ZCGDz9jRWyHb6QXK0JskSiOgzQfwTY5xgLLSdUSreaLVMsVVWfxfa8Rw==")!
+    private static let part2 = Data(base64Encoded: "ZAPnhUkYwQ6y5DdQxWThbvhJHN8msQ1rqJw0ggKdufQjelrKuiGGJI30aswkgCWTDyHkTGK9ynlqTkJ5L4CiGGUabGeo8M6JTQ==")!
+    private static let key = zip(part1, part2).map { $0 ^ $1 }
+    
+    static func sign(string: String, salt: Int) -> (sig: String, slt: String) {
+        let slt = String(salt)
+        
+        let context = UnsafeMutablePointer<CCHmacContext>.allocate(capacity: 1)
+        CCHmacInit(context, CCHmacAlgorithm(kCCHmacAlgSHA1), key, size_t(key.count))
+
+        CCHmacUpdate(context, string, size_t(string.lengthOfBytes(using: String.Encoding.utf8)))
+        CCHmacUpdate(context, slt, size_t(slt.lengthOfBytes(using: String.Encoding.utf8)))
+        
+        var hmac = Array<UInt8>(repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
+        CCHmacFinal(context, &hmac)
+        
+        let sig = Data(bytes: hmac)
+            .base64EncodedString()
+            .replacingOccurrences(of: "+", with: "-")
+            .replacingOccurrences(of: "/", with: "_")
+        
+        return (sig: sig, slt: slt)
+    }
+    
+    static var currentSalt: Int {
+        return Int(Date().timeIntervalSince1970 * 1000)
+    }
+}
