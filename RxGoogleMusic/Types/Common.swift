@@ -12,19 +12,24 @@ import UIKit
 #endif
 typealias JSON = [String: Any]
 
-public protocol GMusicEntity {
-	static var collectionRequestPath: GMusicRequestPath { get }
+protocol GMusicEntity {
+	static var collectionRequestPath: GMusicRequestType { get }
 }
 
-public enum GMusicRequestPath {
+public enum StreamQuality: String {
+    case medium = "med"
+}
+
+enum GMusicRequestType {
 	case track
 	case playlist
 	case playlistEntry
 	case radioStation
 	case favorites
-	case artist
-	case album
-    case radioStatioFeed(String)
+    case artist(id: String, numRelatedArtists: Int, numTopTracks: Int, includeAlbums: Bool, includeBio: Bool)
+    case album(id: String, includeDescription: Bool, includeTracks: Bool)
+    case radioStatioFeed(statioId: String)
+    case stream(trackId: String, quality: StreamQuality)
     
     var path: String {
         switch self {
@@ -36,6 +41,26 @@ public enum GMusicRequestPath {
         case .artist: return "fetchartist"
         case .album: return "fetchalbum"
         case .radioStatioFeed: return "radio/stationfeed"
+        case .stream: return "music/mplay"
+        }
+    }
+    
+    var urlParameters: [(String, String)] {
+        switch self {
+        case let .album(id, includeDescription, includeTracks):
+            return [("nid", id), ("include-description", "\(includeDescription)"), ("include-tracks", "\(includeTracks)")]
+        case let .artist(id, numRelatedArtists, numTopTracks, includeAlbums, includeBio):
+            return [("nid", id), ("num-related-artists", "\(numRelatedArtists)"),
+                    ("num-top-tracks", "\(numTopTracks)"), ("include-albums", "\(includeAlbums)"), ("include-bio", "\(includeBio)")]
+        case let .stream(trackId, quality):
+            let (sig, slt) = Hmac.sign(string: trackId, salt: Hmac.currentSalt)
+            
+            // mjck if trackID started with T or D,
+            // songid instead
+            // ("targetkbps", "512"), ("p", "1"), ("pt", "e"), ("adaptive", "true")
+            return [("mjck", trackId), ("sig", sig), ("slt", slt), ("opt", quality.rawValue), ("audio_formats", "fmp4_aac,mp3"), ("net", "wifi")]
+        case .favorites, .playlist, .playlistEntry, .radioStatioFeed, .radioStation, .track:
+            return []
         }
     }
 }
