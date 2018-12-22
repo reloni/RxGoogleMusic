@@ -18,6 +18,18 @@ func dictionaryPair<T>(key: String, value: T?) -> (String, String)? {
     return (key, String(describing: v))
 }
 
+func setJson(key: String, value: Any?) -> (JSON) -> JSON {
+    return { json in
+        var copy = json
+        copy[key] = value
+        return copy
+    }
+}
+
+func dataFrom(_ json: JSON) -> Data? {
+    return try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+}
+
 // MARK: Request setters
 func setBody(_ body: Data?) -> (URLRequest) -> URLRequest {
     return { request in

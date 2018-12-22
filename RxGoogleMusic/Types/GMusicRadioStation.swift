@@ -10,14 +10,14 @@ import Foundation
 
 public struct GMusicRadioSeed: Codable {
 	public let kind: String
-	public let artistId: String
+	public let artistId: String?
 	public let seedType: String
 	public let metadataSeed: GMusicRadioSeedMetadata?
 }
 
 public struct GMusicRadioSeedMetadata: Codable {
 	public let kind: String
-	public let artist: GMusicArtist
+    public let artist: GMusicArtist?
 }
 
 public struct GMusicRadioStation: Codable {

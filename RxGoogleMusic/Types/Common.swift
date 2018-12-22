@@ -13,7 +13,7 @@ import UIKit
 typealias JSON = [String: Any]
 
 protocol GMusicEntity {
-	static var collectionRequestPath: GMusicRequestType { get }
+    static var collectionRequestPath: GMusicRequestType { get }
 }
 
 public enum StreamQuality: String {
@@ -21,7 +21,7 @@ public enum StreamQuality: String {
 }
 
 enum GMusicRequestType {
-	case track
+    case track
 	case playlist
 	case playlistEntry
 	case radioStation
@@ -59,8 +59,24 @@ enum GMusicRequestType {
             // songid instead
             // ("targetkbps", "512"), ("p", "1"), ("pt", "e"), ("adaptive", "true")
             return [("mjck", trackId), ("sig", sig), ("slt", slt), ("opt", quality.rawValue), ("audio_formats", "fmp4_aac,mp3"), ("net", "wifi")]
-        case .favorites, .playlist, .playlistEntry, .radioStatioFeed, .radioStation, .track:
+        case .favorites, .radioStation, .radioStatioFeed, .playlist, .playlistEntry, .track:
             return []
+        }
+    }
+    
+    func maxResultsUrlParameter(_ value: Int) -> (String, String)? {
+        switch self {
+        case .track, .playlist, .playlistEntry: return ("max-results", "\(value)")
+        case .album, .radioStation, .radioStatioFeed, .stream, .favorites, .artist: return nil
+        }
+    }
+    
+    func nextPageTokenUrlParameter(_ value: GMusicNextPageToken) -> (String, String)? {
+        switch self {
+        case .track, .playlist, .playlistEntry:
+            guard let token = value.escapedValue else { return nil }
+            return ("start-token", "\(token)")
+        case .album, .radioStation, .radioStatioFeed, .stream, .favorites, .artist: return nil
         }
     }
 }
@@ -161,6 +177,16 @@ public enum GMusicNextPageToken {
 	case begin
 	case token(String)
 	case end
+    
+    var escapedValue: String? {
+        guard case GMusicNextPageToken.token(let token) = self else { return nil }
+        return token.addingPercentEncoding(withAllowedCharacters: CharacterSet.nextPageTokenAllowed)
+    }
+    
+    var rawValue: String? {
+        guard case GMusicNextPageToken.token(let token) = self else { return nil }
+        return token
+    }
 }
 
 public struct GMusicCollection<T: Codable>: Decodable {

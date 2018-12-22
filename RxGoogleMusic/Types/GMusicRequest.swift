@@ -30,21 +30,17 @@ struct GMusicRequest {
 	}
     
     var url: URL {
-        let url = URL(baseUrl: baseUrl.appendingPathComponent(type.path).absoluteString, parameters: Dictionary(uniqueKeysWithValues: urlParameters))!
-        guard let token = escapedPageToken else { return url }
-        return URL(string: "\(url.absoluteString)&start-token=\(token)")!
-    }
-    
-    var escapedPageToken: String? {
-        guard case GMusicNextPageToken.token(let token) = pageToken else { return nil }
-        return token.addingPercentEncoding(withAllowedCharacters: CharacterSet.nextPageTokenAllowed)
+        let url = URL(baseUrl: baseUrl.appendingPathComponent(type.path).absoluteString,
+                   parameters: Dictionary(uniqueKeysWithValues: urlParameters))!
+        guard let nextPage = type.nextPageTokenUrlParameter(pageToken) else { return url }
+        return url.appendingParameter(key: nextPage.0, rawValue: nextPage.1)!
     }
 	
     var urlParameters: [(String, String)] {
         return [
             dictionaryPair(key: "dv", value: GMusicConstants.dv),
             dictionaryPair(key: "hl", value: locale.identifier),
-            dictionaryPair(key: "max-results", value: maxResults),
+            type.maxResultsUrlParameter(maxResults),
             dictionaryPair(key: "prettyPrint", value: false),
             dictionaryPair(key: "tier", value: GMusicConstants.tier),
             dictionaryPair(key: "updated-min", value: updatedMin?.microsecondsSince1970),
