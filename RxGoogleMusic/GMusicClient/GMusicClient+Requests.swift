@@ -28,7 +28,6 @@ public extension GMusicClient {
     
     func radioStationFeed(for station: GMusicRadioStation, maxResults: Int = 100) -> Observable<GMusicCollection<GMusicRadioStation>> {
         guard let stationId = station.id?.uuidString.lowercased() else { return .empty() }
-        print(stationId)
         let request = GMusicRequest(type: .radioStatioFeed(statioId: stationId), baseUrl: baseUrl, dataRequest: dataRequest, maxResults: maxResults, updatedMin: nil, pageToken: .begin, locale: locale)
         return entityCollection(request: request, recursive: false)
     }
@@ -47,4 +46,9 @@ public extension GMusicClient {
 		let request = GMusicRequest(type: .album(id: id, includeDescription: includeDescription, includeTracks: includeTracks), baseUrl: baseUrl, dataRequest: dataRequest, locale: locale)
 		return entityRequest(request)
 	}
+    
+    func downloadTrack(id trackId: String) -> Single<Data> {
+        let request = GMusicRequest(type: .stream(trackId: trackId, quality: .medium), baseUrl: baseUrl, dataRequest: dataRequest, maxResults: 0, updatedMin: nil, pageToken: .begin, locale: locale)
+        return apiRequest(request)
+    }
 }

@@ -33,14 +33,14 @@ enum GMusicRequestType {
     
     var path: String {
         switch self {
-        case .track: return "tracks"
-        case .playlist: return "playlists"
-        case .playlistEntry: return "plentries"
-        case .radioStation: return "radio/station"
-        case .favorites: return "ephemeral/top"
-        case .artist: return "fetchartist"
-        case .album: return "fetchalbum"
-        case .radioStatioFeed: return "radio/stationfeed"
+        case .track: return "/sj/v2.5/tracks"
+        case .playlist: return "/sj/v2.5/playlists"
+        case .playlistEntry: return "/sj/v2.5/plentries"
+        case .radioStation: return "/sj/v2.5/radio/station"
+        case .favorites: return "/sj/v2.5/ephemeral/top"
+        case .artist: return "/sj/v2.5/fetchartist"
+        case .album: return "/sj/v2.5/fetchalbum"
+        case .radioStatioFeed: return "/sj/v2.5/radio/stationfeed"
         case .stream: return "music/mplay"
         }
     }
@@ -82,7 +82,7 @@ enum GMusicRequestType {
 }
 
 struct GMusicConstants {
-	static let apiBaseUrl = URL(string: "https://mclients.googleapis.com/sj/v2.5")!
+	static let apiBaseUrl = URL(string: "https://mclients.googleapis.com")!
 	static let tokenUrl = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
 	static let issueTokenUrl = URL(string: "https://www.googleapis.com/oauth2/v2/IssueToken")!
 	static let authAdviceUrl = URL(string: "https://www.googleapis.com/oauth2/v3/authadvice")!

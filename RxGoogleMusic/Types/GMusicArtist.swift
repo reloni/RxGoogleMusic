@@ -23,7 +23,7 @@ public struct GMusicArtist: Codable {
 	}
 	public let kind: String
 	public let name: String
-	public let artistArtRef: URL
+	public let artistArtRef: URL?
 	public let artistArtRefs: [GMusicRef]
 	public let artistId: String
 	public let artistBio: String?
@@ -37,7 +37,7 @@ public struct GMusicArtist: Codable {
 		
 		kind = try container.decode(String.self, forKey: .kind)
 		name = try container.decode(String.self, forKey: .name)
-		artistArtRef = try container.decode(URL.self, forKey: .artistArtRef)
+		artistArtRef = try container.decodeIfPresent(URL.self, forKey: .artistArtRef)
 		artistArtRefs = try container.decodeIfPresent([GMusicRef].self, forKey: .artistArtRefs) ?? []
 		artistId = try container.decode(String.self, forKey: .artistId)
 		artistBio = try container.decodeIfPresent(String.self, forKey: .artistBio)

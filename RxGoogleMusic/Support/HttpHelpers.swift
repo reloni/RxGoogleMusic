@@ -55,7 +55,7 @@ func setAuthorization(_ token: String) -> (URLRequest) -> URLRequest {
     }
 }
 
-let defaultHeaders: (URLRequest) -> URLRequest = (\.allHTTPHeaderFields .~ [:])
+let defaultHeaders: (URLRequest) -> URLRequest = (\.allHTTPHeaderFields .~ ["X-Device-ID":"ios:\(GMusicConstants.deviceId)"])
 let postHeader: (URLRequest) -> URLRequest = defaultHeaders
     <> setMethod(.post)
 let postJson: (URLRequest) -> URLRequest = postHeader
