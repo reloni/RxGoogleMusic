@@ -15,7 +15,7 @@ private let genericBody = { (maxResults: Int, nextPageToken: GMusicNextPageToken
     return JSON()
         |> setJson(key: "max-results", value: maxResults)
         >>> setJson(key: "start-token", value: nextPageToken.rawValue)
-        >>> dataFrom
+        >>> jsonToData
 }
 
 private let radioFeedBody = { (radioId: String, numEntries: Int) in

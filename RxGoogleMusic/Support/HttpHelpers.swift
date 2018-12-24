@@ -26,7 +26,7 @@ func setJson(key: String, value: Any?) -> (JSON) -> JSON {
     }
 }
 
-func dataFrom(_ json: JSON) -> Data? {
+func jsonToData(_ json: JSON) -> Data? {
     return try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 }
 
