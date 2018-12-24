@@ -48,7 +48,7 @@ public extension GMusicClient {
 	}
     
     func downloadTrack(id trackId: String) -> Single<Data> {
-        let request = GMusicRequest(type: .stream(trackId: trackId, quality: .medium), baseUrl: baseUrl, dataRequest: dataRequest, maxResults: 0, updatedMin: nil, pageToken: .begin, locale: locale)
+        let request = GMusicRequest(type: .stream(trackId: trackId, quality: .high), baseUrl: baseUrl, dataRequest: dataRequest, maxResults: 0, updatedMin: nil, pageToken: .begin, locale: locale)
         return apiRequest(request)
     }
 }

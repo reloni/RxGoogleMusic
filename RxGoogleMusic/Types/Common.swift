@@ -18,6 +18,7 @@ protocol GMusicEntity {
 
 public enum StreamQuality: String {
     case medium = "med"
+    case high = "hi"
 }
 
 enum GMusicRequestType {
@@ -58,7 +59,10 @@ enum GMusicRequestType {
             // mjck if trackID started with T or D,
             // songid instead
             // ("targetkbps", "512"), ("p", "1"), ("pt", "e"), ("adaptive", "true")
-            return [("mjck", trackId), ("sig", sig), ("slt", slt), ("opt", quality.rawValue), ("audio_formats", "fmp4_aac,mp3"), ("net", "wifi")]
+            // ("audio_formats", "fmp4_aac,mp3")
+            // ("ppf", "fmp4_aac_lc,fmp4_he_aac_v1")
+            // ("upf", "mp3")
+            return [("mjck", trackId), ("sig", sig), ("slt", slt), ("opt", quality.rawValue), ("ppf", "fmp4_aac_lc,fmp4_he_aac_v1"), ("upf", "mp3"), ("net", "wifi"), ("targetkbps", "320"), ("p", "1"), ("pt", "e"), ("adaptive", "false")]
         case .favorites, .radioStation, .radioStatioFeed, .playlist, .playlistEntry, .track:
             return []
         }
