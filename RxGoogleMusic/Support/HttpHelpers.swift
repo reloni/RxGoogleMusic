@@ -18,6 +18,18 @@ func dictionaryPair<T>(key: String, value: T?) -> (String, String)? {
     return (key, String(describing: v))
 }
 
+func setJson(key: String, value: Any?) -> (JSON) -> JSON {
+    return { json in
+        var copy = json
+        copy[key] = value
+        return copy
+    }
+}
+
+func jsonToData(_ json: JSON) -> Data? {
+    return try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
+}
+
 // MARK: Request setters
 func setBody(_ body: Data?) -> (URLRequest) -> URLRequest {
     return { request in
@@ -43,7 +55,7 @@ func setAuthorization(_ token: String) -> (URLRequest) -> URLRequest {
     }
 }
 
-let defaultHeaders: (URLRequest) -> URLRequest = (\.allHTTPHeaderFields .~ [:])
+let defaultHeaders: (URLRequest) -> URLRequest = (\.allHTTPHeaderFields .~ ["X-Device-ID":"ios:\(GMusicConstants.deviceId)"])
 let postHeader: (URLRequest) -> URLRequest = defaultHeaders
     <> setMethod(.post)
 let postJson: (URLRequest) -> URLRequest = postHeader

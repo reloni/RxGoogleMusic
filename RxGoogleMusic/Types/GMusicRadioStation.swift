@@ -10,17 +10,17 @@ import Foundation
 
 public struct GMusicRadioSeed: Codable {
 	public let kind: String
-	public let artistId: String
+	public let artistId: String?
 	public let seedType: String
 	public let metadataSeed: GMusicRadioSeedMetadata?
 }
 
 public struct GMusicRadioSeedMetadata: Codable {
 	public let kind: String
-	public let artist: GMusicArtist
+    public let artist: GMusicArtist?
 }
 
-public struct GMusicRadioStation: Codable, GMusicEntity {
+public struct GMusicRadioStation: Codable {
 	enum CodingKeys: String, CodingKey {
 		case kind
 		case id
@@ -57,8 +57,6 @@ public struct GMusicRadioStation: Codable, GMusicEntity {
 	public let inLibrary: Bool
     public let tracks: [GMusicTrack]
 	
-	public static var collectionRequestPath: GMusicRequestPath = .radioStation
-	
 	public init(from decoder: Decoder) throws {
 		let container = try decoder.container(keyedBy: CodingKeys.self)
 		
@@ -78,4 +76,8 @@ public struct GMusicRadioStation: Codable, GMusicEntity {
 		inLibrary = try container.decode(.inLibrary)
         tracks = try container.decodeIfPresent(.tracks) ?? []
 	}
+}
+
+extension GMusicRadioStation: GMusicEntity {
+    static var collectionRequestPath: GMusicRequestType = .radioStation
 }

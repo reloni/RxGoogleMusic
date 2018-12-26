@@ -26,8 +26,8 @@ extension Single {
 extension CharacterSet {
 	static let nextPageTokenAllowed: CharacterSet = {
 		var chars = CharacterSet.urlHostAllowed
-		chars.remove("=")
-		chars.remove("+")
+        chars.remove("=")
+        chars.remove("+")
 		return chars
 	}()
 }
@@ -43,6 +43,12 @@ extension URL {
 		
 		self = created
 	}
+    
+    func appendingParameter(key: String, rawValue: String?) -> URL? {
+        guard let value = rawValue else { return self }
+        let delimeter = self.pathComponents.count == 0 ? "?" : "&"
+        return URL(string: "\(absoluteString)\(delimeter)\(key)=\(value)")
+    }
 }
 
 extension URLRequest {

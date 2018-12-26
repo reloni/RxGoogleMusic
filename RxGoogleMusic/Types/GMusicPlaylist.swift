@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct GMusicPlaylist: Codable, GMusicEntity {
+public struct GMusicPlaylist: Codable {
 	public let kind: String
 	public let id: UUID
 	public let clientId: String?
@@ -23,6 +23,8 @@ public struct GMusicPlaylist: Codable, GMusicEntity {
 	public let ownerProfilePhotoUrl: URL?
 	public let accessControlled: Bool
 	public let description: String?
-	
-	public static var collectionRequestPath: GMusicRequestPath = .playlist
+}
+
+extension GMusicPlaylist: GMusicEntity {
+    static var collectionRequestPath: GMusicRequestType = .playlist
 }

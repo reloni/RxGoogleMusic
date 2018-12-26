@@ -12,36 +12,81 @@ import UIKit
 #endif
 typealias JSON = [String: Any]
 
-public protocol GMusicEntity {
-	static var collectionRequestPath: GMusicRequestPath { get }
+protocol GMusicEntity {
+    static var collectionRequestPath: GMusicRequestType { get }
 }
 
-public enum GMusicRequestPath {
-	case track
+public enum StreamQuality: String {
+    case medium = "med"
+    case high = "hi"
+}
+
+enum GMusicRequestType {
+    case track
 	case playlist
 	case playlistEntry
 	case radioStation
 	case favorites
-	case artist
-	case album
-    case radioStatioFeed(String)
+    case artist(id: String, numRelatedArtists: Int, numTopTracks: Int, includeAlbums: Bool, includeBio: Bool)
+    case album(id: String, includeDescription: Bool, includeTracks: Bool)
+    case radioStatioFeed(statioId: String)
+    case stream(trackId: String, quality: StreamQuality)
     
     var path: String {
         switch self {
-        case .track: return "tracks"
-        case .playlist: return "playlists"
-        case .playlistEntry: return "plentries"
-        case .radioStation: return "radio/station"
-        case .favorites: return "ephemeral/top"
-        case .artist: return "fetchartist"
-        case .album: return "fetchalbum"
-        case .radioStatioFeed: return "radio/stationfeed"
+        case .track: return "/sj/v2.5/tracks"
+        case .playlist: return "/sj/v2.5/playlists"
+        case .playlistEntry: return "/sj/v2.5/plentries"
+        case .radioStation: return "/sj/v2.5/radio/station"
+        case .favorites: return "/sj/v2.5/ephemeral/top"
+        case .artist: return "/sj/v2.5/fetchartist"
+        case .album: return "/sj/v2.5/fetchalbum"
+        case .radioStatioFeed: return "/sj/v2.5/radio/stationfeed"
+        case .stream: return "music/mplay"
+        }
+    }
+    
+    var urlParameters: [(String, String)] {
+        switch self {
+        case let .album(id, includeDescription, includeTracks):
+            return [("nid", id), ("include-description", "\(includeDescription)"), ("include-tracks", "\(includeTracks)")]
+        case let .artist(id, numRelatedArtists, numTopTracks, includeAlbums, includeBio):
+            return [("nid", id), ("num-related-artists", "\(numRelatedArtists)"),
+                    ("num-top-tracks", "\(numTopTracks)"), ("include-albums", "\(includeAlbums)"), ("include-bio", "\(includeBio)")]
+        case let .stream(trackId, quality):
+            let (sig, slt) = Hmac.sign(string: trackId, salt: Hmac.currentSalt)
+            
+            // mjck if trackID started with T or D,
+            // songid instead
+            // ("targetkbps", "512"), ("p", "1"), ("pt", "e"), ("adaptive", "true")
+            // ("audio_formats", "fmp4_aac,mp3")
+            // ("ppf", "fmp4_aac_lc,fmp4_he_aac_v1")
+            // ("upf", "mp3")
+            return [("mjck", trackId), ("sig", sig), ("slt", slt), ("opt", quality.rawValue), ("ppf", "fmp4_aac_lc,fmp4_he_aac_v1"), ("upf", "mp3"), ("net", "wifi"), ("targetkbps", "320"), ("p", "1"), ("pt", "e"), ("adaptive", "false")]
+        case .favorites, .radioStation, .radioStatioFeed, .playlist, .playlistEntry, .track:
+            return []
+        }
+    }
+    
+    func maxResultsUrlParameter(_ value: Int) -> (String, String)? {
+        switch self {
+        case .track, .playlist, .playlistEntry: return ("max-results", "\(value)")
+        case .album, .radioStation, .radioStatioFeed, .stream, .favorites, .artist: return nil
+        }
+    }
+    
+    func nextPageTokenUrlParameter(_ value: GMusicNextPageToken) -> (String, String)? {
+        switch self {
+        case .track, .playlist, .playlistEntry:
+            guard let token = value.escapedValue else { return nil }
+            return ("start-token", "\(token)")
+        case .album, .radioStation, .radioStatioFeed, .stream, .favorites, .artist: return nil
         }
     }
 }
 
 struct GMusicConstants {
-	static let apiBaseUrl = URL(string: "https://mclients.googleapis.com/sj/v2.5")!
+	static let apiBaseUrl = URL(string: "https://mclients.googleapis.com")!
 	static let tokenUrl = URL(string: "https://www.googleapis.com/oauth2/v4/token")!
 	static let issueTokenUrl = URL(string: "https://www.googleapis.com/oauth2/v2/IssueToken")!
 	static let authAdviceUrl = URL(string: "https://www.googleapis.com/oauth2/v3/authadvice")!
@@ -136,6 +181,16 @@ public enum GMusicNextPageToken {
 	case begin
 	case token(String)
 	case end
+    
+    var escapedValue: String? {
+        guard case GMusicNextPageToken.token(let token) = self else { return nil }
+        return token.addingPercentEncoding(withAllowedCharacters: CharacterSet.nextPageTokenAllowed)
+    }
+    
+    var rawValue: String? {
+        guard case GMusicNextPageToken.token(let token) = self else { return nil }
+        return token
+    }
 }
 
 public struct GMusicCollection<T: Codable>: Decodable {

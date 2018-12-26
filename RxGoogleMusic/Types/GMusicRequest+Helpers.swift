@@ -9,8 +9,13 @@
 import Foundation
 import RxSwift
 
-private let genericBody = { (maxResults: Int) in
-    return "{ \"max-results\": \(maxResults) }".data(using: .utf8)
+
+
+private let genericBody = { (maxResults: Int, nextPageToken: GMusicNextPageToken) in
+    return JSON()
+        |> setJson(key: "max-results", value: maxResults)
+        >>> setJson(key: "start-token", value: nextPageToken.rawValue)
+        >>> jsonToData
 }
 
 private let radioFeedBody = { (radioId: String, numEntries: Int) in
@@ -35,7 +40,7 @@ func gMusicUrlRequest(for request: GMusicRequest, with token: GMusicToken) -> UR
         return request.url
             |> urlRequest
             >>> postJson
-            >>> (genericBody(request.maxResults) |> setBody)
+            >>> (genericBody(request.maxResults, request.pageToken) |> setBody)
             >>> setAuthorization(token.accessToken)
     case .radioStatioFeed(let stationId):
         return request.url
