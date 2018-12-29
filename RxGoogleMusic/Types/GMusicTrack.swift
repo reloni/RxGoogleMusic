@@ -43,6 +43,12 @@ public struct GMusicTrack: Codable {
 	public let albumAvailableForPurchase: Bool?
 }
 
+public extension GMusicTrack {
+    var duration: TimeInterval {
+        return TimeInterval(durationMillis).map { $0 / 1000 } ?? 0
+    }
+}
+
 extension GMusicTrack: GMusicEntity {
     static var collectionRequestPath: GMusicRequestType = .track
 }
