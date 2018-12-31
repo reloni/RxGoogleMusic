@@ -57,18 +57,19 @@ private func refreshToken(_ token: String, jsonRequest: @escaping (URLRequest) -
 
 //    let t = test |> singleMap { try tokenJsonToObject2($0) }
     
-    let test = token
-        |> tokenRefreshRequest
-        >>> jsonRequest
-        >>> singleMap { try tokenJsonToObject2($0) }
-//        >>> Single.flatMap(tokenJsonToObject)
-        >>> (token |> (attachExistedRefreshToken |> curry))
-    
     return token
         |> tokenRefreshRequest
         >>> jsonRequest
-        >>> Single.flatMap(tokenJsonToObject)
-        >>> (token |> (attachExistedRefreshToken |> curry))
+        >>> sequenceMap(tokenJsonToObject2)
+//        >>> Single.flatMap(tokenJsonToObject)
+        >>> sequenceMap { $0.withNew(refreshToken: token) }
+//        >>> (token |> (attachExistedRefreshToken |> curry))
+    
+//    return token
+//        |> tokenRefreshRequest
+//        >>> jsonRequest
+//        >>> Single.flatMap(tokenJsonToObject)
+//        >>> (token |> (attachExistedRefreshToken |> curry))
 }
 
 func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
@@ -80,9 +81,13 @@ func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URL
     return refreshToken(current, jsonRequest: jsonRequest)
 }
 
-private func attachExistedRefreshToken(_ token: String?, to request: Single<GMusicToken>) -> Single<GMusicToken> {
-    return request.map { $0 |> (\.refreshToken .~ token) }
-}
+//private func attachExistedRefreshToken(_ token: String?, to request: Single<GMusicToken>) -> Single<GMusicToken> {
+//    return request.map { $0 |> (\.refreshToken .~ token) }
+//}
+
+//private func attachExistedRefreshToken2(_ token: String?) -> (GMusicToken) -> GMusicToken {
+//    return { t in t |> (\.refreshToken .~ token) }
+//}
 
 // MARK: Issue token
 func issueMusicApiToken(withToken token: GMusicToken, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {

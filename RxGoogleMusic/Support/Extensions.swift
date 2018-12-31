@@ -30,7 +30,7 @@ func sequenceMap<OldElement, NewElement>(_ map: @escaping (OldElement) throws ->
     }
 }
 
-func singleMap<OldElement, NewElement>(_ map: @escaping (OldElement) throws -> NewElement) ->
+func sequenceMap<OldElement, NewElement>(_ map: @escaping (OldElement) throws -> NewElement) ->
     (Single<OldElement>) -> Single<NewElement> {
         return {
             return $0.map(map)
