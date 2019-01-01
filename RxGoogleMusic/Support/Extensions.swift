@@ -9,34 +9,6 @@
 import Foundation
 import RxSwift
 
-extension Single {
-    static func doOnSuccess(_ onSuccess: (@escaping (Element) throws -> Void)) -> (Single<Element>) -> Single<Element> {
-        return { single in
-            return single.do(onSuccess: onSuccess)
-        }
-    }
-    
-    static func flatMap<T>(_ selector: (@escaping (Element) throws -> Single<T>)) -> (Single<Element>) -> Single<T> {
-        return { single in
-            return single.flatMap(selector)
-        }
-    }
-}
-
-func sequenceMap<OldElement, NewElement>(_ map: @escaping (OldElement) throws -> NewElement) ->
-    (Observable<OldElement>) -> Observable<NewElement> {
-    return {
-        return $0.map(map)
-    }
-}
-
-func sequenceMap<OldElement, NewElement>(_ map: @escaping (OldElement) throws -> NewElement) ->
-    (Single<OldElement>) -> Single<NewElement> {
-        return {
-            return $0.map(map)
-        }
-}
-
 extension CharacterSet {
 	static let nextPageTokenAllowed: CharacterSet = {
 		var chars = CharacterSet.urlHostAllowed

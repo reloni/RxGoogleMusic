@@ -113,8 +113,7 @@ func dataToJson(_ data: Data) throws -> JSON {
 }
 
 func dataRequest(for session: URLSession) -> (URLRequest) -> Single<Data> {
-    return session
-        |> (dataRequest |> curry |> flip)
+    return session |> (dataRequest |> curry |> flip)
 }
 
 func jsonRequest(for session: URLSession) -> (URLRequest) -> Single<JSON> {
