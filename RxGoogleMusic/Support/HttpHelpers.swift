@@ -101,29 +101,25 @@ private func dataRequest(_ request: URLRequest, in session: URLSession) -> Singl
     }
 }
 
-func jsonRequest(from dataRequest: Single<Data>) -> Single<JSON> {
-    return dataRequest
-        .flatMap { data -> Single<JSON> in
-            do {
-                guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? JSON else {
-                    return .error(GMusicError.unknownJsonStructure)
-                }
-                return .just(json)
-            } catch let error {
-                return .error(GMusicError.jsonParseError(error))
-            }
+func dataToJson(_ data: Data) throws -> JSON {
+    do {
+        guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? JSON else {
+            throw GMusicError.unknownJsonStructure
+        }
+        return json
+    } catch let error {
+        throw GMusicError.jsonParseError(error)
     }
 }
 
 func dataRequest(for session: URLSession) -> (URLRequest) -> Single<Data> {
-    return session
-        |> (dataRequest |> curry |> flip)
+    return session |> (dataRequest |> curry |> flip)
 }
 
 func jsonRequest(for session: URLSession) -> (URLRequest) -> Single<JSON> {
-    return { request in
-        return request
-            |> (session |> dataRequest)
-            >>> jsonRequest
-    }
+    return { dataRequest($0, in: session).map(dataToJson) }
+}
+
+func jsonRequest(from dataRequest: Single<Data>) -> Single<JSON> {
+    return dataRequest.map(dataToJson)
 }

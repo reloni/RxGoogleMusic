@@ -7,9 +7,24 @@
 //
 
 import Foundation
+import RxSwift
 #if os(iOS)
 import UIKit
 #endif
+
+func sequenceMap<OldElement, NewElement>(_ map: @escaping (OldElement) throws -> NewElement) ->
+    (Observable<OldElement>) -> Observable<NewElement> {
+        return {
+            return $0.map(map)
+        }
+}
+
+func sequenceMap<OldElement, NewElement>(_ map: @escaping (OldElement) throws -> NewElement) ->
+    (Single<OldElement>) -> Single<NewElement> {
+        return {
+            return $0.map(map)
+        }
+}
 
 enum HardwareType {
     case iOS
