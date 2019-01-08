@@ -57,11 +57,11 @@ func setAuthorization(_ token: String) -> (URLRequest) -> URLRequest {
 
 let defaultHeaders: (URLRequest) -> URLRequest = (\.allHTTPHeaderFields .~ ["X-Device-ID":"ios:\(GMusicConstants.deviceId)"])
 let postHeader: (URLRequest) -> URLRequest = defaultHeaders
-    <> setMethod(.post)
+    >>> setMethod(.post)
 let postJson: (URLRequest) -> URLRequest = postHeader
-    <> setHeader(field: "content-type", value: "application/json")
+    >>> setHeader(field: "content-type", value: "application/json")
 let postUrlEncoded: (URLRequest) -> URLRequest = postHeader
-    <> setHeader(field: "content-type", value: "application/x-www-form-urlencoded")
+    >>> setHeader(field: "content-type", value: "application/x-www-form-urlencoded")
 
 // MARK: Data request
 private func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> {
