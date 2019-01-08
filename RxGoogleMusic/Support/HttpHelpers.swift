@@ -50,9 +50,7 @@ func setHeader(field: String, value: String?) -> (URLRequest) -> URLRequest {
 }
 
 func setAuthorization(_ token: String) -> (URLRequest) -> URLRequest {
-    return { request in
-        return request |> ((\.["Authorization"] .~ "Bearer \(token)") |> property(\.allHTTPHeaderFields) <<< map)
-    }
+    return setHeader(field: "Authorization", value: "Bearer \(token)")
 }
 
 let defaultHeaders: (URLRequest) -> URLRequest = (\.allHTTPHeaderFields .~ ["X-Device-ID":"ios:\(GMusicConstants.deviceId)"])

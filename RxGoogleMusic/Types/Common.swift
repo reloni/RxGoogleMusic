@@ -145,9 +145,6 @@ public struct GMusicToken {
 	public var isTokenExpired: Bool {
 		return expiresAt == nil ? true : expiresAt! < Date()
 	}
-	var header: (String, String) {
-		return ("Authorization", "Bearer \(accessToken)")
-	}
 	
 	init?(json: JSON) {
 		guard let at = json["access_token"] as? String, at.count > 0 else { return nil }
