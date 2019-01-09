@@ -55,4 +55,14 @@ public extension GMusicClient {
     func downloadTrack(_ track: GMusicTrack) -> Single<Data> {
         return downloadTrack(id: track.nid ?? "")
     }
+    
+    func downloadArt(_ artRef: GMusicRef) -> Single<Data> {
+        return artRef.url
+            |> urlRequest
+            >>> dataRequest
+    }
+    
+    func downloadAlbumArt(_ track: GMusicTrack) -> Single<Data?> {
+        return track.albumArtRef?.first.flatMap { downloadArt($0).map(Optional.init) } ?? Single.just(nil)
+    }
 }
