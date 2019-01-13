@@ -51,7 +51,18 @@ struct GMusicRequest {
 
 extension GMusicRequest {
     func dataRequest(withToken token: GMusicToken) -> Single<Data> {
-        return gMusicUrlRequest(for: self, with: token)
+        return createUrlRequest(for: self)
+            |> setAuthorization(token.accessToken)
             |> dataRequest
+    }
+    
+    func replaced(nextPageToken: GMusicNextPageToken) -> GMusicRequest {
+        return GMusicRequest(type: self.type,
+                             baseUrl: self.baseUrl,
+                             dataRequest: self.dataRequest,
+                             maxResults: self.maxResults,
+                             updatedMin: self.updatedMin,
+                             pageToken: nextPageToken,
+                             locale: self.locale)
     }
 }
