@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct GMusicArtist: Codable {
+public struct GMusicArtist: Codable, Equatable {
 	enum CodingKeys: String, CodingKey {
 		case kind
 		case name

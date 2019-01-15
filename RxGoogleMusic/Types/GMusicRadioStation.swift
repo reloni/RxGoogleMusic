@@ -8,19 +8,19 @@
 
 import Foundation
 
-public struct GMusicRadioSeed: Codable {
+public struct GMusicRadioSeed: Codable, Equatable {
 	public let kind: String
 	public let artistId: String?
 	public let seedType: String
 	public let metadataSeed: GMusicRadioSeedMetadata?
 }
 
-public struct GMusicRadioSeedMetadata: Codable {
+public struct GMusicRadioSeedMetadata: Codable, Equatable {
 	public let kind: String
     public let artist: GMusicArtist?
 }
 
-public struct GMusicRadioStation: Codable {
+public struct GMusicRadioStation: Codable, Equatable {
 	enum CodingKeys: String, CodingKey {
 		case kind
 		case id

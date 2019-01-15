@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct GMusicTrack: Codable {
+public struct GMusicTrack: Codable, Equatable {
 	public let kind: String
 	public let id: UUID?
 	public let clientId: String?

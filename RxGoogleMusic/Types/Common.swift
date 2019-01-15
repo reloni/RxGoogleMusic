@@ -248,14 +248,14 @@ public struct GMusicCollection<T: Codable>: Decodable {
 	}
 }
 
-public struct GMusicRef: Codable {
+public struct GMusicRef: Codable, Equatable {
 	public let kind: String
 	public let url: URL
 	public let aspectRatio: String?
 	public let autogen: Bool?
 }
 
-public struct GMusicAlbum: Codable {
+public struct GMusicAlbum: Codable, Equatable {
 	public let kind: String
 	public let name: String
 	public let albumArtist: String
@@ -269,7 +269,7 @@ public struct GMusicAlbum: Codable {
 	public let tracks: [GMusicTrack]?
 }
 
-public struct GMusicTimestamp: Codable, CustomDebugStringConvertible {
+public struct GMusicTimestamp: Codable, CustomDebugStringConvertible, Equatable {
 	public let value: Date
 	public let rawValue: String
 	
