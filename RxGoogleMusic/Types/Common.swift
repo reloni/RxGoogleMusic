@@ -21,6 +21,24 @@ public enum StreamQuality: String {
     case high = "hi"
 }
 
+public enum NetworkType: String {
+    case wifi = "wifi"
+}
+
+public enum AudioFormat: String {
+    case mp4aaclc = "fmp4_aac_lc"
+    case mp4aacv1 = "fmp4_he_aac_v1"
+    
+    // iOS
+    //case mp4aac = "fmp4_aac"
+    //case mp3 = "mp3"
+}
+
+public enum AudioQuality: Int {
+    case high = 512
+    case medium = 320
+}
+
 enum GMusicRequestType {
     case track
 	case playlist
@@ -58,11 +76,9 @@ enum GMusicRequestType {
             
             // mjck if trackID started with T or D,
             // songid instead
-            // ("targetkbps", "512"), ("p", "1"), ("pt", "e"), ("adaptive", "true")
-            // ("audio_formats", "fmp4_aac,mp3")
-            // ("ppf", "fmp4_aac_lc,fmp4_he_aac_v1")
-            // ("upf", "mp3")
-            return [("mjck", trackId), ("sig", sig), ("slt", slt), ("opt", quality.rawValue), ("ppf", "fmp4_aac_lc,fmp4_he_aac_v1"), ("upf", "mp3"), ("net", "wifi"), ("targetkbps", "320"), ("p", "1"), ("pt", "e"), ("adaptive", "false")]
+            let formats = [AudioFormat.mp4aaclc.rawValue, AudioFormat.mp4aacv1.rawValue].joined(separator: ",")
+            return [("mjck", trackId), ("sig", sig), ("slt", slt), ("opt", quality.rawValue), ("ppf", formats), ("upf", "mp3"),
+                    ("net", NetworkType.wifi.rawValue), ("targetkbps", "\(AudioQuality.medium.rawValue)"), ("p", "1"), ("pt", "e"), ("adaptive", "false")]
         case .favorites, .radioStation, .radioStatioFeed, .playlist, .playlistEntry, .track:
             return []
         }
