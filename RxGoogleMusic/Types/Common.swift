@@ -146,12 +146,26 @@ public enum GMusicError: Error {
     case clientDisposed
 	case jsonParseError(Error)
 	case unknownJsonStructure
-    case emptyDataResponse
 	case urlRequestError(response: URLResponse, data: Data?)
 	case urlRequestLocalError(Error)
 	case unableToRetrieveAccessToken(json: [String: Any])
 	case unableToRetrieveAuthenticationUri(json:[String: Any])
 	case unknown(Error)
+}
+
+extension GMusicError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .clientDisposed: return "Client was deallocated"
+        case .jsonParseError(let e): return "Error while parsing JSON: \(e.localizedDescription)"
+        case .unknownJsonStructure: return "Error while parsing JSON: Unknown JSON structure"
+        case .urlRequestError: return "Server returned an error"
+        case .urlRequestLocalError(let e): return e.localizedDescription
+        case .unableToRetrieveAccessToken: return "Unable to retrieve access token"
+        case .unableToRetrieveAuthenticationUri: return "Unable to retrieve authentication URL"
+        case .unknown(let e): return e.localizedDescription
+        }
+    }
 }
 
 public struct GMusicToken {

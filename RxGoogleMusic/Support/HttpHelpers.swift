@@ -81,12 +81,7 @@ private func dataRequest(_ request: URLRequest, in session: URLSession) -> Singl
                 return
             }
             
-            guard let data = data else {
-                single(.error(GMusicError.emptyDataResponse))
-                return
-            }
-            
-            single(.success(data))
+            single(.success(data ?? Data()))
         }
         
         #if DEBUG
