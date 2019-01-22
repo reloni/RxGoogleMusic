@@ -71,34 +71,34 @@ private let issueMusicApiTokenBody =
 let authAdviceRequest =
     GMusicConstants.authAdviceUrl
         |> urlRequest
-        >>> postJson
-        >>> (authAdviceBody |> setBody)
+        |> postJson
+        <> (authAdviceBody |> setBody)
 
 let tokenExchangeRequest = { (code: String) in
     return GMusicConstants.tokenUrl
         |> urlRequest
-        >>> postUrlEncoded
-        >>> (code |> tokenExchangeBody |> setBody)
+        |> postUrlEncoded
+        <> (code |> tokenExchangeBody |> setBody)
 }
 
 let tokenRefreshRequest = { (refreshToken: String) in
     return GMusicConstants.tokenUrl
         |> urlRequest
-        >>> postUrlEncoded
-        >>> (refreshToken |> tokenRefreshBody |> setBody)
+        |> postUrlEncoded
+        <> (refreshToken |> tokenRefreshBody |> setBody)
 }
 
 let issueMusicApiTokeRequest = { (token: GMusicToken) in
     return GMusicConstants.issueTokenUrl
         |> urlRequest
-        >>> postUrlEncoded
-        >>> setAuthorization(token.accessToken)
-        >>> (issueMusicApiTokenBody |> setBody)
+        |> postUrlEncoded
+        <> setAuthorization(token.accessToken)
+        <> (issueMusicApiTokenBody |> setBody)
 }
 
 let loginPageRequest = { (url: URL) in
     return url
         |> urlRequest
-        >>> setHeader(field: "X-IOS-Device-ID", value: GMusicConstants.deviceId)
-        >>> setHeader(field: "X-Browser-View", value: "embedded")
+        |> setHeader(field: "X-IOS-Device-ID", value: GMusicConstants.deviceId)
+        <> setHeader(field: "X-Browser-View", value: "embedded")
 }

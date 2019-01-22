@@ -6,8 +6,46 @@
 //  Copyright © 2018 Anton Efimenko. All rights reserved.
 //
 
+typealias MutableSetter<S, A> = (@escaping (inout A) -> Void) -> (inout S) -> Void
+
+func mutate<S, A>(
+    _ setter: MutableSetter<S, A>,
+    _ set: @escaping (inout A) -> Void
+    )
+    -> (inout S) -> Void {
+        return setter(set)
+}
+
+func mutate<S, A>(
+    _ setter: MutableSetter<S, A>,
+    _ value: A
+    )
+    -> (inout S) -> Void {
+        return mutate(setter) { $0 = value }
+}
+
+prefix operator ^
+prefix func ^ <Root, Value>(
+    _ kp: WritableKeyPath<Root, Value>
+    )
+    -> (@escaping (inout Value) -> Void)
+    -> (inout Root) -> Void {
+        
+        return { update in
+            { root in
+                update(&root[keyPath: kp])
+            }
+        }
+}
+
 func |> <A, B>(a: A, f: @escaping (A) -> B) -> B {
     return f(a)
+}
+
+func |> <A>(_ a: A, _ f: (inout A) -> Void) -> A {
+    var a = a
+    f(&a)
+    return a
 }
 
 func >>> <A, B, C>(f: @escaping (A) -> B, g: @escaping (B) -> C) -> ((A) -> C) {
@@ -22,18 +60,14 @@ func <<< <A, B, C>(g: @escaping (B) -> C, f: @escaping (A) -> B) -> (A) -> C {
     }
 }
 
-func <> <A>(f: @escaping (A) -> Void, g: @escaping (A) -> Void) -> (A) -> Void {
+func <> <A>(f: @escaping (inout A) -> Void, g: @escaping (inout A) -> Void) -> (inout A) -> Void {
     return { value in
-        f(value)
-        g(value)
+        f(&value)
+        g(&value)
     }
 }
 func <> <A>(f: @escaping (A) -> A, g: @escaping (A) -> A) -> ((A) -> A) {
     return f >>> g
-}
-
-func .~ <Object, Value>(_ kp: WritableKeyPath<Object, Value>, _ v: Value) -> (Object) -> Object {
-    return (property(kp)) { _ in v }
 }
 
 func curry<A, B, C>(_ f: @escaping (A, B) -> C) -> (A) -> (B) -> C {
@@ -50,22 +84,4 @@ func flip<A, B, C>(_ f: @escaping (A) -> (B) -> C) -> (B) -> (A) -> C {
             return f(a)(b)
         }
     }
-}
-
-func property<Object, Value> (_ kp: WritableKeyPath<Object, Value>) -> (@escaping (Value) -> Value) -> (Object) -> Object {
-    return { value in
-        return { object in
-            var copy = object
-            copy[keyPath: kp] = value(copy[keyPath: kp])
-            return copy
-        }
-    }
-}
-
-func map<A, B>(_ f: @escaping (A) -> B) -> ([A]) -> [B] {
-    return { $0.map(f) }
-}
-
-func map<A, B>(_ f: @escaping (A) -> B) -> (A?) -> B? {
-    return { $0.map(f) }
 }

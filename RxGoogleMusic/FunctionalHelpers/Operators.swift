@@ -19,8 +19,6 @@ precedencegroup ForwardComposition {
 }
 infix operator >>>: ForwardComposition
 
-infix operator .~: ForwardComposition
-
 precedencegroup SingleComposition {
     associativity: left
     higherThan: ForwardApplication, ForwardComposition

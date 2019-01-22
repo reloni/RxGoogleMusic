@@ -12,8 +12,8 @@ import RxSwift
 private let genericBody = { (maxResults: Int, nextPageToken: GMusicNextPageToken) in
     return JSON()
         |> setJson(key: "max-results", value: maxResults)
-        >>> setJson(key: "start-token", value: nextPageToken.rawValue)
-        >>> jsonToData
+        <> setJson(key: "start-token", value: nextPageToken.rawValue)
+        |> jsonToData
 }
 
 private let radioFeedBody = { (radioId: String, numEntries: Int) in
@@ -37,16 +37,16 @@ func createUrlRequest(for request: GMusicRequest) -> URLRequest {
     case .radioStation, .favorites:
         return request.url
             |> urlRequest
-            >>> postJson
-            >>> (genericBody(request.maxResults, request.pageToken) |> setBody)
+            |> postJson
+            <> (genericBody(request.maxResults, request.pageToken) |> setBody)
     case .radioStatioFeed(let stationId):
         return request.url
             |> urlRequest
-            >>> postJson
-            >>> (radioFeedBody(stationId, request.maxResults) |> setBody)
+            |> postJson
+            <> (radioFeedBody(stationId, request.maxResults) |> setBody)
     default:
         return request.url
             |> urlRequest
-            >>> defaultHeaders
+            |> defaultHeaders
     }
 }

@@ -18,11 +18,9 @@ func dictionaryPair<T>(key: String, value: T?) -> (String, String)? {
     return (key, String(describing: v))
 }
 
-func setJson(key: String, value: Any?) -> (JSON) -> JSON {
+func setJson(key: String, value: Any?) -> (inout JSON) -> Void {
     return { json in
-        var copy = json
-        copy[key] = value
-        return copy
+        json[key] = value
     }
 }
 
@@ -31,35 +29,36 @@ func jsonToData(_ json: JSON) -> Data? {
 }
 
 // MARK: Request setters
-func setBody(_ body: Data?) -> (URLRequest) -> URLRequest {
+func setBody(_ body: Data?) -> (inout URLRequest) -> Void {
     return { request in
-        return request |> (\.httpBody .~ body)
+        request.httpBody = body
     }
 }
 
-func setMethod(_ method: HttpMethod) -> (URLRequest) -> URLRequest {
+func setMethod(_ method: HttpMethod) -> (inout URLRequest) -> Void {
+    return mutate(^\URLRequest.httpMethod, method.rawValue)
+}
+
+func setHeader(field: String, value: String?) -> (inout URLRequest) -> Void {
     return { request in
-        return request |> (\.httpMethod .~ (method.rawValue as String?))
+        request.allHTTPHeaderFields?[field] = value
     }
 }
 
-func setHeader(field: String, value: String?) -> (URLRequest) -> URLRequest {
-    return { request in
-        return request |> ((\.[field] .~ value) |> property(\.allHTTPHeaderFields) <<< map)
-    }
-}
-
-func setAuthorization(_ token: String) -> (URLRequest) -> URLRequest {
+func setAuthorization(_ token: String) -> (inout URLRequest) -> Void {
     return setHeader(field: "Authorization", value: "Bearer \(token)")
 }
 
-let defaultHeaders: (URLRequest) -> URLRequest = (\.allHTTPHeaderFields .~ ["X-Device-ID":"ios:\(GMusicConstants.deviceId)"])
-let postHeader: (URLRequest) -> URLRequest = defaultHeaders
-    >>> setMethod(.post)
-let postJson: (URLRequest) -> URLRequest = postHeader
-    >>> setHeader(field: "content-type", value: "application/json")
-let postUrlEncoded: (URLRequest) -> URLRequest = postHeader
-    >>> setHeader(field: "content-type", value: "application/x-www-form-urlencoded")
+let defaultHeaders = mutate(^\URLRequest.allHTTPHeaderFields) { $0 = ["X-Device-ID": "ios:\(GMusicConstants.deviceId)"] }
+
+let postHeader = defaultHeaders
+    <> setMethod(.post)
+
+let postJson = postHeader
+    <> setHeader(field: "content-type", value: "application/json")
+
+let postUrlEncoded = postHeader
+    <> setHeader(field: "content-type", value: "application/x-www-form-urlencoded")
 
 // MARK: Data request
 private func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> {
