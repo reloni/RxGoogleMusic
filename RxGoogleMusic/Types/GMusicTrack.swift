@@ -30,7 +30,7 @@ public struct GMusicTrack: Codable, Equatable {
 	public let playCount: Int?
 	public let discNumber: Int
 	public let rating: String?
-	public let estimatedSize: String
+	public let estimatedSize: String?
 	public let trackType: String?
 	public let storeId: String?
 	public let albumId: String?
