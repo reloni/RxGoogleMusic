@@ -45,8 +45,8 @@ open class GMusicAuthenticationController: ViewController {
             guard let self = self else { return }
             self.exchangeRequest(oauthCode)
                 .observeOn(MainScheduler.instance)
-                .do(onSuccess: { [weak self] token in self?.complete(with: token) })
-                .do(onError: { [weak self] in self?.callback(.error(GMusicAuthenticationController.createGMusicError($0))) })
+                .do(onSuccess: { [weak self] in self?.complete(withToken: $0) })
+                .do(onError: { [weak self] in self?.complete(withError: $0) })
                 .subscribe()
                 .disposed(by: self.bag)
         }
@@ -116,7 +116,12 @@ open class GMusicAuthenticationController: ViewController {
         #endif
     }
     
-    func complete(with token: GMusicToken) {
+    func complete(withError error: Error) {
+        close()
+        callback(.error(GMusicAuthenticationController.createGMusicError(error)))
+    }
+    
+    func complete(withToken token: GMusicToken) {
         close()
         callback(.authenticated(token))
     }
@@ -130,7 +135,7 @@ open class GMusicAuthenticationController: ViewController {
         gMusicAuthenticationUrl(for: session |> jsonRequest)
             .observeOn(MainScheduler.instance)
             .do(onSuccess: { [weak self] url in self?.webView.load(loginPageRequest(url)) })
-            .do(onError: { [weak self] in self?.callback(.error(GMusicAuthenticationController.createGMusicError($0))) })
+            .do(onError: { [weak self] in self?.complete(withError: $0) })
             .subscribe()
             .disposed(by: bag)
     }
