@@ -41,6 +41,10 @@ public struct GMusicTrack: Codable, Equatable {
 	public let trackAvailableForSubscription: Bool?
 	public let trackAvailableForPurchase: Bool?
 	public let albumAvailableForPurchase: Bool?
+    
+    var identifier: String? {
+        return storeId ?? nid
+    }
 }
 
 public extension GMusicTrack {

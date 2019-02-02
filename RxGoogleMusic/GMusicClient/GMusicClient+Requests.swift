@@ -53,7 +53,7 @@ public extension GMusicClient {
     }
     
     func downloadTrack(_ track: GMusicTrack) -> Single<Data> {
-        return downloadTrack(id: track.nid ?? "")
+        return downloadTrack(id: track.identifier ?? "")
     }
     
     func downloadArt(_ artRef: GMusicRef) -> Single<Data> {
