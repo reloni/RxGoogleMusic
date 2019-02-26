@@ -168,7 +168,7 @@ extension GMusicError: LocalizedError {
     }
 }
 
-public struct GMusicToken {
+public struct GMusicToken: Equatable {
 	public let accessToken: String
 	public let refreshToken: String?
 	public let expiresAt: Date?
