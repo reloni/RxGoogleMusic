@@ -9,6 +9,8 @@
 import Foundation
 
 public struct GMusicTrack: Codable, Equatable {
+    /// Workaround in order to be able to identify track
+    public let automaticId = UUID()
 	public let kind: String
 	public let id: UUID?
 	public let clientId: String?

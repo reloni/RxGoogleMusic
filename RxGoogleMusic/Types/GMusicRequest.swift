@@ -45,7 +45,7 @@ struct GMusicRequest {
             dictionaryPair(key: "tier", value: GMusicConstants.tier),
             dictionaryPair(key: "updated-min", value: updatedMin?.microsecondsSince1970),
             ]
-            .compactMap { $0 } + type.urlParameters
+            .compactMap( { $0 }) + type.urlParameters
     }
 }
 
