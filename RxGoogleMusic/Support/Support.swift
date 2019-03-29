@@ -88,7 +88,7 @@ struct Hmac {
         var hmac = Array<UInt8>(repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
         CCHmacFinal(context, &hmac)
         
-        let sig = Data(bytes: hmac)
+        let sig = Data(hmac)
             .base64EncodedString()
             .replacingOccurrences(of: "+", with: "-")
             .replacingOccurrences(of: "/", with: "_")
