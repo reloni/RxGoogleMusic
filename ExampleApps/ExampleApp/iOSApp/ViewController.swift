@@ -21,7 +21,7 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func authenticate(_ sender: Any) {
-		let controller = GMusicAuthenticationController { [unowned self] result in
+        let controller = GMusicAuthenticationController(deviceId: deviceId) { [unowned self] result in
 			switch result {
 			case .userAborted: print("aborted")
 			case .authenticated(let token): self.showLibrary(accessToken: token)
@@ -56,6 +56,7 @@ class ViewController: UIViewController {
 		let controller = storyboard.instantiateViewController(withIdentifier: "LibraryController") as! LibraryController
 		
 		controller.client = GMusicClient(token: token,
+                                         deviceId: deviceId,
 										 session: URLSession(configuration: URLSessionConfiguration.default),
 										 locale: Locale.current)
 		

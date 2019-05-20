@@ -8,6 +8,10 @@
 
 import Cocoa
 
+// device id for Google play music API
+// should be preserved across sessions
+let deviceId = UUID()
+
 @NSApplicationMain
 class AppDelegate: NSObject, NSApplicationDelegate {
 

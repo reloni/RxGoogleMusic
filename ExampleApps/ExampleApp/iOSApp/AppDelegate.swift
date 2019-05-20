@@ -8,6 +8,10 @@
 
 import UIKit
 
+// device id for Google play music API
+// should be preserved across sessions
+let deviceId = UUID()
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 

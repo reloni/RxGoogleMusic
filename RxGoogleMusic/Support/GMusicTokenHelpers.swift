@@ -19,8 +19,8 @@ private func jsonToToken(_ json: JSON) throws -> GMusicToken {
 }
 
 // MARK: Authentication URL
-func gMusicAuthenticationUrl(for jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<URL> {
-    return authAdviceRequest
+func gMusicAuthenticationUrl(for jsonRequest: @escaping (URLRequest) -> Single<JSON>, deviceId: UUID) -> Single<URL> {
+    return authAdviceRequest(deviceId)
         |> jsonRequest
         >>> gMusicAuthenticationUrl
 }
@@ -60,10 +60,9 @@ func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URL
 }
 
 // MARK: Issue token
-func issueMusicApiToken(withToken token: GMusicToken, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
-    return token
-        |> issueMusicApiTokeRequest
-        >>> jsonRequest
+func issueMusicApiToken(withToken token: GMusicToken, deviceId: UUID, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
+    return issueMusicApiTokeRequest(token, deviceId)
+        |> jsonRequest
         >>> (issueMusicApiToken |> sequenceMap)
 }
 
@@ -78,14 +77,11 @@ private func issueMusicApiToken(from json: JSON) throws -> GMusicToken {
 }
 
 // MARK: Refresh and Issue
-func refreshAndIssueTokens(gMusicToken token: GMusicToken, force: Bool,
+func refreshAndIssueTokens(gMusicToken token: GMusicToken, deviceId: UUID, force: Bool,
                            jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<(gMusicToken: GMusicToken, apiToken: GMusicToken)> {
     let refreshToken = RxGoogleMusic.refreshToken(token, force: force, jsonRequest: jsonRequest)
     
-    let issueToken = jsonRequest
-        |> (curry(issueMusicApiToken) |> flip)
-    
     return refreshToken.flatMap { gMusicToken in
-            issueToken(gMusicToken).flatMap { apiToken in return .just((gMusicToken, apiToken)) }
+            issueMusicApiToken(withToken: gMusicToken, deviceId: deviceId, jsonRequest: jsonRequest).flatMap { apiToken in return .just((gMusicToken, apiToken)) }
     }
 }

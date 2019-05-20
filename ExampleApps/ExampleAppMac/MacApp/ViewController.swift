@@ -19,7 +19,7 @@ class ViewController: NSViewController {
     }
 
     @IBAction func buttonTapped(_ sender: Any) {
-        let authController = GMusicAuthenticationController { [weak self] result in
+        let authController = GMusicAuthenticationController(deviceId: deviceId) { [weak self] result in
             switch result {
             case .authenticated(let token): self?.showLibrary(accessToken: token)
             case .error(let e):
@@ -37,6 +37,7 @@ class ViewController: NSViewController {
         let controller = storyboard.instantiateController(withIdentifier: "LibraryController") as! LibraryController
         
         controller.client = GMusicClient(token: token,
+                                         deviceId: deviceId,
                                          session: URLSession(configuration: URLSessionConfiguration.default),
                                          locale: Locale.current)
         

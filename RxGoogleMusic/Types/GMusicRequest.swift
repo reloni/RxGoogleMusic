@@ -12,16 +12,18 @@ import RxSwift
 struct GMusicRequest {
 	let type: GMusicRequestType
     let baseUrl: URL
+    let deviceId: UUID
     let dataRequest: (URLRequest) -> Single<Data>
 	let maxResults: Int
 	let updatedMin: Date?
 	let locale: Locale
 	let pageToken: GMusicNextPageToken
 	
-    init(type: GMusicRequestType, baseUrl: URL, dataRequest: @escaping (URLRequest) -> Single<Data>, maxResults: Int = 25, updatedMin: Date? = nil,
+    init(type: GMusicRequestType, baseUrl: URL, deviceId: UUID, dataRequest: @escaping (URLRequest) -> Single<Data>, maxResults: Int = 25, updatedMin: Date? = nil,
          pageToken: GMusicNextPageToken = .begin, locale: Locale = Locale.current) {
 		self.type = type
         self.baseUrl = baseUrl
+        self.deviceId = deviceId
         self.dataRequest = dataRequest
 		self.maxResults = maxResults
 		self.updatedMin = updatedMin
@@ -53,12 +55,14 @@ extension GMusicRequest {
     func dataRequest(withToken token: GMusicToken) -> Single<Data> {
         return createUrlRequest(for: self)
             |> setAuthorization(token.accessToken)
+            |> setHeader(field: "X-Device-ID", value: "ios:\(deviceId.uuidString)")
             |> dataRequest
     }
     
     func replaced(nextPageToken: GMusicNextPageToken) -> GMusicRequest {
         return GMusicRequest(type: self.type,
                              baseUrl: self.baseUrl,
+                             deviceId: self.deviceId,
                              dataRequest: self.dataRequest,
                              maxResults: self.maxResults,
                              updatedMin: self.updatedMin,

@@ -9,27 +9,28 @@
 import Foundation
 
 //// MARK: Body
-private let authAdviceBody =
-    """
-        {
-        "report_user_id": "true",
-        "system_version": "\(GMusicConstants.systemVersion)",
-        "app_version": "1.0",
-        "user_id": [],
-        "request_trigger": "ADD_ACCOUNT",
-        "lib_ver": "3.2",
-        "package_name": "\(GMusicConstants.packageName)",
-        "supported_service": ["uca"],
-        "redirect_uri": "\(GMusicConstants.redirectUri)",
-        "device_name": "\(GMusicConstants.deviceModel)",
-        "fast_setup": "true",
-        "mediator_client_id": "\(GMusicConstants.clientId)",
-        "device_id": "\(GMusicConstants.deviceId)",
-        "hl": "\(Locale.current.identifier)",
-        "client_id": "\(GMusicConstants.clientIdLong)"
-        }
-        """.data(using: .utf8)
-
+private let authAdviceBody = { (deviceId: UUID) in
+    return
+            """
+            {
+            "report_user_id": "true",
+            "system_version": "\(GMusicConstants.systemVersion)",
+            "app_version": "1.0",
+            "user_id": [],
+            "request_trigger": "ADD_ACCOUNT",
+            "lib_ver": "3.2",
+            "package_name": "\(GMusicConstants.packageName)",
+            "supported_service": ["uca"],
+            "redirect_uri": "\(GMusicConstants.redirectUri)",
+            "device_name": "\(GMusicConstants.deviceModel)",
+            "fast_setup": "true",
+            "mediator_client_id": "\(GMusicConstants.clientId)",
+            "device_id": "\(deviceId.uuidString)",
+            "hl": "\(Locale.current.identifier)",
+            "client_id": "\(GMusicConstants.clientIdLong)"
+            }
+            """.data(using: .utf8)
+}
 private let tokenExchangeBody = { (code: String) in
     return
         """
@@ -55,24 +56,26 @@ private let tokenRefreshBody = { (refreshToken: String) in
         .data(using: .utf8)
 }
 
-private let issueMusicApiTokenBody =
+private let issueMusicApiTokenBody = { (deviceId: UUID) in
     """
     client_id=\(GMusicConstants.clientIdLong)&
     app_id=\(GMusicConstants.packageName)&
-    device_id=\(GMusicConstants.deviceId)&
+    device_id=\(deviceId.uuidString)&
     hl=\(Locale.current.identifier)&
     response_type=token&
     scope=\(Scope.skyjam.rawValue) \(Scope.supportcontent.rawValue)
     """
     .replacingOccurrences(of: "\n", with: "")
     .data(using: .utf8)
+}
 
 // MARK: Requests
-let authAdviceRequest =
+let authAdviceRequest = { (deviceId: UUID) in
     GMusicConstants.authAdviceUrl
         |> urlRequest
         |> postJson
-        <> (authAdviceBody |> setBody)
+        <> (authAdviceBody(deviceId) |> setBody)
+}
 
 let tokenExchangeRequest = { (code: String) in
     return GMusicConstants.tokenUrl
@@ -88,17 +91,17 @@ let tokenRefreshRequest = { (refreshToken: String) in
         <> (refreshToken |> tokenRefreshBody |> setBody)
 }
 
-let issueMusicApiTokeRequest = { (token: GMusicToken) in
+let issueMusicApiTokeRequest = { (token: GMusicToken, deviceId: UUID) in
     return GMusicConstants.issueTokenUrl
         |> urlRequest
         |> postUrlEncoded
         <> setAuthorization(token.accessToken)
-        <> (issueMusicApiTokenBody |> setBody)
+        <> (issueMusicApiTokenBody(deviceId) |> setBody)
 }
 
-let loginPageRequest = { (url: URL) in
+let loginPageRequest = { (url: URL, deviceId: UUID) in
     return url
         |> urlRequest
-        |> setHeader(field: "X-IOS-Device-ID", value: GMusicConstants.deviceId)
+        |> setHeader(field: "X-IOS-Device-ID", value: deviceId.uuidString)
         <> setHeader(field: "X-Browser-View", value: "embedded")
 }

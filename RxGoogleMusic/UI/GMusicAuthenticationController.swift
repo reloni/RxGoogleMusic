@@ -57,8 +57,12 @@ open class GMusicAuthenticationController: ViewController {
     let toolBar = UIToolbar()
     #endif
     
-    public init(session: URLSession = URLSession.shared,
+    let deviceId: UUID
+    
+    public init(deviceId: UUID,
+                session: URLSession = URLSession.shared,
                 callback: @escaping (AuthenticationResult) -> ()) {
+        self.deviceId = deviceId
         self.callback = callback
         self.session = session
         self.exchangeRequest = session
@@ -132,10 +136,16 @@ open class GMusicAuthenticationController: ViewController {
     }
     
     @objc func loadAuthenticationUrl() {
-        gMusicAuthenticationUrl(for: session |> jsonRequest)
+        gMusicAuthenticationUrl(for: session |> jsonRequest, deviceId: deviceId)
             .observeOn(MainScheduler.instance)
-            .do(onSuccess: { [weak self] url in self?.webView.load(loginPageRequest(url)) })
-            .do(onError: { [weak self] in self?.complete(withError: $0) })
+            .do(onSuccess: { [weak self] url in
+                self?.webView.load(loginPageRequest(url, self?.deviceId ?? UUID()))
+                
+            })
+            .do(onError: { [weak self] in
+                self?.complete(withError: $0)
+                
+            })
             .subscribe()
             .disposed(by: bag)
     }

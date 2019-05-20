@@ -116,7 +116,6 @@ struct GMusicConstants {
 	
     static let deviceModel = HardwareType.current.model
     static let systemVersion = HardwareType.current.osVersion
-    static let deviceId = UUID().uuidString
 }
 
 enum Scope: String {
