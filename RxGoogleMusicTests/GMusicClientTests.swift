@@ -10,9 +10,8 @@ import XCTest
 @testable import RxGoogleMusic
 
 class GMusicClientTests: XCTestCase {
-    let client = GMusicClient(token: GMusicToken(accessToken: "",
-                                                 expiresIn: 99999999,
-                                                 refreshToken: ""))
+    let client = GMusicClient(token: GMusicToken(accessToken: "", expiresIn: 99999999, refreshToken: ""),
+                              deviceId: UUID())
     
     func testLoadTracks() {
         let resultExpectation = expectation(description: "Should return data")
