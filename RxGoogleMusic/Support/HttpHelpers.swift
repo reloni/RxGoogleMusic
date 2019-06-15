@@ -7,6 +7,7 @@
 //
 
 import RxSwift
+import Combine
 import Foundation
 
 func urlRequest(from url: URL) -> URLRequest {
@@ -93,6 +94,36 @@ private func dataRequest(_ request: URLRequest, in session: URLSession) -> Singl
     }
 }
 
+private func dataRequest2(_ request: URLRequest, in session: URLSession) -> Publishers.Future<Data, GMusicError> {
+    return Publishers.Future { publisher in
+        let task = session.dataTask(with: request) { data, response, error in
+            if let error = error {
+                publisher(.failure(GMusicError.urlRequestLocalError(error)))
+                return
+            }
+            
+            if !(200...299 ~= (response as? HTTPURLResponse)?.statusCode ?? 0) {
+                #if DEBUG
+                if let data = data, let responseString = String.init(data: data, encoding: .utf8) {
+                    print("Response string: \(responseString)")
+                }
+                #endif
+                
+                publisher(.failure(GMusicError.urlRequestError(response: response!, data: data)))
+                return
+            }
+            
+            publisher(.success(data ?? Data()))
+        }
+        
+        #if DEBUG
+        print("URL \(task.originalRequest!.url!.absoluteString)")
+        #endif
+        
+        task.resume()
+    }
+}
+
 func dataToJson(_ data: Data) throws -> JSON {
     do {
         guard let json = try JSONSerialization.jsonObject(with: data, options: []) as? JSON else {
@@ -108,10 +139,22 @@ func dataRequest(for session: URLSession) -> (URLRequest) -> Single<Data> {
     return session |> (dataRequest |> curry |> flip)
 }
 
+func dataRequest2(for session: URLSession) -> (URLRequest) -> Publishers.Future<Data, GMusicError> {
+    return session |> (dataRequest2 |> curry |> flip)
+}
+
 func jsonRequest(for session: URLSession) -> (URLRequest) -> Single<JSON> {
     return { dataRequest($0, in: session).map(dataToJson) }
 }
 
+func jsonRequest2(for session: URLSession) -> (URLRequest) -> AnyPublisher<JSON, Error> {
+    return { dataRequest2($0, in: session).tryMap(dataToJson).eraseToAnyPublisher() }
+}
+
 func jsonRequest(from dataRequest: Single<Data>) -> Single<JSON> {
     return dataRequest.map(dataToJson)
+}
+
+func jsonRequest2(from dataRequest: AnyPublisher<Data, Error>) -> AnyPublisher<JSON, Error> {
+    return dataRequest.tryMap(dataToJson).eraseToAnyPublisher()
 }
