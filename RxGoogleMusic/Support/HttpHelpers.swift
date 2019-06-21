@@ -36,7 +36,9 @@ func setBody(_ body: Data?) -> (inout URLRequest) -> Void {
 }
 
 func setMethod(_ method: HttpMethod) -> (inout URLRequest) -> Void {
-    return mutate(^\URLRequest.httpMethod, method.rawValue)
+    return {
+        $0.httpMethod = method.rawValue
+    }
 }
 
 func setHeader(field: String, value: String?) -> (inout URLRequest) -> Void {
@@ -49,7 +51,9 @@ func setAuthorization(_ token: String) -> (inout URLRequest) -> Void {
     return setHeader(field: "Authorization", value: "Bearer \(token)")
 }
 
-let defaultHeaders = mutate(^\URLRequest.allHTTPHeaderFields) { $0 = [:] }
+let defaultHeaders = { (request: inout URLRequest) in
+    request.allHTTPHeaderFields = [:]
+}
 
 let postHeader = defaultHeaders
     <> setMethod(.post)

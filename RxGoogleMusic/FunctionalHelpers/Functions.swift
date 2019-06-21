@@ -6,38 +6,6 @@
 //  Copyright © 2018 Anton Efimenko. All rights reserved.
 //
 
-typealias MutableSetter<S, A> = (@escaping (inout A) -> Void) -> (inout S) -> Void
-
-func mutate<S, A>(
-    _ setter: MutableSetter<S, A>,
-    _ set: @escaping (inout A) -> Void
-    )
-    -> (inout S) -> Void {
-        return setter(set)
-}
-
-func mutate<S, A>(
-    _ setter: MutableSetter<S, A>,
-    _ value: A
-    )
-    -> (inout S) -> Void {
-        return mutate(setter) { $0 = value }
-}
-
-prefix operator ^
-prefix func ^ <Root, Value>(
-    _ kp: WritableKeyPath<Root, Value>
-    )
-    -> (@escaping (inout Value) -> Void)
-    -> (inout Root) -> Void {
-        
-        return { update in
-            { root in
-                update(&root[keyPath: kp])
-            }
-        }
-}
-
 func |> <A, B>(a: A, f: @escaping (A) -> B) -> B {
     return f(a)
 }
