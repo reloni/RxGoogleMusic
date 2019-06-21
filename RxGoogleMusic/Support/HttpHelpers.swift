@@ -65,7 +65,7 @@ let postUrlEncoded = postHeader
     <> setHeader(field: "content-type", value: "application/x-www-form-urlencoded")
 
 // MARK: Data request
-private func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> {
+func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> {
     return Single.create { single in
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -106,16 +106,4 @@ func dataToJson(_ data: Data) throws -> JSON {
     } catch let error {
         throw GMusicError.jsonParseError(error)
     }
-}
-
-func dataRequest(for session: URLSession) -> (URLRequest) -> Single<Data> {
-    return session |> (dataRequest |> curry |> flip)
-}
-
-func jsonRequest(for session: URLSession) -> (URLRequest) -> Single<JSON> {
-    return { dataRequest($0, in: session).map(dataToJson) }
-}
-
-func jsonRequest(from dataRequest: Single<Data>) -> Single<JSON> {
-    return dataRequest.map(dataToJson)
 }

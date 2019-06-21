@@ -11,6 +11,7 @@
 		6E0B79321FF2D434008F7800 /* RxGoogleMusicTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0B79311FF2D434008F7800 /* RxGoogleMusicTests.swift */; };
 		6E0F2B4E2003CE19000DA9F9 /* GMusicRadioStation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0F2B4D2003CE19000DA9F9 /* GMusicRadioStation.swift */; };
 		6E0F2B502003CF4E000DA9F9 /* GMusicArtist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0F2B4F2003CF4E000DA9F9 /* GMusicArtist.swift */; };
+		6E28BB3822BD632600C955AF /* Environment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E28BB3722BD632600C955AF /* Environment.swift */; };
 		6E30528220016D7A00DA0DBB /* GMusicWKNavigationDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E30528120016D7A00DA0DBB /* GMusicWKNavigationDelegate.swift */; };
 		6E3963F91FFA86610016C2FA /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E3963F81FFA86610016C2FA /* RxSwift.framework */; };
 		6E3963FB1FFA86B30016C2FA /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E3963F81FFA86610016C2FA /* RxSwift.framework */; };
@@ -53,6 +54,7 @@
 		6E0B79331FF2D434008F7800 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		6E0F2B4D2003CE19000DA9F9 /* GMusicRadioStation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicRadioStation.swift; sourceTree = "<group>"; };
 		6E0F2B4F2003CF4E000DA9F9 /* GMusicArtist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicArtist.swift; sourceTree = "<group>"; };
+		6E28BB3722BD632600C955AF /* Environment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Environment.swift; sourceTree = "<group>"; };
 		6E30528120016D7A00DA0DBB /* GMusicWKNavigationDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicWKNavigationDelegate.swift; sourceTree = "<group>"; };
 		6E3963F81FFA86610016C2FA /* RxSwift.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxSwift.framework; path = Carthage/Build/iOS/RxSwift.framework; sourceTree = "<group>"; };
 		6E3963FF1FFA88090016C2FA /* GMusicClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GMusicClient.swift; sourceTree = "<group>"; };
@@ -186,6 +188,7 @@
 		6ED3EFBC218B3576002385A1 /* Support */ = {
 			isa = PBXGroup;
 			children = (
+				6E28BB3722BD632600C955AF /* Environment.swift */,
 				6E3964011FFA93930016C2FA /* Extensions.swift */,
 				6E91DC45218CD36A00AF4083 /* HttpRequest.swift */,
 				6EAF31DA218A29700017A15A /* HttpHelpers.swift */,
@@ -347,6 +350,7 @@
 				6EF05FA521BE9DFB003C2BE4 /* Support.swift in Sources */,
 				6ED3EFBE218B35A4002385A1 /* GMusicTokenHelpers.swift in Sources */,
 				6EAF31DB218A29700017A15A /* HttpHelpers.swift in Sources */,
+				6E28BB3822BD632600C955AF /* Environment.swift in Sources */,
 				6E3964041FFA981E0016C2FA /* GMusicTrack.swift in Sources */,
 				6ED14CB11FFC00F900B78078 /* GMusicClient+Requests.swift in Sources */,
 				6E0F2B502003CF4E000DA9F9 /* GMusicArtist.swift in Sources */,
