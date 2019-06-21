@@ -39,7 +39,7 @@ func exchangeOAuthCodeForToken(code: String, jsonRequest: @escaping (URLRequest)
     return code
         |> tokenExchangeRequest
         >>> jsonRequest
-        >>> (jsonToToken |> sequenceMap)
+        >>> (jsonToToken |> singleMap)
 }
 
 // MARK: Refresh token
@@ -47,8 +47,8 @@ private func refreshToken(_ token: String, jsonRequest: @escaping (URLRequest) -
     return token
         |> tokenRefreshRequest
         >>> jsonRequest
-        >>> (jsonToToken |> sequenceMap)
-        >>> sequenceMap { $0.withNew(refreshToken: token) }}
+        >>> (jsonToToken |> singleMap)
+        >>> singleMap { $0.withNew(refreshToken: token) }}
 
 func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     guard let current = token.refreshToken, (token.isTokenExpired || force) else {
@@ -63,7 +63,7 @@ func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URL
 func issueMusicApiToken(withToken token: GMusicToken, deviceId: UUID, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     return issueMusicApiTokeRequest(token, deviceId)
         |> jsonRequest
-        >>> (issueMusicApiToken |> sequenceMap)
+        >>> (issueMusicApiToken |> singleMap)
 }
 
 private func issueMusicApiToken(from json: JSON) throws -> GMusicToken {

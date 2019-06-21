@@ -12,14 +12,7 @@ import RxSwift
 import UIKit
 #endif
 
-func sequenceMap<OldElement, NewElement>(_ map: @escaping (OldElement) throws -> NewElement) ->
-    (Observable<OldElement>) -> Observable<NewElement> {
-        return {
-            return $0.map(map)
-        }
-}
-
-func sequenceMap<OldElement, NewElement>(_ map: @escaping (OldElement) throws -> NewElement) ->
+func singleMap<OldElement, NewElement>(_ map: @escaping (OldElement) throws -> NewElement) ->
     (Single<OldElement>) -> Single<NewElement> {
         return {
             return $0.map(map)
