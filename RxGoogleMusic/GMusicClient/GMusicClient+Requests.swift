@@ -39,12 +39,14 @@ public extension GMusicClient {
 	
 	func artist(_ id: String, includeAlbums: Bool = false, includeBio: Bool = false, numRelatedArtists: Int = 0, numTopTracks: Int = 0) -> Single<GMusicArtist> {
 		return gMusicRequest(.artist(id: id, numRelatedArtists: numRelatedArtists, numTopTracks: numTopTracks, includeAlbums: includeAlbums, includeBio: includeBio))
-            |> entityRequest
+            |> apiRequest
+            >>> singleMap(decode)
 	}
 	
 	func album(_ id: String, includeDescription: Bool = false, includeTracks: Bool = false) -> Single<GMusicAlbum> {
 		return gMusicRequest(.album(id: id, includeDescription: includeDescription, includeTracks: includeTracks))
-            |> entityRequest
+            |> apiRequest
+            >>> singleMap(decode)
 	}
     
     func downloadTrack(id trackId: String) -> Single<Data> {

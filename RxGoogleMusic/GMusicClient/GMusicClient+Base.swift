@@ -36,14 +36,14 @@ extension GMusicClient {
 	private func collectionRequest<T>(_ request: GMusicRequest, recursive: Bool) -> Observable<GMusicCollection<T>> {
 		if case GMusicNextPageToken.end = request.pageToken { return .empty() }
         
-		guard recursive else { return collectionRequest(request).asObservable() }
+		guard recursive else { return apiRequest(request).map(decode).asObservable() }
         
 		return Observable.create { [weak self] observer in
 			guard let client = self else { observer.onError(GMusicError.clientDisposed); return Disposables.create() }
 			
 			let subscription =
 				client.collectionRequest(request: request,
-										 invokeRequest: { [weak self] in self?.collectionRequest($0) ?? Single.error(GMusicError.clientDisposed) },
+										 invokeRequest: { [weak self] in self?.apiRequest($0).map(decode) ?? Single.error(GMusicError.clientDisposed) },
 										 observer: observer)
 					.do(onError: { observer.onError($0) })
 					.subscribe()
@@ -64,14 +64,6 @@ extension GMusicClient {
 			
 			return client.collectionRequest(request: request.replaced(nextPageToken: result.nextPageToken), invokeRequest: invokeRequest, observer: observer)
 		}
-	}
-	
-	private func collectionRequest<T>(_ request: GMusicRequest) -> Single<GMusicCollection<T>> {
-        return apiRequest(request).map(decode)
-	}
-	
-	func entityRequest<T: Decodable>(_ request: GMusicRequest) -> Single<T> {
-        return apiRequest(request).map(decode)
 	}
 	
 	func apiRequest(_ request: GMusicRequest) -> Single<Data> {

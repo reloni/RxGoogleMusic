@@ -29,11 +29,11 @@ func jsonToData(_ json: JSON) -> Data? {
 }
 
 func decode<T: Decodable>(_ data: Data) throws -> T {
-    return try JSONDecoder().decode(T.self, from: data)
+    return try Current.jsonDecoder.decode(T.self, from: data)
 }
 
 func decode<T>(_ data: Data) throws -> GMusicCollection<T> {
-    return try JSONDecoder().decode(GMusicCollection<T>.self, from: data)
+    return try Current.jsonDecoder.decode(GMusicCollection<T>.self, from: data)
 }
 
 // MARK: Request setters

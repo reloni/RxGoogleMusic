@@ -14,6 +14,7 @@ var Current = Environment()
 struct Environment {
     var httpClient = GMusicHttpClient()
     var hardware = HardwareType.current
+    var jsonDecoder = JSONDecoder()
 }
 
 extension Environment {
