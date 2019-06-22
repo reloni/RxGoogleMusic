@@ -56,6 +56,7 @@ private let tokenRefreshBody = { (refreshToken: String) in
         .data(using: .utf8)
 }
 
+#warning("Use GMusicClient locale instead of global")
 private let issueMusicApiTokenBody = { (deviceId: UUID) in
     """
     client_id=\(GMusicConstants.clientIdLong)&

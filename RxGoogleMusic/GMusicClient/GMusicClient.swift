@@ -26,6 +26,6 @@ final public class GMusicClient {
         self.deviceId = deviceId
 		self.locale = locale
 		self.baseUrl = baseUrl
-        self.dataRequest = session |> Environment.current.httpClient.dataRequest
+        self.dataRequest = session |> Current.httpClient.dataRequest
 	}
 }

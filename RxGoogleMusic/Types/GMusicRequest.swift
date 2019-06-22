@@ -54,7 +54,7 @@ struct GMusicRequest {
 extension GMusicRequest {
     func dataRequest(withToken token: GMusicToken) -> Single<Data> {
         return self
-            |> Environment.current.httpClient.createRequest
+            |> Current.httpClient.createRequest
             |> setAuthorization(token.accessToken)
             |> setHeader(field: "X-Device-ID", value: "ios:\(deviceId.uuidString)")
             |> dataRequest

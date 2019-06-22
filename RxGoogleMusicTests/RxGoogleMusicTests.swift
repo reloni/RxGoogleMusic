@@ -9,7 +9,7 @@
 import XCTest
 @testable import RxGoogleMusic
 
-class RxGoogleMusicTests: XCTestCase {	
+class RxGoogleMusicTests: XCTestCase {
 	func testEscapeNextPageToken() {
 		let token = "KngKS/fiRWcN/////zzrdXkSE0wf/wD+//6Ynpaexc/Pz8/Pz5rGx5nKyM2dms/Fy8zFy8zei43FzsrPz8jKx8/Oyc7Ix8fIys/Oz8v//hBkIRzbqFg2k+ObOQAAAADymLodSANQAFoLCc72Cz/OJRQ6EAJg0fbfswYyDQoLCgAo+Nns25vUyAI="
 		let result = token.addingPercentEncoding(withAllowedCharacters: CharacterSet.nextPageTokenAllowed)
@@ -19,9 +19,9 @@ class RxGoogleMusicTests: XCTestCase {
     
     func testHardwareType() {
         #if os(iOS)
-        XCTAssertEqual(.iOS, HardwareType.current)
+        XCTAssertEqual(.iOS, Current.hardware)
         #elseif os(macOS)
-        XCTAssertEqual(.macOS, HardwareType.current)
+        XCTAssertEqual(.macOS, Current.hardware)
         #else
         fatalError()
         #endif

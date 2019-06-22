@@ -86,8 +86,8 @@ extension GMusicClient {
             return apiToken |> Single.just
         }
         
-        return Environment.current.httpClient
-            .refreshAndIssueTokens(token, deviceId, force, dataRequest >>> Environment.current.httpClient.jsonRequest)
+        return Current.httpClient
+            .refreshAndIssueTokens(token, deviceId, force, dataRequest >>> Current.httpClient.jsonRequest)
             .flatMap(saveTokens)
     }
 }

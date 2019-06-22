@@ -9,16 +9,15 @@
 import Foundation
 import RxSwift
 
+var Current = Environment()
+
 struct Environment {
-    static let current = Environment()
-    
-    var httpClient = GMusicHttpClient.default
+    var httpClient = GMusicHttpClient()
+    var hardware = HardwareType.current
 }
 
 extension Environment {
     struct GMusicHttpClient {
-        static let `default` = GMusicHttpClient()
-        
         var getAuthenticationUrl = gMusicAuthenticationUrl(for:deviceId:)
         var exchangeCodeForToken = exchangeOAuthCodeForToken(code:jsonRequest:)
         var refreshAndIssueTokens = refreshAndIssueTokens(gMusicToken:deviceId:force:jsonRequest:)

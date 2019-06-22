@@ -114,8 +114,8 @@ struct GMusicConstants {
 	static let dv = "3000038001007" // required magic paramerer ¯\_(ツ)_/¯
 	static let tier = "aa" // another requered parameter
 	
-    static let deviceModel = HardwareType.current.model
-    static let systemVersion = HardwareType.current.osVersion
+    static let deviceModel = Current.hardware.model
+    static let systemVersion = Current.hardware.osVersion
 }
 
 enum Scope: String {
