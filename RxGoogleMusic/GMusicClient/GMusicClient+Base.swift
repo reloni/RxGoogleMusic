@@ -67,17 +67,11 @@ extension GMusicClient {
 	}
 	
 	private func collectionRequest<T>(_ request: GMusicRequest) -> Single<GMusicCollection<T>> {
-		return apiRequest(request).flatMap { data -> Single<GMusicCollection<T>> in
-			let result = try JSONDecoder().decode(GMusicCollection<T>.self, from: data)
-			return .just(result)
-		}
+        return apiRequest(request).map(decode)
 	}
 	
 	func entityRequest<T: Decodable>(_ request: GMusicRequest) -> Single<T> {
-		return apiRequest(request).flatMap { data -> Single<T> in
-			let result = try JSONDecoder().decode(T.self, from: data)
-			return .just(result)
-		}
+        return apiRequest(request).map(decode)
 	}
 	
 	func apiRequest(_ request: GMusicRequest) -> Single<Data> {

@@ -28,6 +28,14 @@ func jsonToData(_ json: JSON) -> Data? {
     return try? JSONSerialization.data(withJSONObject: json, options: .prettyPrinted)
 }
 
+func decode<T: Decodable>(_ data: Data) throws -> T {
+    return try JSONDecoder().decode(T.self, from: data)
+}
+
+func decode<T>(_ data: Data) throws -> GMusicCollection<T> {
+    return try JSONDecoder().decode(GMusicCollection<T>.self, from: data)
+}
+
 // MARK: Request setters
 func setBody(_ body: Data?) -> (inout URLRequest) -> Void {
     return { request in
