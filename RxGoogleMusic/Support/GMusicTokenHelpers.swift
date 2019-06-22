@@ -43,20 +43,17 @@ func exchangeOAuthCodeForToken(code: String, jsonRequest: @escaping (URLRequest)
 }
 
 // MARK: Refresh token
-private func refreshToken(_ token: String, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
-    return token
-        |> tokenRefreshRequest
-        >>> jsonRequest
-        >>> (jsonToToken |> singleMap)
-        >>> singleMap { $0.withNew(refreshToken: token) }}
-
 func refreshToken(_ token: GMusicToken, force: Bool, jsonRequest: @escaping (URLRequest) -> Single<JSON>) -> Single<GMusicToken> {
     guard let current = token.refreshToken, (token.isTokenExpired || force) else {
         #warning("Maybe should return error if there is no refresh token")
         return .just(token)
     }
 
-    return refreshToken(current, jsonRequest: jsonRequest)
+    return current
+        |> tokenRefreshRequest
+        >>> jsonRequest
+        >>> (jsonToToken |> singleMap)
+        >>> singleMap { $0.withNew(refreshToken: current) }
 }
 
 // MARK: Issue token
