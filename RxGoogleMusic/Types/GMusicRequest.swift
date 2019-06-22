@@ -19,8 +19,8 @@ struct GMusicRequest {
 	let locale: Locale
 	let pageToken: GMusicNextPageToken
 	
-    init(type: GMusicRequestType, baseUrl: URL, deviceId: UUID, dataRequest: @escaping (URLRequest) -> Single<Data>, maxResults: Int = 25, updatedMin: Date? = nil,
-         pageToken: GMusicNextPageToken = .begin, locale: Locale = Locale.current) {
+    init(type: GMusicRequestType, baseUrl: URL, deviceId: UUID, dataRequest: @escaping (URLRequest) -> Single<Data>, maxResults: Int, updatedMin: Date?,
+         pageToken: GMusicNextPageToken, locale: Locale) {
 		self.type = type
         self.baseUrl = baseUrl
         self.deviceId = deviceId

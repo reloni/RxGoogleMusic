@@ -28,32 +28,28 @@ public extension GMusicClient {
     
     func radioStationFeed(for station: GMusicRadioStation, maxResults: Int = 100) -> Observable<GMusicCollection<GMusicRadioStation>> {
         guard let stationId = station.id?.uuidString.lowercased() else { return .empty() }
-        let request = GMusicRequest(type: .radioStatioFeed(statioId: stationId), baseUrl: baseUrl, deviceId: deviceId, dataRequest: dataRequest,
-                                    maxResults: maxResults, updatedMin: nil, pageToken: .begin, locale: locale)
-        return entityCollection(request: request, recursive: false)
+        return entityCollection(request: gMusicRequest(.radioStatioFeed(statioId: stationId), maxResults: maxResults),
+                                recursive: false)
     }
 	
 	func favorites(updatedMin: Date = Date(timeIntervalSince1970: 0), maxResults: Int = 100, pageToken: GMusicNextPageToken = .begin, recursive: Bool = false) -> Observable<GMusicCollection<GMusicTrack>> {
-		let request = GMusicRequest(type: .favorites, baseUrl: baseUrl, deviceId: deviceId, dataRequest: dataRequest, maxResults: maxResults,
-                                    updatedMin: updatedMin, pageToken: pageToken, locale: locale)
-		return entityCollection(request: request, recursive: recursive)
+        return entityCollection(request: gMusicRequest(.favorites, maxResults: maxResults, updatedMin: updatedMin, pageToken: pageToken),
+                                recursive: recursive)
 	}
 	
 	func artist(_ id: String, includeAlbums: Bool = false, includeBio: Bool = false, numRelatedArtists: Int = 0, numTopTracks: Int = 0) -> Single<GMusicArtist> {
-        let request = GMusicRequest(type: .artist(id: id, numRelatedArtists: numRelatedArtists, numTopTracks: numTopTracks, includeAlbums: includeAlbums, includeBio: includeBio), baseUrl: baseUrl, deviceId: deviceId, dataRequest: dataRequest, locale: locale)
-		return entityRequest(request)
+		return gMusicRequest(.artist(id: id, numRelatedArtists: numRelatedArtists, numTopTracks: numTopTracks, includeAlbums: includeAlbums, includeBio: includeBio))
+            |> entityRequest
 	}
 	
 	func album(_ id: String, includeDescription: Bool = false, includeTracks: Bool = false) -> Single<GMusicAlbum> {
-		let request = GMusicRequest(type: .album(id: id, includeDescription: includeDescription, includeTracks: includeTracks),
-                                    baseUrl: baseUrl, deviceId: deviceId, dataRequest: dataRequest, locale: locale)
-		return entityRequest(request)
+		return gMusicRequest(.album(id: id, includeDescription: includeDescription, includeTracks: includeTracks))
+            |> entityRequest
 	}
     
     func downloadTrack(id trackId: String) -> Single<Data> {
-        let request = GMusicRequest(type: .stream(trackId: trackId, quality: .high), baseUrl: baseUrl, deviceId: deviceId,
-                                    dataRequest: dataRequest, maxResults: 0, updatedMin: nil, pageToken: .begin, locale: locale)
-        return apiRequest(request)
+        return gMusicRequest(.stream(trackId: trackId, quality: .high))
+            |> apiRequest
     }
     
     func downloadTrack(_ track: GMusicTrack) -> Single<Data> {

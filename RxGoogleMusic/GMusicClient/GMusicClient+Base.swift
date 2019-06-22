@@ -10,6 +10,17 @@ import Foundation
 import RxSwift
 
 extension GMusicClient {
+    func gMusicRequest(_ type: GMusicRequestType, maxResults: Int = 25, updatedMin: Date? = nil, pageToken: GMusicNextPageToken = .begin) -> GMusicRequest {
+        return GMusicRequest(type: type,
+                             baseUrl: baseUrl,
+                             deviceId: deviceId,
+                             dataRequest: dataRequest,
+                             maxResults: maxResults,
+                             updatedMin: updatedMin,
+                             pageToken: pageToken,
+                             locale: locale)
+    }
+    
 	func entityCollection<Element: GMusicEntity>(updatedMin: Date,
 												 maxResults: Int,
 												 pageToken: GMusicNextPageToken,
@@ -23,10 +34,10 @@ extension GMusicClient {
 	}
 	
 	private func collectionRequest<T>(_ request: GMusicRequest, recursive: Bool) -> Observable<GMusicCollection<T>> {
-		if case GMusicNextPageToken.end = request.pageToken {
-			return .empty()
-		}
+		if case GMusicNextPageToken.end = request.pageToken { return .empty() }
+        
 		guard recursive else { return collectionRequest(request).asObservable() }
+        
 		return Observable.create { [weak self] observer in
 			guard let client = self else { observer.onError(GMusicError.clientDisposed); return Disposables.create() }
 			
