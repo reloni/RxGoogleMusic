@@ -60,6 +60,12 @@ public extension GMusicClient {
             >>> singleMap { ($0.data, $0.response) }
     }
     
+    func getDownloadRequest(for track: GMusicTrack) -> Single<URLRequest> {
+        let request = gMusicRequest(.download(trackId: track.identifier ?? "", quality: .high, range: nil))
+        return issueApiToken(force: false)
+            .map(request.createUrlRequest)
+    }
+    
     func downloadArt(_ artRef: GMusicRef) -> Single<Data> {
         return artRef.url
             |> urlRequest
