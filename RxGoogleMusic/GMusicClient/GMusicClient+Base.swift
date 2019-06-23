@@ -66,7 +66,7 @@ extension GMusicClient {
 		}
 	}
 	
-	func apiRequest(_ request: GMusicRequest) -> Single<Data> {
+	func apiRequest(_ request: GMusicRequest) -> Single<GMusicRawResponse> {
         return issueApiToken(force: false)
             .flatMap(request.dataRequest)
 	}
@@ -84,7 +84,7 @@ extension GMusicClient {
         }
         
         return Current.httpClient
-            .refreshAndIssueTokens(token, deviceId, force, dataRequest >>> Current.httpClient.jsonRequest)
+            .refreshAndIssueTokens(token, deviceId, force, dataRequest >>> singleMap { $0.data } >>> Current.httpClient.jsonRequest)
             .flatMap(saveTokens)
     }
 }

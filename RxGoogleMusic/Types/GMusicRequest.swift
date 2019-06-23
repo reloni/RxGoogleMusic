@@ -13,13 +13,13 @@ struct GMusicRequest {
 	let type: GMusicRequestType
     let baseUrl: URL
     let deviceId: UUID
-    let dataRequest: (URLRequest) -> Single<Data>
+    let dataRequest: (URLRequest) -> Single<GMusicRawResponse>
 	let maxResults: Int
 	let updatedMin: Date?
 	let locale: Locale
 	let pageToken: GMusicNextPageToken
 	
-    init(type: GMusicRequestType, baseUrl: URL, deviceId: UUID, dataRequest: @escaping (URLRequest) -> Single<Data>, maxResults: Int, updatedMin: Date?,
+    init(type: GMusicRequestType, baseUrl: URL, deviceId: UUID, dataRequest: @escaping (URLRequest) -> Single<GMusicRawResponse>, maxResults: Int, updatedMin: Date?,
          pageToken: GMusicNextPageToken, locale: Locale) {
 		self.type = type
         self.baseUrl = baseUrl
@@ -52,7 +52,7 @@ struct GMusicRequest {
 }
 
 extension GMusicRequest {
-    func dataRequest(withToken token: GMusicToken) -> Single<Data> {
+    func dataRequest(withToken token: GMusicToken) -> Single<GMusicRawResponse> {
         return self
             |> Current.httpClient.createRequest
             |> setAuthorization(token.accessToken)
