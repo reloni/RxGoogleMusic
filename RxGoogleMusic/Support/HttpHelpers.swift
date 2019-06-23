@@ -63,6 +63,14 @@ func setHeader(field: String, value: String?) -> (inout URLRequest) -> Void {
     }
 }
 
+func setHeaders(_ values: [(String, String)]) -> (inout URLRequest) -> Void {
+    return { request in
+        values.forEach {
+            request.allHTTPHeaderFields?[$0.0] = $0.1
+        }
+    }
+}
+
 func setAuthorization(_ token: String) -> (inout URLRequest) -> Void {
     return setHeader(field: "Authorization", value: "Bearer \(token)")
 }

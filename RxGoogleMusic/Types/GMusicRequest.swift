@@ -49,6 +49,10 @@ struct GMusicRequest {
             ]
             .compactMap( { $0 }) + type.urlParameters
     }
+    
+    var headers: [(String, String)] {
+        return type.headers
+    }
 }
 
 extension GMusicRequest {

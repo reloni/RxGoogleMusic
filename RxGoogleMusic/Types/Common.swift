@@ -53,7 +53,7 @@ enum GMusicRequestType {
     case artist(id: String, numRelatedArtists: Int, numTopTracks: Int, includeAlbums: Bool, includeBio: Bool)
     case album(id: String, includeDescription: Bool, includeTracks: Bool)
     case radioStatioFeed(statioId: String)
-    case download(trackId: String, quality: StreamQuality, range: Range<Int>?)
+    case download(trackId: String, quality: StreamQuality, range: ClosedRange<Int>?)
     
     var path: String {
         switch self {
@@ -76,7 +76,7 @@ enum GMusicRequestType {
         case let .artist(id, numRelatedArtists, numTopTracks, includeAlbums, includeBio):
             return [("nid", id), ("num-related-artists", "\(numRelatedArtists)"),
                     ("num-top-tracks", "\(numTopTracks)"), ("include-albums", "\(includeAlbums)"), ("include-bio", "\(includeBio)")]
-        case let .download(trackId, quality, range):
+        case let .download(trackId, quality, _):
             let (sig, slt) = Hmac.sign(string: trackId, salt: Hmac.currentSalt)
             
             // mjck if trackID started with T or D,
@@ -102,6 +102,15 @@ enum GMusicRequestType {
             guard let token = value.escapedValue else { return nil }
             return ("start-token", "\(token)")
         case .album, .radioStation, .radioStatioFeed, .download, .favorites, .artist: return nil
+        }
+    }
+    
+    var headers: [(String, String)] {
+        switch self {
+        case .download(_, _, let range) where range != nil:
+            return [("Range", "bytes=\(range!.lowerBound)-\(range!.upperBound)")]
+        default:
+            return []
         }
     }
 }
