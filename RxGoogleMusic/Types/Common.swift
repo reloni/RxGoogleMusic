@@ -13,8 +13,8 @@ import UIKit
 typealias JSON = [String: Any]
 
 public struct GMusicRawResponse {
-    let data: Data
-    let response: HTTPURLResponse
+    public let data: Data
+    public let response: HTTPURLResponse
 }
 
 protocol GMusicEntity {
