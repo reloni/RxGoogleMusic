@@ -51,12 +51,13 @@ public extension GMusicClient {
 
     func downloadTrack(_ track: GMusicTrack) -> Single<Data> {
         return downloadTrackRaw(track, range: nil)
-            .map { $0.data }
+            .map { $0.0 }
     }
     
-    func downloadTrackRaw(_ track: GMusicTrack, range: ClosedRange<Int>?) -> Single<GMusicRawResponse> {
+    func downloadTrackRaw(_ track: GMusicTrack, range: ClosedRange<Int>?) -> Single<(Data, HTTPURLResponse)> {
         return gMusicRequest(.download(trackId: track.identifier ?? "", quality: .high, range: range))
             |> apiRequest
+            >>> singleMap { ($0.data, $0.response) }
     }
     
     func downloadArt(_ artRef: GMusicRef) -> Single<Data> {
