@@ -66,12 +66,12 @@ extension GMusicClient {
 		}
 	}
 	
-	func apiRequest(_ request: GMusicRequest) -> Single<Data> {
+	func apiRequest(_ request: GMusicRequest) -> Single<GMusicRawResponse> {
         return issueApiToken(force: false)
             .flatMap(request.dataRequest)
 	}
     
-    private func issueApiToken(force: Bool) -> Single<GMusicToken> {
+    func issueApiToken(force: Bool) -> Single<GMusicToken> {
         guard apiToken?.expiresAt ?? Date(timeIntervalSince1970: 0) < Date() || force else {
             // if api token existed and not expired, return it
             return .just(apiToken!)
@@ -84,7 +84,7 @@ extension GMusicClient {
         }
         
         return Current.httpClient
-            .refreshAndIssueTokens(token, deviceId, force, dataRequest >>> Current.httpClient.jsonRequest)
+            .refreshAndIssueTokens(token, deviceId, force, dataRequest >>> singleMap { $0.data } >>> Current.httpClient.jsonRequest)
             .flatMap(saveTokens)
     }
 }

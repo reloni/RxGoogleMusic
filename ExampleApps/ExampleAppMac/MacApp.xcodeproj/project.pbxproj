@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6E20E8B322BFD03B00DEAF79 /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E20E8B222BFD03B00DEAF79 /* RxRelay.framework */; };
+		6E20E8B422BFD03B00DEAF79 /* RxRelay.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E20E8B222BFD03B00DEAF79 /* RxRelay.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E4A319321BE93CE00090BB3 /* RxGoogleMusic.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A319221BE93CE00090BB3 /* RxGoogleMusic.framework */; };
 		6E4A319421BE93CE00090BB3 /* RxGoogleMusic.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6E4A319221BE93CE00090BB3 /* RxGoogleMusic.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		6E7D9C1B21BD9A7F0041D38F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E7D9C1A21BD9A7F0041D38F /* AppDelegate.swift */; };
@@ -28,6 +30,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				6E20E8B422BFD03B00DEAF79 /* RxRelay.framework in Embed Frameworks */,
 				6E99131921BF9F5000BDC72F /* RxCocoa.framework in Embed Frameworks */,
 				6E4A319421BE93CE00090BB3 /* RxGoogleMusic.framework in Embed Frameworks */,
 				6E99131B21BF9F5000BDC72F /* RxSwift.framework in Embed Frameworks */,
@@ -38,6 +41,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		6E20E8B222BFD03B00DEAF79 /* RxRelay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxRelay.framework; path = ../../Carthage/Build/Mac/RxRelay.framework; sourceTree = "<group>"; };
 		6E4A319221BE93CE00090BB3 /* RxGoogleMusic.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = RxGoogleMusic.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E7D9C1721BD9A7F0041D38F /* MacApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MacApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E7D9C1A21BD9A7F0041D38F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -59,6 +63,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E20E8B322BFD03B00DEAF79 /* RxRelay.framework in Frameworks */,
 				6E99131821BF9F5000BDC72F /* RxCocoa.framework in Frameworks */,
 				6E4A319321BE93CE00090BB3 /* RxGoogleMusic.framework in Frameworks */,
 				6E99131A21BF9F5000BDC72F /* RxSwift.framework in Frameworks */,
@@ -71,6 +76,7 @@
 		6E7D9C0E21BD9A7F0041D38F = {
 			isa = PBXGroup;
 			children = (
+				6E20E8B222BFD03B00DEAF79 /* RxRelay.framework */,
 				6E99131621BF9F5000BDC72F /* RxCocoa.framework */,
 				6E99131721BF9F5000BDC72F /* RxSwift.framework */,
 				6E4A319221BE93CE00090BB3 /* RxGoogleMusic.framework */,

@@ -48,20 +48,29 @@ public extension GMusicClient {
             |> apiRequest
             >>> singleMap(decode)
 	}
-    
-    func downloadTrack(id trackId: String) -> Single<Data> {
-        return gMusicRequest(.stream(trackId: trackId, quality: .high))
-            |> apiRequest
+
+    func downloadTrack(_ track: GMusicTrack) -> Single<Data> {
+        return downloadTrackRaw(track, byteRange: nil)
+            .map { $0.0 }
     }
     
-    func downloadTrack(_ track: GMusicTrack) -> Single<Data> {
-        return downloadTrack(id: track.identifier ?? "")
+    func downloadTrackRaw(_ track: GMusicTrack, byteRange: ClosedRange<Int>?) -> Single<(Data, HTTPURLResponse)> {
+        return gMusicRequest(.download(trackId: track.identifier ?? "", quality: .high, range: byteRange))
+            |> apiRequest
+            >>> singleMap { ($0.data, $0.response) }
+    }
+    
+    func createDownloadRequest(for track: GMusicTrack, byteRange: ClosedRange<Int>?) -> Single<URLRequest> {
+        let request = gMusicRequest(.download(trackId: track.identifier ?? "", quality: .high, range: byteRange))
+        return issueApiToken(force: false)
+            .map(request.createUrlRequest)
     }
     
     func downloadArt(_ artRef: GMusicRef) -> Single<Data> {
         return artRef.url
             |> urlRequest
             >>> dataRequest
+            >>> singleMap { $0.data }
     }
     
     func downloadAlbumArt(_ track: GMusicTrack) -> Single<Data?> {

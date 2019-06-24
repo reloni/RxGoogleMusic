@@ -25,12 +25,12 @@ extension Environment {
         var createRequest = createUrlRequest(for:)
         var dataRequest = dataRequest(_:in:)
         
-        func dataRequest(for session: URLSession) -> (URLRequest) -> Single<Data> {
+        func dataRequest(for session: URLSession) -> (URLRequest) -> Single<GMusicRawResponse> {
             return session |> (dataRequest |> curry |> flip)
         }
         
         func jsonRequest(for session: URLSession) -> (URLRequest) -> Single<JSON> {
-            return { self.dataRequest($0, session).map(dataToJson) }
+            return { self.dataRequest($0, session).map { $0.data }.map(dataToJson) }
         }
         
         func jsonRequest(from dataRequest: Single<Data>) -> Single<JSON> {

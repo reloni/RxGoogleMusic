@@ -12,6 +12,11 @@ import UIKit
 #endif
 typealias JSON = [String: Any]
 
+struct GMusicRawResponse {
+    let data: Data
+    let response: HTTPURLResponse
+}
+
 protocol GMusicEntity {
     static var collectionRequestPath: GMusicRequestType { get }
 }
@@ -48,7 +53,7 @@ enum GMusicRequestType {
     case artist(id: String, numRelatedArtists: Int, numTopTracks: Int, includeAlbums: Bool, includeBio: Bool)
     case album(id: String, includeDescription: Bool, includeTracks: Bool)
     case radioStatioFeed(statioId: String)
-    case stream(trackId: String, quality: StreamQuality)
+    case download(trackId: String, quality: StreamQuality, range: ClosedRange<Int>?)
     
     var path: String {
         switch self {
@@ -60,7 +65,7 @@ enum GMusicRequestType {
         case .artist: return "/sj/v2.5/fetchartist"
         case .album: return "/sj/v2.5/fetchalbum"
         case .radioStatioFeed: return "/sj/v2.5/radio/stationfeed"
-        case .stream: return "music/mplay"
+        case .download: return "music/mplay"
         }
     }
     
@@ -71,7 +76,7 @@ enum GMusicRequestType {
         case let .artist(id, numRelatedArtists, numTopTracks, includeAlbums, includeBio):
             return [("nid", id), ("num-related-artists", "\(numRelatedArtists)"),
                     ("num-top-tracks", "\(numTopTracks)"), ("include-albums", "\(includeAlbums)"), ("include-bio", "\(includeBio)")]
-        case let .stream(trackId, quality):
+        case let .download(trackId, quality, _):
             let (sig, slt) = Hmac.sign(string: trackId, salt: Hmac.currentSalt)
             
             // mjck if trackID started with T or D,
@@ -87,7 +92,7 @@ enum GMusicRequestType {
     func maxResultsUrlParameter(_ value: Int) -> (String, String)? {
         switch self {
         case .track, .playlist, .playlistEntry: return ("max-results", "\(value)")
-        case .album, .radioStation, .radioStatioFeed, .stream, .favorites, .artist: return nil
+        case .album, .radioStation, .radioStatioFeed, .download, .favorites, .artist: return nil
         }
     }
     
@@ -96,7 +101,16 @@ enum GMusicRequestType {
         case .track, .playlist, .playlistEntry:
             guard let token = value.escapedValue else { return nil }
             return ("start-token", "\(token)")
-        case .album, .radioStation, .radioStatioFeed, .stream, .favorites, .artist: return nil
+        case .album, .radioStation, .radioStatioFeed, .download, .favorites, .artist: return nil
+        }
+    }
+    
+    var headers: [(String, String)] {
+        switch self {
+        case .download(_, _, let range) where range != nil:
+            return [("Range", "bytes=\(range!.lowerBound)-\(range!.upperBound)")]
+        default:
+            return []
         }
     }
 }
@@ -150,6 +164,7 @@ public enum GMusicError: Error {
 	case unableToRetrieveAccessToken(json: [String: Any])
 	case unableToRetrieveAuthenticationUri(json:[String: Any])
 	case unknown(Error)
+    case unexpectedResponseType
 }
 
 extension GMusicError: LocalizedError {
@@ -162,6 +177,7 @@ extension GMusicError: LocalizedError {
         case .urlRequestLocalError(let e): return e.localizedDescription
         case .unableToRetrieveAccessToken: return "Unable to retrieve access token"
         case .unableToRetrieveAuthenticationUri: return "Unable to retrieve authentication URL"
+        case .unexpectedResponseType: return "Response type is not a HTTPURLResponse"
         case .unknown(let e): return e.localizedDescription
         }
     }

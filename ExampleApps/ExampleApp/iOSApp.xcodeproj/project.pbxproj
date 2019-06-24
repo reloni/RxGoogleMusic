@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		6E0F2B4C2003AD23000DA9F9 /* TableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0F2B4B2003AD23000DA9F9 /* TableViewCell.swift */; };
+		6E20E8B622BFD23100DEAF79 /* RxRelay.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6E20E8B522BFD23100DEAF79 /* RxRelay.framework */; };
 		6E65A0AD2002B13B00A1FB1E /* LibraryController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E65A0AC2002B13B00A1FB1E /* LibraryController.swift */; };
 		6E67375E1FFD4991006EDA4F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E67375D1FFD4991006EDA4F /* AppDelegate.swift */; };
 		6E6737601FFD4991006EDA4F /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E67375F1FFD4991006EDA4F /* ViewController.swift */; };
@@ -21,6 +22,7 @@
 
 /* Begin PBXFileReference section */
 		6E0F2B4B2003AD23000DA9F9 /* TableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableViewCell.swift; sourceTree = "<group>"; };
+		6E20E8B522BFD23100DEAF79 /* RxRelay.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = RxRelay.framework; path = ../../Carthage/Build/iOS/RxRelay.framework; sourceTree = "<group>"; };
 		6E65A0AC2002B13B00A1FB1E /* LibraryController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryController.swift; sourceTree = "<group>"; };
 		6E67375A1FFD4991006EDA4F /* iOSApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iOSApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6E67375D1FFD4991006EDA4F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -39,6 +41,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6E20E8B622BFD23100DEAF79 /* RxRelay.framework in Frameworks */,
 				6EE97D2A21BFA12F0020F461 /* RxGoogleMusic.framework in Frameworks */,
 				6E6A15B721BF9DA9004152D4 /* RxCocoa.framework in Frameworks */,
 				6E6A15B821BF9DA9004152D4 /* RxSwift.framework in Frameworks */,
@@ -51,6 +54,7 @@
 		6E66AC422000016300E3DFD0 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6E20E8B522BFD23100DEAF79 /* RxRelay.framework */,
 				6EE97D2921BFA12F0020F461 /* RxGoogleMusic.framework */,
 				6E6A15B521BF9DA9004152D4 /* RxCocoa.framework */,
 				6E6A15B621BF9DA9004152D4 /* RxSwift.framework */,
@@ -168,6 +172,7 @@
 			inputPaths = (
 				"$(SRCROOT)/../../Carthage/Build/iOS/RxSwift.framework",
 				"$(SRCROOT)/../../Carthage/Build/iOS/RxCocoa.framework",
+				"$(SRCROOT)/../../Carthage/Build/iOS/RxRelay.framework",
 			);
 			name = "Copy carthage frameworks";
 			outputPaths = (

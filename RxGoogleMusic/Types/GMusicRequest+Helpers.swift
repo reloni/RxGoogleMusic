@@ -37,16 +37,21 @@ func createUrlRequest(for request: GMusicRequest) -> URLRequest {
     case .radioStation, .favorites:
         return request.url
             |> urlRequest
+            |> defaultHeaders
+            |> setHeaders(request.headers)
             |> postJson
             <> (genericBody(request.maxResults, request.pageToken) |> setBody)
     case .radioStatioFeed(let stationId):
         return request.url
             |> urlRequest
+            |> defaultHeaders
+            |> setHeaders(request.headers)
             |> postJson
             <> (radioFeedBody(stationId, request.maxResults) |> setBody)
     default:
         return request.url
             |> urlRequest
             |> defaultHeaders
+            |> setHeaders(request.headers)
     }
 }

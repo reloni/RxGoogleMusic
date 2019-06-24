@@ -32,8 +32,16 @@ func decode<T: Decodable>(_ data: Data) throws -> T {
     return try Current.jsonDecoder.decode(T.self, from: data)
 }
 
+func decode<T: Decodable>(_ response: GMusicRawResponse) throws -> T {
+    return try Current.jsonDecoder.decode(T.self, from: response.data)
+}
+
 func decode<T>(_ data: Data) throws -> GMusicCollection<T> {
     return try Current.jsonDecoder.decode(GMusicCollection<T>.self, from: data)
+}
+
+func decode<T>(_ response: GMusicRawResponse) throws -> GMusicCollection<T> {
+    return try Current.jsonDecoder.decode(GMusicCollection<T>.self, from: response.data)
 }
 
 // MARK: Request setters
@@ -55,6 +63,14 @@ func setHeader(field: String, value: String?) -> (inout URLRequest) -> Void {
     }
 }
 
+func setHeaders(_ values: [(String, String)]) -> (inout URLRequest) -> Void {
+    return { request in
+        values.forEach {
+            request.allHTTPHeaderFields?[$0.0] = $0.1
+        }
+    }
+}
+
 func setAuthorization(_ token: String) -> (inout URLRequest) -> Void {
     return setHeader(field: "Authorization", value: "Bearer \(token)")
 }
@@ -73,7 +89,7 @@ let postUrlEncoded = postHeader
     <> setHeader(field: "content-type", value: "application/x-www-form-urlencoded")
 
 // MARK: Data request
-func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> {
+func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<GMusicRawResponse> {
     return Single.create { single in
         let task = session.dataTask(with: request) { data, response, error in
             if let error = error {
@@ -81,18 +97,23 @@ func dataRequest(_ request: URLRequest, in session: URLSession) -> Single<Data> 
                 return
             }
             
-            if !(200...299 ~= (response as? HTTPURLResponse)?.statusCode ?? 0) {
+            guard let response = response as? HTTPURLResponse else {
+                single(.error(GMusicError.unexpectedResponseType))
+                return
+            }
+            
+            if !(200...299 ~= response.statusCode) {
                 #if DEBUG
                 if let data = data, let responseString = String.init(data: data, encoding: .utf8) {
                     print("Response string: \(responseString)")
                 }
                 #endif
                 
-                single(.error(GMusicError.urlRequestError(response: response!, data: data)))
+                single(.error(GMusicError.urlRequestError(response: response, data: data)))
                 return
             }
             
-            single(.success(data ?? Data()))
+            single(.success(GMusicRawResponse(data: data ?? Data(), response: response)))
         }
         
         #if DEBUG
