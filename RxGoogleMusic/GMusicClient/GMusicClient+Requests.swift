@@ -60,8 +60,8 @@ public extension GMusicClient {
             >>> singleMap { ($0.data, $0.response) }
     }
     
-    func getDownloadRequest(for track: GMusicTrack) -> Single<URLRequest> {
-        let request = gMusicRequest(.download(trackId: track.identifier ?? "", quality: .high, range: nil))
+    func createDownloadRequest(for track: GMusicTrack, byteRange: ClosedRange<Int>?) -> Single<URLRequest> {
+        let request = gMusicRequest(.download(trackId: track.identifier ?? "", quality: .high, range: byteRange))
         return issueApiToken(force: false)
             .map(request.createUrlRequest)
     }
