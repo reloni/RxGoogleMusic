@@ -50,12 +50,12 @@ public extension GMusicClient {
 	}
 
     func downloadTrack(_ track: GMusicTrack) -> Single<Data> {
-        return downloadTrackRaw(track, range: nil)
+        return downloadTrackRaw(track, byteRange: nil)
             .map { $0.0 }
     }
     
-    func downloadTrackRaw(_ track: GMusicTrack, range: ClosedRange<Int>?) -> Single<(Data, HTTPURLResponse)> {
-        return gMusicRequest(.download(trackId: track.identifier ?? "", quality: .high, range: range))
+    func downloadTrackRaw(_ track: GMusicTrack, byteRange: ClosedRange<Int>?) -> Single<(Data, HTTPURLResponse)> {
+        return gMusicRequest(.download(trackId: track.identifier ?? "", quality: .high, range: byteRange))
             |> apiRequest
             >>> singleMap { ($0.data, $0.response) }
     }
