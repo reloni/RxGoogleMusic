@@ -19,7 +19,6 @@
 		6E3964021FFA93930016C2FA /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964011FFA93930016C2FA /* Extensions.swift */; };
 		6E3964041FFA981E0016C2FA /* GMusicTrack.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964031FFA981E0016C2FA /* GMusicTrack.swift */; };
 		6E3964071FFAA1370016C2FA /* Common.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E3964061FFAA1370016C2FA /* Common.swift */; };
-		6E4A318E21BE609A00090BB3 /* Carthage.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = 6E4A318D21BE609A00090BB3 /* Carthage.xcconfig */; };
 		6E4A319121BE8EC600090BB3 /* GMusicClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E4A319021BE8EC600090BB3 /* GMusicClientTests.swift */; };
 		6E703C7C21BEB36B00B72DA0 /* GMusicAuthenticationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E703C7B21BEB36B00B72DA0 /* GMusicAuthenticationController.swift */; };
 		6E91DC46218CD36A00AF4083 /* HttpRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E91DC45218CD36A00AF4083 /* HttpRequest.swift */; };
@@ -304,7 +303,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6E4A318E21BE609A00090BB3 /* Carthage.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
